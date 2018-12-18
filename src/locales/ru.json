@@ -1,4 +1,7 @@
 {
   "message": "дратути i18n !!",
-  "errorMessageRequired": "Это поле обязательно"
+  "errorMessages": {
+    "required": "Это поле необходимо заполнить",
+    "between": "Укажите значение от %min% до %max%"
+  }
 }

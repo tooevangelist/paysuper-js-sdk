@@ -1,4 +1,10 @@
 {
   "message": "hello i18n !!",
-  "errorMessageRequired": "The field is required"
+  "errorMessageRequired": "The field is required",
+  "errorMessages": {
+    "required": "Enter a value",
+    "between": "Enter value from %min% to %max%",
+    "email": "We need email here!",
+    "minLength": "The value is too short"
+  }
 }

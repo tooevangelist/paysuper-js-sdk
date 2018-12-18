@@ -1,4 +1,5 @@
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const aliasesConfig = require('./aliases.config');
 
 module.exports = {
   css: {
@@ -31,6 +32,9 @@ module.exports = {
   },
 
   configureWebpack: {
+    resolve: {
+      alias: aliasesConfig.webpack,
+    },
     output: {
       filename: 'sdk.js',
       chunkFilename: '[name].js',
