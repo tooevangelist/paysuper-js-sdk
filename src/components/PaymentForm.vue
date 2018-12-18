@@ -61,8 +61,8 @@
           placeholder="Enter your email"
         />
         <base-button type="submit" :isLoading="isLoading">Proceed</base-button>
-        <div class="payment-form__payment-failed">
-          <base-error-text v-if="isPaymentErrorVisible">
+        <div class="payment-form__payment-failed" v-if="isPaymentErrorVisible">
+          <base-error-text>
             {{ $t('paymentFailedMessage') }}
           </base-error-text>
         </div>
@@ -170,6 +170,9 @@ export default {
 @import "@assets/styles/gui.scss";
 
 .payment-form {
+  background: $ui-color-white;
+  border: 1px solid $ui-color-grey87;
+  width: 560px;
   box-sizing: border-box;
   color: $ui-color-grey13;
   font-family: $ui-font-family-common;
