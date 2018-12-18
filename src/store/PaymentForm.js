@@ -1,5 +1,5 @@
 import axios from 'axios';
-import _ from 'lodash';
+import { find } from 'lodash-es';
 
 export default {
   namespaced: true,
@@ -16,7 +16,7 @@ export default {
 
   getters: {
     activePaymentMethod(state) {
-      return _.find(state.paymentMethods, { id: state.activePaymentMethodID });
+      return find(state.paymentMethods, { id: state.activePaymentMethodID });
     },
   },
 

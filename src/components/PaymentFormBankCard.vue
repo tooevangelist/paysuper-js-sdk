@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import _ from 'lodash';
+import { has, extend } from 'lodash-es';
 import { required, between, minLength } from 'vuelidate/lib/validators';
 
 export default {
@@ -80,11 +80,11 @@ export default {
       type: Object,
       validator(value) {
         return (
-          _.has(value, 'cardNumber')
-          && _.has(value, 'month')
-          && _.has(value, 'year')
-          && _.has(value, 'cvv')
-          && _.has(value, 'cardHolder')
+          has(value, 'cardNumber')
+          && has(value, 'month')
+          && has(value, 'year')
+          && has(value, 'cvv')
+          && has(value, 'cardHolder')
         );
       },
     },
@@ -92,7 +92,7 @@ export default {
 
   data() {
     return {
-      innerValue: _.extend({}, this.value),
+      innerValue: extend({}, this.value),
     };
   },
 
@@ -120,7 +120,7 @@ export default {
 
   watch: {
     value(value) {
-      _.extend(this.innerValue, value);
+      extend(this.innerValue, value);
     },
 
     innerValue: {

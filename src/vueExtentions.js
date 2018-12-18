@@ -1,8 +1,8 @@
 import Vue from 'vue';
-import _ from 'lodash';
+import { get } from 'lodash-es';
 
 Vue.prototype.$getFieldErrorMessages = function $getFieldErrorMessages(fieldPath) {
-  const field = _.get(this.$v, fieldPath);
+  const field = get(this.$v, fieldPath);
 
   if (!field) {
     return [];
@@ -17,7 +17,7 @@ Vue.prototype.$getFieldErrorMessages = function $getFieldErrorMessages(fieldPath
 };
 
 Vue.prototype.$isFieldInvalid = function $isFieldInvalid(fieldPath) {
-  const field = _.get(this.$v, fieldPath);
+  const field = get(this.$v, fieldPath);
   if (!field) {
     return false;
   }
