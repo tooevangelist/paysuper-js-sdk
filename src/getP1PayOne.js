@@ -63,6 +63,9 @@ export default function getP1PayOne(mountApp) {
       assert(this.amount, 'amount is required. Use setAmount method to set it');
 
       const { iframe, iframeMountPoint } = createIframe(appendContainer);
+
+      // These sizes are initial
+      // Right after App is mounted actual form size is transferred to iframe
       iframe.setAttribute('width', '560');
       iframe.setAttribute('height', '600');
 

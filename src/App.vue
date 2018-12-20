@@ -43,9 +43,13 @@ export default {
         this.destroyHandler();
       });
     } else {
-      this.$on('requestIframeResize', () => {
-        const formEl = this.$refs.paymentForm.$el;
+      const formEl = this.$refs.paymentForm.$el;
 
+      this.iframeResizeHandler({
+        height: formEl.offsetHeight,
+        width: formEl.offsetWidth,
+      });
+      this.$on('requestIframeResize', () => {
         setTimeout(() => {
           this.iframeResizeHandler({
             height: formEl.offsetHeight,

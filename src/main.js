@@ -14,7 +14,9 @@ import getP1PayOne from './getP1PayOne';
 Vue.config.productionTip = false;
 
 async function mountApp(
-  iframeMountPoint, initStateOptions, { isInModal, destroyHandler, iframeResizeHandler },
+  iframeMountPoint,
+  initStateOptions,
+  { isInModal, destroyHandler, iframeResizeHandler },
 ) {
   await store.dispatch('PaymentForm/initState', initStateOptions);
 
@@ -31,15 +33,6 @@ async function mountApp(
 }
 const P1PayOne = getP1PayOne(mountApp);
 
-if (process.env.NODE_ENV === 'production') {
-  window.P1PayOne = P1PayOne;
-} else {
-  const payoneForm = new P1PayOne({
-    projectID: '5be2e16701d96d00012d26c3',
-    region: 'US',
-    // email: 'raiky@yandex.ru',
-    // paymentMethod: '',
-    // account: '',
-  });
-  payoneForm.setAmount(5).renderInElement('#app');
-}
+// Public API
+window.P1PayOne = P1PayOne;
+export default P1PayOne;
