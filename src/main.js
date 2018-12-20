@@ -10,26 +10,38 @@ import i18n from './i18n';
 import './baseComponents';
 import './vueExtentions';
 
-Vue.config.productionTip = false;
+import getP1PayOne from './getP1PayOne';
 
-const SDK_PUBLIC_NAME = 'ProtocolOnePayment';
-
-async function mountApp(targetElement) {
-  await store.dispatch('PaymentForm/initState');
+const P1PayOne = getP1PayOne(async (el, initStateOptions, { isInModal, destroyHandler }) => {
+  await store.dispatch('PaymentForm/initState', initStateOptions);
 
   new Vue({
     store,
     i18n,
-    render: h => h(App),
-  }).$mount(targetElement);
-}
+    render: h => h(App, {
+      props: {
+        isInModal,
+      },
+    }),
+    mounted() {
+      this.$on('closeModal', () => {
+        destroyHandler(this);
+      });
+    },
+  }).$mount(el);
+});
+
+Vue.config.productionTip = false;
 
 if (process.env.NODE_ENV === 'production') {
-  window[SDK_PUBLIC_NAME] = {
-    renderForm(targetElement) {
-      mountApp(targetElement);
-    },
-  };
+  window.P1PayOne = P1PayOne;
 } else {
-  mountApp('#app');
+  const payoneForm = new P1PayOne({
+    projectID: '5be2e16701d96d00012d26c3',
+    region: 'US',
+    // email: 'raiky@yandex.ru',
+    // paymentMethod: '',
+    // account: '',
+  });
+  payoneForm.setAmount(5).renderModal();
 }

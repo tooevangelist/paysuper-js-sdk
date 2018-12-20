@@ -1,0 +1,38 @@
+
+.payment-form-bank-card {
+  width: 320px;
+  padding: 20px;
+  border: 1px solid $ui-color-grey87;
+  background: $ui-color-grey96;
+
+  &__row {
+    display: flex;
+    justify-content: space-between;
+
+    & + & {
+      margin-top: 10px;
+    }
+  }
+
+  &__cvv {
+    width: 30%;
+  }
+}
+
+.payment-form-bank-card-expire {
+  width: 50%;
+  display: flex;
+
+  &__item {
+    width: 30%;
+    flex-basis: 0;
+    flex-grow: 1;
+  }
+
+  &__delimiter {
+    width: 12px;
+    text-align: center;
+    height: 34px;
+    line-height: 34px;
+  }
+}

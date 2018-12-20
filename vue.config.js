@@ -9,6 +9,21 @@ module.exports = {
   filenameHashing: false,
 
   chainWebpack: (config) => {
+    config.module.rules.delete('scss');
+
+    /**
+     * Forcing scss not to auto-append css into the document on import
+     */
+    config.module.rule('scss')
+      .test(/\.scss$/)
+      .use('postcss-loader')
+      .loader('postcss-loader');
+
+    config.module.rule('scss')
+      .use('sass-loader')
+      .loader('sass-loader');
+
+
     if (process.env.NODE_ENV !== 'production') {
       return;
     }
@@ -36,7 +51,7 @@ module.exports = {
       alias: aliasesConfig.webpack,
     },
     output: {
-      filename: 'sdk.js',
+      filename: 'p1payone.js',
       chunkFilename: '[name].js',
     },
     plugins:

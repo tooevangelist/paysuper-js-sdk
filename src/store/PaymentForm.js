@@ -8,6 +8,7 @@ export default {
     orderID: '',
     account: '',
     project: null,
+    initialEmail: '',
     paymentMethods: [],
     activePaymentMethodID: '',
     isLoading: false,
@@ -30,6 +31,9 @@ export default {
     project(state, value) {
       state.project = value;
     },
+    initialEmail(state, value) {
+      state.initialEmail = value;
+    },
     paymentMethods(state, value) {
       state.paymentMethods = value;
     },
@@ -45,18 +49,26 @@ export default {
   },
 
   actions: {
-    async initState({ commit }) {
+    async initState({ commit }, {
+      projectID, region, amount, currency,
+      email,
+      paymentMethod,
+      account,
+    }) {
       const { data } = await axios.post('https://p1payapi.tst.protocol.one/api/v1/order', {
-        amount: 5,
-        project: '5be2e16701d96d00012d26c3',
-        region: 'US',
+        region,
+        amount,
+        currency,
+        account,
+        project: projectID,
+        payment_method: paymentMethod,
         payer_ip: '77.233.9.26',
-        currency: 'USD',
       });
 
       commit('orderID', data.id);
       commit('account', data.account);
       commit('project', data.project);
+      commit('initialEmail', email);
       commit('paymentMethods', data.payment_methods);
       commit('activePaymentMethodID', data.payment_methods[0].id);
     },

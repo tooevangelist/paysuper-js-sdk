@@ -26,14 +26,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-@import "@assets/styles/gui.scss";
-
-.base-error-text {
-  font-size: 12px;
-  line-height: 13px;
-  color: $ui-color-red;
-  margin-top: 5px;
-}
-</style>

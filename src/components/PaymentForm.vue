@@ -52,20 +52,24 @@
         />
       </div>
       <div class="payment-form__finish-form">
-        <BaseTextField
-          class="payment-form__email-field"
-          v-model="email"
-          :hasError="$isFieldInvalid('email')"
-          :errors="$getFieldErrorMessages('email')"
-          name="email"
-          placeholder="Enter your email"
-        />
-        <base-button type="submit" :isLoading="isLoading">Proceed</base-button>
-        <div class="payment-form__payment-failed" v-if="isPaymentErrorVisible">
-          <base-error-text>
-            {{ $t('paymentFailedMessage') }}
-          </base-error-text>
+        <div>
+          <BaseTextField
+            class="payment-form__email-field"
+            v-if="!initialEmail"
+            v-model="email"
+            :hasError="$isFieldInvalid('email')"
+            :errors="$getFieldErrorMessages('email')"
+            name="email"
+            placeholder="Enter your email"
+          />
+          <div class="payment-form__payment-failed" v-if="isPaymentErrorVisible">
+            <base-error-text>
+              {{ $t('paymentFailedMessage') }}
+            </base-error-text>
+          </div>
         </div>
+        <base-button type="submit" :isLoading="isLoading">Proceed</base-button>
+
       </div>
 
     </form>
@@ -103,6 +107,10 @@ export default {
 
   validations() {
     if (this.isBankCardPayment) {
+      if (this.initialEmail) {
+        return {};
+      }
+
       return {
         email: {
           required,
@@ -123,6 +131,7 @@ export default {
       'orderID',
       'account',
       'project',
+      'initialEmail',
       'paymentMethods',
       'activePaymentMethodID',
       'isLoading',
@@ -159,103 +168,12 @@ export default {
       this.createPayment({
         ...this.bankCard,
         ewallet: this.ewallet,
-        email: this.email,
+        email: this.initialEmail || this.email,
       });
     },
   },
 };
 </script>
-
-<style lang="scss">
-@import "@assets/styles/gui.scss";
-
-.payment-form {
-  background: $ui-color-white;
-  border: 1px solid $ui-color-grey87;
-  width: 560px;
-  box-sizing: border-box;
-  color: $ui-color-grey13;
-  font-family: $ui-font-family-common;
-  font-size: 13px;
-  line-height: 16px;
-
-  * {
-    box-sizing: border-box;
-  }
-
-  &__methods {
-    padding: 15px 20px;
-    border-bottom: 1px solid $ui-color-grey87;
-  }
-
-  &__forms {
-    min-height: 200px;
-    padding: 10px 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-bottom: 1px solid $ui-color-grey87;
-  }
-
-  &__finish-form {
-    padding: 20px;
-    background: $ui-color-grey96;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-
-  &__email-field {
-    max-width: 60%;
-  }
-
-  &__ewallet-field {
-    max-width: 70%;
-  }
-
-  &__payment-failed {
-    width: 100%;
-    margin-top: 5px;
-  }
-}
-
-.payment-form-head {
-  padding: 15px 20px;
-  border-bottom: 1px solid $ui-color-grey87;
-
-  &__title {
-    font-size: 18px;
-    font-weight: 400;
-    line-height: 25px;
-  }
-
-  &__summ {
-    font-weight: 400;
-    font-size: 32px;
-    line-height: 40px;
-  }
-
-  &__delimiter-text {
-    margin-bottom: 8px;
-  }
-}
-
-.payment-form-info {
-  margin-top: 20px;
-
-  &__item {
-    display: flex;
-  }
-
-  &__key {
-    color: $ui-color-grey47;
-    width: 80px;
-  }
-
-  &__value {
-  }
-}
-</style>
 
 <i18n>
 {

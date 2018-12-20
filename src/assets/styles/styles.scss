@@ -1,0 +1,30 @@
+// This styles includes only into iframe
+// It has no influence on parenet page (where we init the library)
+
+@import 'includes/gui.scss';
+@import 'components/App.scss';
+@import 'components/BaseButton.scss';
+@import 'components/BaseErrorText.scss';
+@import 'components/BaseTextField.scss';
+@import 'components/PaymentForm.scss';
+@import 'components/PaymentFormBankCard.scss';
+@import 'components/PaymentFormMethods.scss';
+
+body {
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  text-align: left;
+  display: inline;
+  font-size: inherit;
+  font-family: inherit;
+  overflow: visible;
+}
