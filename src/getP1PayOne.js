@@ -24,7 +24,9 @@ function createIframe(appendContainer) {
   const iframe = document.createElement('iframe');
   iframe.setAttribute('frameborder', '0');
 
-  getDomElement(appendContainer).appendChild(iframe);
+  const appendContainerElement = getDomElement(appendContainer);
+  assert(appendContainerElement, 'Element for form rendering is not found');
+  appendContainerElement.appendChild(iframe);
 
   const { body, head } = iframe.contentDocument;
   const styleTag = document.createElement('STYLE');
@@ -143,11 +145,14 @@ export default function getP1PayOne(mountApp) {
      * @return {P1PayOne}
      */
     setAmount(amount) {
-      this.amount = amount;
+      const amountIsValidType = (typeof amount === 'string' || typeof amount === 'number');
+      assert(amountIsValidType, 'Amount value must be a string or number');
+      this.amount = Number(amount);
       return this;
     }
 
     setCurrency(currency) {
+      assert(typeof currency === 'string', 'Currency value must be a string');
       this.currency = currency;
       return this;
     }
