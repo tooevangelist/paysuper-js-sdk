@@ -1,7 +1,7 @@
 import Vue from 'vue';
-import { get } from 'lodash-es';
+import { get, extend } from 'lodash-es';
 
-Vue.prototype.$getFieldErrorMessages = function $getFieldErrorMessages(fieldPath) {
+function $getFieldErrorMessages(fieldPath) {
   const field = get(this.$v, fieldPath);
 
   if (!field) {
@@ -14,12 +14,22 @@ Vue.prototype.$getFieldErrorMessages = function $getFieldErrorMessages(fieldPath
       const params = field.$params[name];
       return message.replace(/%(.+?)%/g, (a, variable) => params[variable]);
     });
-};
+}
 
-Vue.prototype.$isFieldInvalid = function $isFieldInvalid(fieldPath) {
+function $isFieldInvalid(fieldPath) {
   const field = get(this.$v, fieldPath);
   if (!field) {
     return false;
   }
   return Boolean(field.$invalid && field.$dirty);
-};
+}
+
+function $requestIframeResize() {
+  this.$root.$emit('requestIframeResize');
+}
+
+extend(Vue.prototype, {
+  $getFieldErrorMessages,
+  $isFieldInvalid,
+  $requestIframeResize,
+});

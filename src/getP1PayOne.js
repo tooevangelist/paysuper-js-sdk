@@ -58,7 +58,7 @@ export default function getP1PayOne(mountApp) {
      * @param {String|DomElement} appendContainer
      * @return {P1PayOne}
      */
-    renderEmbedded(appendContainer) {
+    async renderInElement(appendContainer) {
       assert(appendContainer, 'Mount element or selector is required for embedded form render');
       assert(this.amount, 'amount is required. Use setAmount method to set it');
 
@@ -66,20 +66,36 @@ export default function getP1PayOne(mountApp) {
       iframe.setAttribute('width', '560');
       iframe.setAttribute('height', '600');
 
-      mountApp(iframeMountPoint, {
-        projectID: this.projectID,
-        region: this.region,
-        amount: this.amount,
-        currency: this.currency,
-        email: this.email,
-        paymentMethod: this.paymentMethod,
-        account: this.account,
-      }, {});
+      await mountApp(
+        iframeMountPoint,
+        {
+          projectID: this.projectID,
+          region: this.region,
+          amount: this.amount,
+          currency: this.currency,
+          email: this.email,
+          paymentMethod: this.paymentMethod,
+          account: this.account,
+        },
+        {
+          isInModal: false,
+          iframeResizeHandler({ width, height }) {
+            iframe.setAttribute('width', width);
+            iframe.setAttribute('height', height);
+          },
+        },
+      );
 
-      return this;
+      return iframe;
     }
 
-    renderModal() {
+    /**
+     * Renders the payment form in modal dialog layer
+     *
+     * @param {String|DomElement} appendContainer
+     * @return {P1PayOne}
+     */
+    async renderModal() {
       assert(this.amount, 'amount is required. Use setAmount method to set it');
 
       const { iframe, iframeMountPoint } = createIframe(document.body);
@@ -88,13 +104,14 @@ export default function getP1PayOne(mountApp) {
         width: '100%',
         height: '100%',
         position: 'fixed',
+        background: 'rgba(0, 0, 0, 0.6)',
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
       });
 
-      mountApp(
+      await mountApp(
         iframeMountPoint,
         {
           projectID: this.projectID,
@@ -107,14 +124,13 @@ export default function getP1PayOne(mountApp) {
         },
         {
           isInModal: true,
-          destroyHandler(app) {
-            app.$destroy();
+          destroyHandler() {
             iframe.parentNode.removeChild(iframe);
           },
         },
       );
 
-      return this;
+      return iframe;
     }
 
     /**

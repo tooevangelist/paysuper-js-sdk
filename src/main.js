@@ -9,29 +9,27 @@ import store from './store/RootStore';
 import i18n from './i18n';
 import './baseComponents';
 import './vueExtentions';
-
 import getP1PayOne from './getP1PayOne';
 
-const P1PayOne = getP1PayOne(async (el, initStateOptions, { isInModal, destroyHandler }) => {
+Vue.config.productionTip = false;
+
+async function mountApp(
+  iframeMountPoint, initStateOptions, { isInModal, destroyHandler, iframeResizeHandler },
+) {
   await store.dispatch('PaymentForm/initState', initStateOptions);
 
-  new Vue({
+  const VueApp = Vue.extend(App);
+  new VueApp({
     store,
     i18n,
-    render: h => h(App, {
-      props: {
-        isInModal,
-      },
-    }),
-    mounted() {
-      this.$on('closeModal', () => {
-        destroyHandler(this);
-      });
+    propsData: {
+      isInModal,
+      destroyHandler,
+      iframeResizeHandler,
     },
-  }).$mount(el);
-});
-
-Vue.config.productionTip = false;
+  }).$mount(iframeMountPoint);
+}
+const P1PayOne = getP1PayOne(mountApp);
 
 if (process.env.NODE_ENV === 'production') {
   window.P1PayOne = P1PayOne;
@@ -43,5 +41,5 @@ if (process.env.NODE_ENV === 'production') {
     // paymentMethod: '',
     // account: '',
   });
-  payoneForm.setAmount(5).renderModal();
+  payoneForm.setAmount(5).renderInElement('#app');
 }

@@ -5,7 +5,7 @@
         <IconClose width="16" height="16" fill="#999" />
       </button>
 
-      <PaymentForm/>
+      <PaymentForm ref="paymentForm" />
     </div>
   </div>
 </template>
@@ -13,6 +13,7 @@
 <script>
 import PaymentForm from './components/PaymentForm.vue';
 import IconClose from './components/IconClose.vue';
+import modalTools from './modalTools';
 
 export default {
   name: 'App',
@@ -21,10 +22,38 @@ export default {
       type: Boolean,
       default: false,
     },
+    destroyHandler: {
+      default: undefined,
+    },
+    iframeResizeHandler: {
+      default: undefined,
+    },
   },
   components: {
     PaymentForm,
     IconClose,
+  },
+
+  mounted() {
+    if (this.isInModal) {
+      modalTools.hideBodyScrollbar();
+      this.$on('closeModal', () => {
+        modalTools.showBodyScrollbar();
+        this.$destroy();
+        this.destroyHandler();
+      });
+    } else {
+      this.$on('requestIframeResize', () => {
+        const formEl = this.$refs.paymentForm.$el;
+
+        setTimeout(() => {
+          this.iframeResizeHandler({
+            height: formEl.offsetHeight,
+            width: formEl.offsetWidth,
+          });
+        }, 0);
+      });
+    }
   },
 };
 </script>

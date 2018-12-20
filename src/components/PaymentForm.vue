@@ -105,6 +105,39 @@ export default {
     };
   },
 
+  computed: {
+    ...mapState('PaymentForm', [
+      'orderID',
+      'account',
+      'project',
+      'initialEmail',
+      'paymentMethods',
+      'activePaymentMethodID',
+      'isLoading',
+      'isPaymentErrorVisible',
+    ]),
+    ...mapGetters('PaymentForm', ['activePaymentMethod']),
+
+    isBankCardPayment() {
+      return this.activePaymentMethod.type === 'bank_card';
+    },
+  },
+
+  watch: {
+    bankCard() {
+      this.$requestIframeResize();
+    },
+    ewallet() {
+      this.$requestIframeResize();
+    },
+    email() {
+      this.$requestIframeResize();
+    },
+    activePaymentMethodID() {
+      this.$requestIframeResize();
+    },
+  },
+
   validations() {
     if (this.isBankCardPayment) {
       if (this.initialEmail) {
@@ -126,28 +159,11 @@ export default {
     };
   },
 
-  computed: {
-    ...mapState('PaymentForm', [
-      'orderID',
-      'account',
-      'project',
-      'initialEmail',
-      'paymentMethods',
-      'activePaymentMethodID',
-      'isLoading',
-      'isPaymentErrorVisible',
-    ]),
-    ...mapGetters('PaymentForm', ['activePaymentMethod']),
-
-    isBankCardPayment() {
-      return this.activePaymentMethod.type === 'bank_card';
-    },
-  },
-
   methods: {
     ...mapActions('PaymentForm', ['setActivePaymentMethod', 'createPayment', 'hidePaymentError']),
 
     submitPaymentForm() {
+      this.$requestIframeResize();
       this.hidePaymentError();
       this.$v.$touch();
 
