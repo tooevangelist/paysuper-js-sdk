@@ -1,5 +1,4 @@
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const aliasesConfig = require('./aliases.config');
 
 module.exports = {
   css: {
@@ -47,15 +46,12 @@ module.exports = {
   },
 
   configureWebpack: {
-    resolve: {
-      alias: aliasesConfig.webpack,
-    },
     output: {
       filename: 'p1payone.js',
       chunkFilename: '[name].js',
     },
     plugins:
-      process.env.NODE_ENV === 'production'
+      process.env.CHECK_SIZE === 'true'
         ? [new BundleAnalyzerPlugin()]
         : [],
   },

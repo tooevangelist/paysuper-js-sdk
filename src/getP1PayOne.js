@@ -1,6 +1,8 @@
 import assert from 'simple-assert';
 import { extend } from 'lodash-es';
+import axios from 'axios';
 import styles from './assets/styles/styles.scss';
+import { apiPathGetProjectPackages } from './settings';
 
 /**
  * Returns DOM element by selector or actual DOM element
@@ -25,7 +27,7 @@ function createIframe(appendContainer) {
   iframe.setAttribute('frameborder', '0');
 
   const appendContainerElement = getDomElement(appendContainer);
-  assert(appendContainerElement, 'Element for form rendering is not found');
+  assert(appendContainerElement, 'Form mounting element is not found');
   appendContainerElement.appendChild(iframe);
 
   const { body, head } = iframe.contentDocument;
@@ -42,7 +44,7 @@ export default function getP1PayOne(mountApp) {
   return class P1PayOne {
     constructor({
       projectID, region, email, paymentMethod, account,
-    }) {
+    } = {}) {
       assert(projectID, 'projectID is required for "new P1PayOne(...)"');
       this.projectID = projectID;
       this.region = region;
@@ -51,7 +53,7 @@ export default function getP1PayOne(mountApp) {
       this.account = account;
 
       this.currency = 'USD';
-      this.amount = null;
+      this.amount = undefined;
     }
 
     /**
@@ -62,7 +64,7 @@ export default function getP1PayOne(mountApp) {
      */
     async renderInElement(appendContainer) {
       assert(appendContainer, 'Mount element or selector is required for embedded form render');
-      assert(this.amount, 'amount is required. Use setAmount method to set it');
+      assert(this.amount, 'Amount is required. Use setAmount method to set it');
 
       const { iframe, iframeMountPoint } = createIframe(appendContainer);
 
@@ -101,7 +103,7 @@ export default function getP1PayOne(mountApp) {
      * @return {P1PayOne}
      */
     async renderModal() {
-      assert(this.amount, 'amount is required. Use setAmount method to set it');
+      assert(this.amount, 'Amount is required. Use setAmount method to set it');
 
       const { iframe, iframeMountPoint } = createIframe(document.body);
 
@@ -151,10 +153,49 @@ export default function getP1PayOne(mountApp) {
       return this;
     }
 
+    /**
+     * Setups the currency
+     *
+     * @param {String} currency example: "US"
+     * @return {P1PayOne}
+     */
     setCurrency(currency) {
       assert(typeof currency === 'string', 'Currency value must be a string');
       this.currency = currency;
       return this;
+    }
+
+    /**
+     * Fetches and returns array of project packages
+     *
+     * @param {String} id package ID
+     * @return {Object[]}
+     */
+    async getAllSku() {
+      const { data } = await axios.get(
+        `${apiPathGetProjectPackages}/${this.region}/${this.projectID}`,
+      );
+
+      return data;
+    }
+
+    /**
+     * Fetches and returns single project package
+     *
+     * @param {String} id package ID
+     * @return {Object}
+     */
+    async getSkuByID(id) {
+      assert(id, 'ID is required in getSkuByID method');
+      const { data } = await axios.get(
+        `${apiPathGetProjectPackages}/${this.region}/${this.projectID}?id[]=${id}`,
+      );
+
+      if (!Array.isArray(data) || !data.length) {
+        return null;
+      }
+
+      return data[0];
     }
   };
 }

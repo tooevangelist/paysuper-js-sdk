@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { find } from 'lodash-es';
+import { apiPathCreateOrder } from '../settings';
 
 export default {
   namespaced: true,
@@ -55,7 +56,7 @@ export default {
       paymentMethod,
       account,
     }) {
-      const { data } = await axios.post('https://p1payapi.tst.protocol.one/api/v1/order', {
+      const { data } = await axios.post(apiPathCreateOrder, {
         region,
         amount,
         currency,
@@ -104,7 +105,7 @@ export default {
 
       try {
         const { data } = await axios.post(
-          'https://p1payapi.tst.protocol.one/api/v1/payment',
+          apiPathCreateOrder,
           request,
         );
         window.location.href = data.redirect_url;
