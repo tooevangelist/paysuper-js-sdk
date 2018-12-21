@@ -18,3 +18,15 @@
     padding: 10px;
   }
 }
+
+.app-failed {
+  background: $ui-color-white;
+  border: 1px solid $ui-color-grey87;
+  width: 560px;
+  padding: 20px;
+  box-sizing: border-box;
+  color: $ui-color-grey13;
+  font-family: $ui-font-family-common;
+  font-size: 13px;
+  line-height: 16px;
+}

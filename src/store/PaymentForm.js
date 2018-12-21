@@ -56,22 +56,26 @@ export default {
       paymentMethod,
       account,
     }) {
-      const { data } = await axios.post(apiPathCreateOrder, {
-        region,
-        amount,
-        currency,
-        account,
-        project: projectID,
-        payment_method: paymentMethod,
-        payer_ip: '77.233.9.26',
-      });
+      try {
+        const { data } = await axios.post(apiPathCreateOrder, {
+          region,
+          amount,
+          currency,
+          account,
+          project: projectID,
+          payment_method: paymentMethod,
+          payer_ip: '77.233.9.26',
+        });
 
-      commit('orderID', data.id);
-      commit('account', data.account);
-      commit('project', data.project);
-      commit('initialEmail', email);
-      commit('paymentMethods', data.payment_methods);
-      commit('activePaymentMethodID', data.payment_methods[0].id);
+        commit('orderID', data.id);
+        commit('account', data.account);
+        commit('project', data.project);
+        commit('initialEmail', email);
+        commit('paymentMethods', data.payment_methods);
+        commit('activePaymentMethodID', data.payment_methods[0].id);
+      } catch (error) {
+        console.error(error);
+      }
     },
 
     setActivePaymentMethod({ commit }, value) {
