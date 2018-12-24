@@ -1,0 +1,28 @@
+language: node_js    
+
+jobs:
+  include:
+    - stage: lint
+      script: node run lint
+    - stage: test
+      script: node run test
+    - stage: build
+      script: node run build
+    - name: deploy_dev
+      if: branch = master
+      deploy:
+        provider: s3  
+        secret_access_key:
+          secure: fEXlMMAyNkcPUN7rup6Xjaa8t7BBR8fMIFLGndRkrf7xHlElUGWFPx42aqdcQpaDF6KxFZEjHjMo10Fw6KH0qPggZYvBwfD3rs9yRoPKndxELOvneFf94CvwQj4O1kxGPhb8UYbUeU6zSMv1dPhTbpz+XEL1KYcV/BSUQEfNhfYBjurK2AUfsgApZpSuUGiRpMxEyiFZbHH7+ZyL8XEw0L4o31cEMAk5ZxVIHUj7Ej/l24eRY81l7SLYPoqrnLFgHy1yCz/0a4J6qgz6c32/GXHT4ABsyJurX02XbBGUzC2Jxw0BgwZ5TAWR/86IfglDs/V6TS9oLzIyHnmHK5Ag+ldlbBG8v/VKpOvS8IZDA7zVrv5b5kzeC0O2oBNLO2+ocno0TONsRRIC8U6xfBkEFJOVW4q98nIPNq6HkaW0M8/A1OPFAb3H/cT/Z91+mMBF/SGZOkkk9hpfPGn7jdfqWZXEEVO1Ltmkvr1psHgJLRmGRHLD5CxO0GyECjq04QV9fu/l5Hu4+wQlJxL5zlreMbZO/uUrx8j/gH/3Q/pOUluRd4Qgs0zvSu5IAUIg//nRM1Dxj7oFvL/pus2wlXCaEDpozVU38vSUgTALDHBfZ9dSFWmQBJD3e8dJqqiYfy3peghqjLpXcAxluHQCtiqY/g1tWP/NmZ/X+X2jZejI3Xs=
+        access_key_id:
+          secure: TjrvoImDddUl8q5kyWT1Lx8QlztA6W8czcBPjkYCna7D+oakGDAaYZ04FSF55xFeweZlBVvOSjUyjPVC3yr+NO5mJRi5iVeZqIeUssoyZkXsV7wbcEmcGoOPmDxQHdjNl7rXakyb1Q8qFcB/tTQuPETWQMA+mfp7WOG4eC1XXZAvxobDl4uT28Py8mJQSf19uwDvnFwbUbxOnWe1M9dz/wBDABnIQnzlUWTZtdByrZdfkboGlOF9uh1dLJEv4MRE6tk2OSJ2hX7FRtmreC/wiLag/OZr6DVVpe+Ee/Pd7RnK/bMnHR1jtCmhFHum4BDPL1nmd4eFvEmmVc6af+L0lSkRzGrjP+st+eEiGJrC/4HxMkXwoiGCh0ZdrVt87SVLlTMf7CXHGxujPZmtLeqhlU8AY/C0drPx3l53l2NNqxPZ8gEERSmwN//OAVTN+Qq+T9hnYi1kI4IrvPwnfegRS56F0OZQ3MhYAiGz9RE5gshGUcbWwZ7y2xHieuKSFltf2Mp4NiL7OcpmRrBHs0W2buYCzuLe0yE87lQldNKhYLqmPykUVNrqu01iyFXXV3pdAdsd8+Un2XP9WtKYZYzdD5ApY7MfC3oKLfY+Yt4e/DI6Ut7yDFPIoP7/8pQD6dWpFwMTPhNlk/1hCeLY2LzUJkfHZpVqgOm9kaLid+1Xzds=
+        endpoint:
+          secure: YWYsRkfItn5meI1s7fxUM6zUxAZs9wOvfbR77+Vd1mAzQtsm6G3eXC3mLmBdZ2AUD8070jUdneHuNO2lSn/DIFGEnl7HWmdr+g0Li4FcK7Y/00pK+yUEW59JbLD2aNsCqARk2/q3jeik6IstsRc+rTOMBGOPFouoNoB85kfgYEcPTs+N5UuigJa+tK8BAw9tVWF+4XarrsNQBAK962PxfdqrIHtjT6T5/xd1IKLRoeMW+WBxqHQUxMLQP5t6+mrr7qAPLpSx7cyJJ1IHfRS8o6mhcQJ2m9a7Po6doCw+d/nw95MHbuN0vi5C2v9paBEOIj4eFH0L5CaOsIuP3gOQEpA22+dr2HiS72bpljI8+6C0v6HVc4uvgILnFFvsfGxaUlMO+AcvKyZp7I0vRm++aJpIaBfLYhU0dfj9eRKhzVgcUnVPwvgwKavzNRL1T50ZBi42/X3l4aCFaP/IdzfkbuWqibgHePTV4GFlB17R/VPXO+XxmxrhYkdCPO+BfgzY5MNb+No17OdFs6AaPevywu9XyHAmTa+5Bgb1frIzJFbB2kcVDZB+b3qHaeDXkq/UocZCebdQxezlrN8s3PDnynTELW4+FWW//7T+vRJGfVZTUxJ9czzR15Nj8IbhGbp96hRiUjBjuB8Q/mP0/snnP+f8occj+j4FxWnRRqLWMGA=
+        bucket: "payone"
+
+after_success: 
+
+notifications:
+  email: false
+  slack:
+    secure: EfqPW3dwulj/+GsA3mMSTEAJGkt9XJ0YiapBHiiyfoVg0YToqto8st5LcJAhmQ+5XPyvnZ5fyZmOFQbYdLSV4JoZDx5AspObe2C0rM7mcdYA9JzTxseOr48XagZH2KOtf5+fgVuCANmfrxTv2xZAGC37hX9/YFdunG3SEvfmc1j1mSmwQqwDChsEDET6XzcgA/Q3tplLNcfLKXf2j4GR0Y1Lc+E6lsnRmRXeDVW6R9hI4rcfkCeSy+vWzAaa31t9i+O4zxZGcCxlTxKcbDVpBidCfu3pasbAjf+CCApfFNzEWRrfD7Wx77nrbdrUpta663YYB2gqU9/6dVLHbRCZIJMzc5KmAtrdxFC4kSf0V+g72oUXPe/0F6VxhJR68ymW8JZvWuiWCmfVqR4t3O90S1BXlL2Ccw5YOGs1NID6ZiPNn4XYBGp8LGpSqPgq/XCmJQgwYb7+ASZAj+P5EOjTrEHZJ01n/jxgRsmGxq6MYlFSywfeVxgRLL5ZJSTj1u05s+UadYtrUD6dN3dJaX+j5ZN/x4Su1FbT8KFKYzNmabQH9ireNzdvfZJkSPpxC1IByRB7LZWvDNCce0kCmqvBP9r7XVmRp7UNPIr2Zxyghq/6wGfxMTqZUN3vgJIqBwm+NumjbyIhAFFavBcRXlelVmL+khpNMof6X/DJ3n7fbG0=
