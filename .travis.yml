@@ -1,4 +1,13 @@
 language: node_js    
+node_js:
+  - "11.5.0"
+
+stages:
+  - lint
+  - test
+  - build
+  - deploy_dev
+    if: branch=master
 
 jobs:
   include:
