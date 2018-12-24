@@ -19,14 +19,14 @@ jobs:
       provider: s3
       skip_cleanup: true
       local_dir: dist
-      upload-dir: dev
+      upload-dir: /payone/dev
       secret_access_key:
         secure: fEXlMMAyNkcPUN7rup6Xjaa8t7BBR8fMIFLGndRkrf7xHlElUGWFPx42aqdcQpaDF6KxFZEjHjMo10Fw6KH0qPggZYvBwfD3rs9yRoPKndxELOvneFf94CvwQj4O1kxGPhb8UYbUeU6zSMv1dPhTbpz+XEL1KYcV/BSUQEfNhfYBjurK2AUfsgApZpSuUGiRpMxEyiFZbHH7+ZyL8XEw0L4o31cEMAk5ZxVIHUj7Ej/l24eRY81l7SLYPoqrnLFgHy1yCz/0a4J6qgz6c32/GXHT4ABsyJurX02XbBGUzC2Jxw0BgwZ5TAWR/86IfglDs/V6TS9oLzIyHnmHK5Ag+ldlbBG8v/VKpOvS8IZDA7zVrv5b5kzeC0O2oBNLO2+ocno0TONsRRIC8U6xfBkEFJOVW4q98nIPNq6HkaW0M8/A1OPFAb3H/cT/Z91+mMBF/SGZOkkk9hpfPGn7jdfqWZXEEVO1Ltmkvr1psHgJLRmGRHLD5CxO0GyECjq04QV9fu/l5Hu4+wQlJxL5zlreMbZO/uUrx8j/gH/3Q/pOUluRd4Qgs0zvSu5IAUIg//nRM1Dxj7oFvL/pus2wlXCaEDpozVU38vSUgTALDHBfZ9dSFWmQBJD3e8dJqqiYfy3peghqjLpXcAxluHQCtiqY/g1tWP/NmZ/X+X2jZejI3Xs=
       access_key_id:
         secure: TjrvoImDddUl8q5kyWT1Lx8QlztA6W8czcBPjkYCna7D+oakGDAaYZ04FSF55xFeweZlBVvOSjUyjPVC3yr+NO5mJRi5iVeZqIeUssoyZkXsV7wbcEmcGoOPmDxQHdjNl7rXakyb1Q8qFcB/tTQuPETWQMA+mfp7WOG4eC1XXZAvxobDl4uT28Py8mJQSf19uwDvnFwbUbxOnWe1M9dz/wBDABnIQnzlUWTZtdByrZdfkboGlOF9uh1dLJEv4MRE6tk2OSJ2hX7FRtmreC/wiLag/OZr6DVVpe+Ee/Pd7RnK/bMnHR1jtCmhFHum4BDPL1nmd4eFvEmmVc6af+L0lSkRzGrjP+st+eEiGJrC/4HxMkXwoiGCh0ZdrVt87SVLlTMf7CXHGxujPZmtLeqhlU8AY/C0drPx3l53l2NNqxPZ8gEERSmwN//OAVTN+Qq+T9hnYi1kI4IrvPwnfegRS56F0OZQ3MhYAiGz9RE5gshGUcbWwZ7y2xHieuKSFltf2Mp4NiL7OcpmRrBHs0W2buYCzuLe0yE87lQldNKhYLqmPykUVNrqu01iyFXXV3pdAdsd8+Un2XP9WtKYZYzdD5ApY7MfC3oKLfY+Yt4e/DI6Ut7yDFPIoP7/8pQD6dWpFwMTPhNlk/1hCeLY2LzUJkfHZpVqgOm9kaLid+1Xzds=
       endpoint:
         secure: k67XzNuh39riSrC5gaGX7d2m37SmjBcjaucwURd+FVtkP+UuO3BehPwzr5vXsBffBhqSRFhK0J8XYseK+5p0KoQKHeNzo/PHQ8AE61wbRhg/YsFIoK27I7COsPGn1Pn7CfeczQKWUL3HiHD4GdE7V1wkGTR7Md7nuGUX600cB+oMJBIrV6xtKC5xw+qGlHuMxR6qpaDFXFVWn4+uCEszvboeb7tHt/3OwiWJnlrpPU4iAO2MVOn04F1HEbfJYFEn5qulkYcCjaOPNnWYu+nmeOHdlHYwuSLgbi8C1lG2pw/QtrHdXWRTcO1hQKUhkj7+VPj/rPBPWoJkJPpics7k4CdiML4ApxlFqhit3v/F/iPoM8W4WCCon3mo+Yjkr47Bg4OZ9j6WbQI+iq1ll1le5CDZOYvbUv/uh8xyHzc/yqgTem5cTfSDwYtRCPWbg20Pnl+DJ0j1DZTeCR5B9grzHVxhppEijFU5OP4Jn8IHl2htAqhZIgtqLWk3IdoQWK4+OYO6CbZ6uNSzfuv7E32soVC8hexFlzy1ehFLlPZi7FAXQobqx1jVZvP2t31D/LMu1Fb9xEgyozKraPr8hsCZQgvgcIzhWRzlh5jM76dWf1Q2ykyVRfr4U6+hpXwcUJAH6LQhN+f4YZ2docVIKS0ljJVyRyWSRaVsg4or8VPhfK0=
-      bucket: payone
+#      bucket: payone
 after_success: 
 notifications:
   email: false
