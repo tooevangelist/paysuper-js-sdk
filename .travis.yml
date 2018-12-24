@@ -24,6 +24,7 @@ jobs:
       - npm run build
       deploy:
         provider: s3  
+        skip_cleanup: true
         local_dir: dist
         upload-dir: dev
         secret_access_key:
