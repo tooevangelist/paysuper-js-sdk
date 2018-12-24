@@ -17,7 +17,7 @@ jobs:
     script:
     - npm run test
     - npm run build
-    - s3cmd put dist/p1payone.js --ssl --host=$S3_HOST --host-bucket=$S3_HOST --access_key=$S3_ACCESS_KEY --secret_key=$S3_SECRET_KEY -v s3://payone/dev/
+    - s3cmd put dist/p1payone.js --host=$S3_HOST --host-bucket=$S3_HOST --access_key=$S3_ACCESS_KEY --secret_key=$S3_SECRET_KEY -v s3://payone/dev/
 
 after_success: 
 
