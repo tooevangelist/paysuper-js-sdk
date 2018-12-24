@@ -134,7 +134,7 @@ export default function getP1PayOne(mountApp) {
         },
       );
 
-      return iframe;
+      return { iframe };
     }
 
     /**
@@ -179,7 +179,7 @@ export default function getP1PayOne(mountApp) {
         },
       );
 
-      return iframe;
+      return { iframe };
     }
 
     /**
