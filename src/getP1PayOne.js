@@ -40,14 +40,54 @@ function createIframe(appendContainer) {
   return { iframe, iframeMountPoint };
 }
 
+/**
+ * Converts region value to uppercase, throw errors on incorrect values
+ *
+ * @param {String} value example: "US"
+ * @param {Object} navigator browser global object
+ * @return {String}
+ */
+export function getRegion(value, navigator) {
+  if (!value) {
+    if (navigator && navigator.language && navigator.language.indexOf('-') !== -1) {
+      return navigator.language.split('-')[1];
+    }
+    return 'US';
+  }
+
+  assert(typeof value === 'string', 'Region value must be a string');
+  assert(value.length === 2, 'Region value must be in 2-characters format');
+  return value.toUpperCase();
+}
+
+/**
+ * Converts region value to uppercase, throw errors on incorrect values
+ *
+ * @param {String} value example: "en"
+ * @param {Object} navigator browser global object
+ * @return {String}
+ */
+export function getLanguage(value, navigator) {
+  if (!value) {
+    if (navigator && navigator.language) {
+      return navigator.language.slice(0, 2);
+    }
+    return 'en';
+  }
+  assert(typeof value === 'string', 'Language value must be a string');
+  assert(value.length === 2, 'Language value must be in 2-characters format');
+  return value.toLowerCase();
+}
+
 export default function getP1PayOne(mountApp) {
   return class P1PayOne {
     constructor({
-      projectID, region, email, paymentMethod, account,
+      projectID, region, email, paymentMethod, account, language,
     } = {}) {
       assert(projectID, 'projectID is required for "new P1PayOne(...)"');
       this.projectID = projectID;
-      this.region = region;
+      this.region = getRegion(region, navigator);
+      this.language = getLanguage(language, navigator);
       this.email = email;
       this.paymentMethod = paymentMethod;
       this.account = account;
@@ -90,6 +130,7 @@ export default function getP1PayOne(mountApp) {
             iframe.setAttribute('width', width);
             iframe.setAttribute('height', height);
           },
+          language: this.language,
         },
       );
 
@@ -134,6 +175,7 @@ export default function getP1PayOne(mountApp) {
           destroyHandler() {
             iframe.parentNode.removeChild(iframe);
           },
+          language: this.language,
         },
       );
 

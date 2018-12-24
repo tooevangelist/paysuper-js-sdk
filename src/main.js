@@ -16,14 +16,16 @@ Vue.config.productionTip = false;
 async function mountApp(
   iframeMountPoint,
   initStateOptions,
-  { isInModal, destroyHandler, iframeResizeHandler },
+  {
+    isInModal, destroyHandler, iframeResizeHandler, language,
+  },
 ) {
   await store.dispatch('PaymentForm/initState', initStateOptions);
 
   const VueApp = Vue.extend(App);
   new VueApp({
     store,
-    i18n,
+    i18n: i18n(language),
     propsData: {
       isInModal,
       destroyHandler,

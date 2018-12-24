@@ -72,16 +72,19 @@
 
 .payment-form-info {
   margin-top: 20px;
+  display: table;
 
   &__item {
-    display: flex;
+    display: table-row;
   }
 
   &__key {
     color: $ui-color-grey47;
-    width: 80px;
+    display: table-cell;
+    padding-right: 15px;
   }
 
   &__value {
+    display: table-cell;
   }
 }

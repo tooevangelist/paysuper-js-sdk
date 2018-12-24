@@ -8,9 +8,7 @@
       <PaymentForm v-if="orderID" ref="paymentForm" />
       <div class="app-failed" v-else>
         <base-error-text>
-          <p>Payment form initialization failed.</p>
-          <p>This is probably happened because we could not create payment request.</p>
-          <p>Try again after refreshing the page or later.</p>
+          <p v-for="text in $t('paymentInitFailed')" :key="text">{{text}}</p>
         </base-error-text>
       </div>
     </div>
@@ -78,3 +76,22 @@ export default {
   },
 };
 </script>
+
+<i18n>
+{
+  "en": {
+    "paymentInitFailed": [
+      "Payment form initialization failed.",
+      "This is probably happened because we could not handle payment request.",
+      "Try again after refreshing the page or later."
+    ]
+  },
+  "ru": {
+    "paymentInitFailed": [
+      "Не удалось отображить форму оплаты.",
+      "Скорее всего, проблема в том, что мы не смогли обратать запрос на создание платежа.",
+      "Попробуйте снова, обновив страницу. Либо, попробуйте позже."
+    ]
+  }
+}
+</i18n>

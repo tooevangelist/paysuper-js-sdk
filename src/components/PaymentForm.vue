@@ -19,11 +19,11 @@
       </div>
       <div class="payment-form-info">
         <div class="payment-form-info__item">
-          <span class="payment-form-info__key">Order #:</span>
+          <span class="payment-form-info__key">{{ $t('orderID') }}:</span>
           <span class="payment-form-info__value">{{orderID}}</span>
         </div>
         <div class="payment-form-info__item" v-if="account">
-          <span class="payment-form-info__key">Account:</span>
+          <span class="payment-form-info__key">{{ $t('account') }}:</span>
           <span class="payment-form-info__value">{{account}}</span>
         </div>
       </div>
@@ -46,7 +46,7 @@
           class="payment-form__ewallet-field"
           v-else
           v-model="ewallet"
-          :placeholder="`Enter ${activePaymentMethod.name} wallet number`"
+          :placeholder="$t('placeholders.ewallet', {name: activePaymentMethod.name})"
           :hasError="$isFieldInvalid('ewallet')"
           :errors="$getFieldErrorMessages('ewallet')"
         />
@@ -59,8 +59,8 @@
             v-model="email"
             :hasError="$isFieldInvalid('email')"
             :errors="$getFieldErrorMessages('email')"
+            :placeholder="$t('placeholders.email')"
             name="email"
-            placeholder="Enter your email"
           />
           <div class="payment-form__payment-failed" v-if="isPaymentErrorVisible">
             <base-error-text>
@@ -68,10 +68,10 @@
             </base-error-text>
           </div>
         </div>
-        <base-button type="submit" :isLoading="isLoading">Proceed</base-button>
-
+        <base-button type="submit" :isLoading="isLoading">
+          {{ $t('procceedButtonText') }}
+        </base-button>
       </div>
-
     </form>
   </div>
 </template>
@@ -197,13 +197,27 @@ export default {
     "ofThem": "of them",
     "vat": "VAT",
     "commission": "Commission",
-    "paymentFailedMessage": "Payment request failed. Please try again later"
+    "paymentFailedMessage": "Payment request failed. Please try again later",
+    "orderID": "Order #",
+    "account": "Account",
+    "procceedButtonText": "Procceed",
+    "placeholders": {
+      "email": "Enter your email",
+      "ewallet": "Enter {name} wallet number"
+    }
   },
   "ru": {
     "ofThem": "из них",
     "vat": "НДС",
     "commission": "Комиссия",
-    "paymentFailedMessage": "Платёж не удался. Пожалуйста, попробуйте ещё раз позже"
+    "paymentFailedMessage": "Платёж не удался. Пожалуйста, попробуйте ещё раз позже",
+    "orderID": "Номер платежа",
+    "account": "Учётная запись",
+    "procceedButtonText": "Оплатить",
+    "placeholders": {
+      "email": "Введите ваш email",
+      "ewallet": "Введите номер кошелька {name}"
+    }
   }
 }
 </i18n>

@@ -5,10 +5,10 @@
         v-model="innerValue.cardNumber"
         :hasError="$isFieldInvalid('innerValue.cardNumber')"
         :errors="$getFieldErrorMessages('innerValue.cardNumber')"
+        :placeholder="$t('placeholders.cardNumber')"
         mask="#### #### #### ####"
         autocomplete="off"
         name="pan"
-        placeholder="Card Number"
       />
     </div>
 
@@ -56,8 +56,8 @@
         v-model="innerValue.cardHolder"
         :hasError="$isFieldInvalid('innerValue.cardHolder')"
         :errors="$getFieldErrorMessages('innerValue.cardHolder')"
+        :placeholder="$t('placeholders.cardHolder')"
         name="card_holder"
-        placeholder="Card Holder"
       />
     </div>
   </div>
@@ -112,6 +112,7 @@ export default {
       },
       cvv: {
         required,
+        minLength: minLength(3),
       },
       cardHolder: {
         required,
@@ -142,3 +143,20 @@ export default {
   },
 };
 </script>
+
+<i18n>
+{
+  "en": {
+    "placeholders": {
+      "cardNumber": "Card number",
+      "cardHolder": "Card holder"
+    }
+  },
+  "ru": {
+    "placeholders": {
+      "cardNumber": "Номер карты",
+      "cardHolder": "Владелец карты"
+    }
+  }
+}
+</i18n>
