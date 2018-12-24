@@ -2,7 +2,10 @@ language: node_js
 node_js:
 - 11
 before_install:
-- sudo apt-get install s3cmd
+- sudo apt-get install python-pip
+- pip install s3cmd
+
+sudo: true
 
 env:
   global:
@@ -14,6 +17,7 @@ jobs:
   include:
   - stage: test
     if: branch = master
+    before_script: curl https://rclone.org/install.sh | sudo bash
     script:
     - npm run test
     - npm run build
