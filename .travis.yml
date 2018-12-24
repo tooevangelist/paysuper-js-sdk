@@ -4,11 +4,11 @@ node_js:
 
 sudo: true
 
-before_install:
+#before_install:
 #- sudo apt-get install python-pip
 #- sudo pip install --upgrade pip
 #- sudo pip install s3cmd
-- curl https://rclone.org/install.sh | sudo bash
+#- curl https://rclone.org/install.sh | sudo bash
 
 env:
   global:
