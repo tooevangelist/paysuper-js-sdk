@@ -1,9 +1,12 @@
 
 .payment-form-bank-card {
   width: 320px;
-  padding: 20px;
-  border: 1px solid $ui-color-grey87;
-  background: $ui-color-grey96;
+
+  &__inner {
+    padding: 20px;
+    border: 1px solid $ui-color-grey87;
+    background: $ui-color-grey96;
+  }
 
   &__row {
     display: flex;
@@ -35,4 +38,9 @@
     height: 34px;
     line-height: 34px;
   }
+}
+
+.payment-form-bank-card-approves {
+  text-align: right;
+  padding-top: 5px;
 }
