@@ -12,11 +12,11 @@ stages:
 jobs:
   include:
     - stage: lint
-      script: node run lint
+      script: npm run lint
     - stage: test
-      script: node run test
+      script: npm run test
     - stage: build
-      script: node run build
+      script: npm run build
     - name: deploy_dev
       if: branch = master
       deploy:
