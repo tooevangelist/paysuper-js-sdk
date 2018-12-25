@@ -27,6 +27,6 @@ export default function handleIframeMessages(iframe, dataForSend) {
     if (handler) {
       handler(iframe, data, dataForSend);
     }
-    this.emit(`payform:${name}`);
+    this.emit(name);
   });
 }
