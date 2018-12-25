@@ -1,6 +1,5 @@
-import getP1PayOne, { getRegion, getLanguage } from '@/getP1PayOne';
+import P1PayOne, { getRegion, getLanguage } from '@/P1PayOne';
 
-const P1PayOne = getP1PayOne(() => { });
 const projectID = '5be2e16701d96d00012d26c3';
 
 describe('P1PayOne', () => {
@@ -78,22 +77,9 @@ describe('P1PayOne', () => {
   });
 
   describe('getLanguage', () => {
-    const defaultLanguage = 'en';
-    it(`should return ${defaultLanguage} if no value and no navigator`, () => {
-      const value = getLanguage();
-      expect(value).toEqual(defaultLanguage);
-    });
-
-    it(`should return ${defaultLanguage} if no value and no navigator.language`, () => {
-      const value = getLanguage(null, {});
-      expect(value).toEqual(defaultLanguage);
-    });
-
-    it('should return region from navigator.language when no value', () => {
-      const value = getLanguage(null, {
-        language: 'ru-RU',
-      });
-      expect(value).toEqual('ru');
+    it('should return region undefined when no value', () => {
+      const value = getLanguage(null);
+      expect(value).toEqual(undefined);
     });
 
     it('should cast value into upper case', () => {
