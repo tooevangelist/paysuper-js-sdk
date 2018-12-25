@@ -16,16 +16,29 @@ env:
   - secure: IrKX68dZwLUot3XBk8LfuR2rYXbmq2aMsfZcQmf6abbMJvzzt9pEx+s9LacfxcXw7v35yCbhQthJejfznxMheTYOdy8oxljCjnJ5bLE90K6PymyLAEaLCUD6KFzj0wC53Dh7ZAunYDvKMYbQo+YGYTQfvXlC2yuTTOJS4il7l8WSGFDAh0G49+grF1QaC441U4lxlt1kYpC1uDR4iN3t+a5z6CRxwBzwXnoI5cq/re2eO0VDNvC07bGtZTm1OakKPyOyc43NepdjVpp9E9ZKjbkYgFaMKSJKOCSvyCqsmzldXeLZPirrIBxZd/StG+dvO7EWkwIO3jw5z53tD8gnf4ixcl6RKtwEQpJYrpAjjuGqkhYQhVL6JSgp3uGtEPZLVIbieGMu7YpQjKhJLhE2+kfs0qiBG3GWIYegthiF30o+ehnPR770jr+QD4NalhNaf7hckMorWeXHIExyr/OnK7n/MVyPkuaIp2DzWnyAkgZCBecVuTjGXbInMo4RS5hK2Rf61/dBiCmoiB5t5i6fgKGzFBDx6EF3oxCyHn4bgGIRGRUiRupBvsnYsF1TuF4bScQXztjuunhAlgfj34kXg7fWe+Qz6X37uFSMXifmp9S9Azx5RHz9JJUfXPunh4uBR/nMMJLe+YCSG5IBTXC643aRStFZ4mBnqfYfwRPVGEY=
   - secure: aQXk7BYtpwTGPEwESzczIaNyWwwbsylELI/oge/DvBaXgHej9/LdzUTPbYd5HF1XN1gyT6Gl7NM3Ru66zDfSIVGzksoB/5czA49BrQ8LxIUunT19kznX/eig2Qv8ZsVrfOuHOAU1zzxhVgdQinKxA7On3C+rNDZexLBhOfm2xp8WXfHXuMy0Ksh2LwF2sMMjITQYyTw08Wp7IIm2+zCbODcj4Nk+heKPc3bQocCR1BiL1mgQ7rpKkiIWraDTar4YZ02YBhGnnzNjCaphuXy+5yVcEKQKFBZLih198C4Hp831KIr8s++uz/u7IQGR3zZTC8j6ZmrgOzgUOf/lccrYVXnZpiHeLCcgDqBfQRhFiCX944cBbdsESVcMINfup8HWL2EghaUxZSwvqlNfGDs/wJ+28EwF37B7rIIESBf4oAaZAjC2DXzQaaWWtS+lxEcr6M9qCQEvi0ScEDj7Ryq9QGxGelJf5mi93/br/n7e791JzCCJBWqFGs3Phg46m//fvicIkUZpjc8rFDYUyR7T939tqH0VaAUQaOFUXvV5UAqAGJhGq2f8bQQYZzjehIFRWLWuKSAlTIq9wVuVARJ86AydAbS5NrKjIAmPl7uTkWgGAWEmfYVlZkbs2RbxDQucdcgAa57y+pbnB9uOOS/THvB7XDl5xbPXdUIYJudOFNQ=
 
+stages:
+- test
+- release
+
 jobs:
   include:
   - stage: test
     if: branch = master
     before_script: curl https://rclone.org/install.sh | sudo bash
     script:
+    - set -e
     - npm run test
     - npm run build
-    - rclone copy dist :s3://payone/dev/ --s3-access-key-id=$S3_ACCESS_KEY --s3-endpoint=$S3_HOST --s3-secret-access-key=$S3_SECRET_KEY    
- #   - s3cmd put dist/p1payone.js --host=$S3_HOST --host-bucket=$S3_HOST --access_key=$S3_ACCESS_KEY --secret_key=$S3_SECRET_KEY -v s3://payone/dev/
+    - rclone copy dist :s3://payone/sdk/dev/ --s3-access-key-id=$S3_ACCESS_KEY --s3-endpoint=$S3_HOST --s3-secret-access-key=$S3_SECRET_KEY    
+   - stage: release
+    if: (tag =~ ^v)
+    before_script: curl https://rclone.org/install.sh | sudo bash
+    script:
+    - set -e
+    - npm run test
+    - npm run build
+    - rclone copy dist :s3://payone/sdk/latest/ --s3-access-key-id=$S3_ACCESS_KEY --s3-secret-access-key=$S3_SECRET_KEY --s3-endpoint=$S3_HOST
+    - rclone copy dist :s3://payone/sdk/$TRAVIS_TAG/ --s3-access-key-id=$S3_ACCESS_KEY --s3-secret-access-key=$S3_SECRET_KEY --s3-endpoint=$S3_HOST
 
 after_success: 
 
