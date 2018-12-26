@@ -147,7 +147,7 @@ export default class P1PayOne extends Events.EventEmitter {
    * @param {String|DomElement} appendContainer
    * @return {P1PayOne}
    */
-  async renderInElement(appendContainer) {
+  async render(appendContainer) {
     assert(appendContainer, 'Mount element or selector is required for embedded form render');
     assert(this.amount, 'Amount is required. Use setAmount method to set it');
 
@@ -178,7 +178,7 @@ export default class P1PayOne extends Events.EventEmitter {
     const { modalLayer, modalLayerInner, closeButton } = createModalLayer();
     closeButton.addEventListener('click', () => {
       modalLayer.parentNode.removeChild(modalLayer);
-      this.emit('closeModal');
+      this.emit('modalClosed');
     });
     document.body.appendChild(modalLayer);
 
@@ -187,7 +187,7 @@ export default class P1PayOne extends Events.EventEmitter {
     this.initIframeMessagesHandling(iframe, formData);
 
     modalTools.hideBodyScrollbar();
-    this.emit('openModal');
+    this.emit('modalOpened');
 
     return { iframe };
   }

@@ -1,6 +1,7 @@
 {
   "name": "payone-js-sdk",
   "version": "1.0.1",
+  "main": "src/main.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",

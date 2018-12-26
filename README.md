@@ -1,12 +1,15 @@
 # ProtocolONE PayOne
 
 ## Usage
-```
-const payoneForm = new P1PayOne({
-  projectID: '5be2e16701d96d00012d26c3',
-  region: 'US',
-});
-payoneForm.setAmount(5).renderInElement('#app');
+```html
+<script src="https://static.protocol.one/payone/sdk/latest/p1payone.js"></script>
+<script>
+  const payoneForm = new P1PayOne({
+    projectID: '5be2e16701d96d00012d26c3',
+    region: 'US',
+  });
+  payoneForm.setAmount(5).render('#app');
+</script>
 ```
 
 ### P1PayOne options
@@ -27,18 +30,16 @@ Sets payment amount
 - param: **value** {String|Number} Example - 'USD'
 - return: {P1PayOne}
 
-#### renderInElement( selector )
+#### render( selector )
 - param: **selector** {String|DomElement}
-- return: {Promise}
+- return: {Object}
 Renders the form in the certaion place in page. 
-Promise is resolved when form rendering is finished.
-Resolved promise has argument with context object.
+Returns context object.
 
 #### renderModal()
-- return: {Promise}
+- return: {Object}
 Renders the form in modal dialog.
-Promise is resolved when form rendering is finished.
-Resolved promise has argument with context object.
+Returns context object.
 
 #### getAllSku()
 - return: {Object[]}
@@ -46,6 +47,33 @@ Resolved promise has argument with context object.
 #### getSkuByID( value )
 - param: **value** {String}
 - return: {Object}
+
+### P1PayOne events
+```js
+payoneForm.on('init', function() {
+  console.log('P1PayOne is initialized')
+})
+payoneForm.setAmount(5).renderModal('#app');
+```
+#### Events list
+- **init** - the form begins to initialize
+- **load** - the in fully loaded
+- **modalOpened** - if `renderModal` methods used notifies about modal dialog opening
+- **modalClosed** - if `renderModal` methods used notifies about modal dialog closing
+
+
+### Library URLs
+#### Hub with navigation
+https://static.protocol.one/minio/payone/
+
+#### Dev version
+https://static.protocol.one/payone/sdk/dev/p1payone.js
+Updates automatically with `master` branch updates
+
+#### By release
+https://static.protocol.one/payone/sdk/latest/p1payone.js
+https://static.protocol.one/payone/sdk/v1.0.9/p1payone.js
+Updates width actual version releases (`v*` tag pushed into repo)
 
 ## Development
 
