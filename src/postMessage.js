@@ -13,9 +13,9 @@ export const receivingMessagesNames = invert({
   FORM_RESIZE: 'formResize',
   PAYMENT_CREATED: 'paymentCreated',
   PAYMENT_FAILED_TO_CREATE: 'paymentFailedToCreate',
-  // PAYMENT_DELIVERING: 'statusDelivering',
-  // PAYMENT_TROUBLED: 'statusTroubled',
-  PAYMENT_DONE: 'statusDone',
+  PAYMENT_PENDING: 'paymentPending',
+  PAYMENT_COMPLETED: 'paymentCompleted',
+  PAYMENT_DECLINED: 'paymentDeclined',
 });
 
 export function postMessage(targetWindow, nameID, data = {}) {
@@ -34,11 +34,15 @@ export function receiveMessages(from, objectWithCallbacks, callbackEvery) {
       return;
     }
     const { name } = event.data;
-    const callback = objectWithCallbacks[receivingMessagesNames[name]];
+    const messageAlias = receivingMessagesNames[name];
+    if (!messageAlias) {
+      return;
+    }
+    callbackEvery(name, event.data.data);
+    const callback = objectWithCallbacks[messageAlias];
     if (!callback) {
       return;
     }
     callback(event.data.data);
-    callbackEvery(name, event.data.data);
   });
 }

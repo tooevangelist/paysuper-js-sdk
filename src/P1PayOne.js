@@ -176,8 +176,6 @@ export default class P1PayOne extends Events.EventEmitter {
         setTimeout(() => {
           link.parentNode.removeChild(link);
         });
-
-        this.preloader.style.display = 'block';
       },
     }, (name) => {
       this.emit(name);
