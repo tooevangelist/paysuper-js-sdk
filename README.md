@@ -56,8 +56,8 @@ payoneForm.on('init', function() {
 payoneForm.setAmount(5).renderModal('#app');
 ```
 #### Events list
-- **init** - the form begins to initialize
-- **load** - the in fully loaded
+- **created** - the form begins to initialize
+- **loaded** - the in fully loaded
 - **modalOpened** - if `renderModal` methods used notifies about modal dialog opening
 - **modalClosed** - if `renderModal` methods used notifies about modal dialog closing
 

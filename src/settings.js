@@ -1,5 +1,7 @@
-export const apiBase = 'https://p1payapi.tst.protocol.one';
+export const apiBaseUrl = 'https://p1payapi.tst.protocol.one';
 
-export const apiPathCreateOrder = `${apiBase}/api/v1/order`;
+export const apiCreateOrderUrl = `${apiBaseUrl}/api/v1/order`;
 
-export const apiPathGetProjectPackages = `${apiBase}/api/v1/project/package`;
+export const apiGetProjectPackagesUrl = `${apiBaseUrl}/api/v1/project/package`;
+
+export const websocketServerUrl = 'wss://cf.tst.protocol.one/connection/websocket';

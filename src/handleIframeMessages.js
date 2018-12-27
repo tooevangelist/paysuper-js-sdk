@@ -1,31 +1,48 @@
+import getPostMessageMethod from './postMessage';
+
 const handlers = {
-  init(iframe, eventData, dataForSend) {
+  inited(eventData, formData) {
     if (process.env.NODE_ENV !== 'development') {
       return;
     }
-    iframe.contentWindow.postMessage({
-      source: 'PAYONE_JS_SDK',
-      data: dataForSend,
-    }, '*');
+    const postMessage = getPostMessageMethod(this.iframe.contentWindow);
+    postMessage('REQUEST_INIT_FORM', {
+      formData,
+      options: {
+        email: this.email,
+        language: this.language,
+      },
+    });
   },
 
-  formResize(iframe, { width, height }) {
-    iframe.setAttribute('width', width);
-    iframe.setAttribute('height', height);
+  formResize({ width, height }) {
+    this.iframe.setAttribute('width', width);
+    this.iframe.setAttribute('height', height);
   },
 
+  paymentCreated({ redirectUrl }) {
+    // Hacking browser popups blocking policity
+    const link = document.createElement('a');
+    document.body.appendChild(link);
+    link.setAttribute('href', redirectUrl);
+    link.setAttribute('target', '_blank');
+    link.click();
+    setTimeout(() => {
+      link.parentNode.removeChild(link);
+    });
+  },
 };
 
-export default function handleIframeMessages(iframe, dataForSend) {
+export default function handleIframeMessages(formData) {
   window.addEventListener('message', (event) => {
-    if (event.data.source !== 'PAYONE_PAYMENT_FORM') {
+    if (event.data && event.data.source !== 'PAYONE_PAYMENT_FORM') {
       return;
     }
 
     const { name, data } = event.data;
     const handler = handlers[name];
     if (handler) {
-      handler(iframe, data, dataForSend);
+      handler.call(this, data, formData);
     }
     this.emit(name);
   });
