@@ -1,44 +1,26 @@
 import assert from 'simple-assert';
 import axios from 'axios';
 import Events from 'events';
-import Centrifuge from 'centrifuge';
-import { apiGetProjectPackagesUrl, apiCreateOrderUrl, websocketServerUrl } from './settings';
-import handleIframeMessages from './handleIframeMessages';
-import createModalLayer from './createModalLayer';
+import { apiGetProjectPackagesUrl, apiCreateOrderUrl } from './settings';
+import { createIframe, createModalLayer } from './createElements';
 import modalTools from './modalTools';
+import { postMessage, receiveMessages } from './postMessage';
+import './assets/styles.scss';
 
 /**
  * Returns DOM element by selector or actual DOM element
  *
- * @param {String|DomElement} container
- * @param {DomElement} element
+ * @param {String|DomElement} element
  * @return {DomElement}
  */
-function appendElementToContainer(container, element) {
-  const trustedContainer = typeof container === 'string'
-    ? document.querySelector(container)
-    : container;
-  assert(trustedContainer, 'Append container element is not found');
-  trustedContainer.appendChild(element);
-}
+function getDomElement(element) {
+  if (!element) {
+    return undefined;
+  }
 
-/**
- * Comes from "payone-js-payment-form" package devServer options
- */
-const iframeSrc = 'http://localhost:4040/';
-
-/**
- * Creates iframe container for payment form
- *
- * @return {Object}
- */
-function createIframe() {
-  const iframe = document.createElement('iframe');
-  iframe.setAttribute('frameborder', '0');
-  iframe.setAttribute('src', iframeSrc);
-  iframe.style.overflow = 'hidden';
-
-  return iframe;
+  return typeof element === 'string'
+    ? document.querySelector(element)
+    : element;
 }
 
 /**
@@ -93,38 +75,46 @@ export default class P1PayOne extends Events.EventEmitter {
     this.currency = 'USD';
     this.amount = undefined;
 
+    this.wrapper = null;
+    this.preloader = null;
     this.iframe = null;
+  }
+
+  createElements() {
+    this.iframe = createIframe();
+    this.wrapper.appendChild(this.iframe);
+
+    return this;
   }
 
   /**
    * Renders the payment form into target element
    *
-   * @param {String|DomElement} appendContainer
+   * @param {String|DomElement} selectorOrElement
    * @return {P1PayOne}
    */
-  async render(appendContainer) {
+  async render(selectorOrElement) {
+    const appendContainer = getDomElement(selectorOrElement);
     assert(appendContainer, 'Mount element or selector is required for embedded form render');
     assert(this.amount, 'Amount is required. Use setAmount method to set it');
 
     const formData = await this.createOrder();
-    const iframe = createIframe();
-    this.iframe = iframe;
-    appendElementToContainer(appendContainer, iframe);
 
+    this.iframe = createIframe();
+    appendContainer.appendChild(this.iframe);
     this.initIframeMessagesHandling(formData);
 
     // These sizes are initial
     // Right after App is mounted actual form size is transferred to iframe
-    iframe.setAttribute('width', '560');
-    iframe.setAttribute('height', '628');
+    this.iframe.setAttribute('width', '560');
+    this.iframe.setAttribute('height', '628');
 
-    return { iframe };
+    return { wrapper: this.wrapper, iframe: this.iframe };
   }
 
   /**
    * Renders the payment form in modal dialog layer
    *
-   * @param {String|DomElement} appendContainer
    * @return {P1PayOne}
    */
   async renderModal() {
@@ -132,25 +122,68 @@ export default class P1PayOne extends Events.EventEmitter {
 
     const formData = await this.createOrder();
     const { modalLayer, modalLayerInner, closeButton } = createModalLayer();
+
     closeButton.addEventListener('click', () => {
       modalLayer.parentNode.removeChild(modalLayer);
       this.emit('modalClosed');
     });
     document.body.appendChild(modalLayer);
 
-    const iframe = createIframe();
-    this.iframe = iframe;
-    modalLayerInner.appendChild(iframe);
+    this.iframe = createIframe();
+    modalLayerInner.appendChild(this.iframe);
     this.initIframeMessagesHandling(formData);
 
     modalTools.hideBodyScrollbar();
     this.emit('modalOpened');
 
-    return { iframe };
+    return { wrapper: this.wrapper, iframe: this.iframe };
   }
 
+  /**
+   * Handling iframe message transport with the form
+   * @param {Object} formData
+   * @return {P1PayOne}
+   */
   initIframeMessagesHandling(formData) {
-    handleIframeMessages.call(this, formData);
+    const postMessageWindow = this.iframe.contentWindow;
+
+    receiveMessages(window, {
+      INITED: () => {
+        if (process.env.NODE_ENV !== 'development') {
+          return;
+        }
+        postMessage(postMessageWindow, 'REQUEST_INIT_FORM', {
+          formData,
+          options: {
+            email: this.email,
+            language: this.language,
+          },
+        });
+      },
+
+      FORM_RESIZE: ({ width, height }) => {
+        this.iframe.setAttribute('width', width);
+        this.iframe.setAttribute('height', height);
+      },
+
+      PAYMENT_CREATED: ({ redirectUrl }) => {
+        // Hacking browser popups blocking policity
+        const link = document.createElement('a');
+        document.body.appendChild(link);
+        link.setAttribute('href', redirectUrl);
+        link.setAttribute('target', '_blank');
+        link.click();
+        setTimeout(() => {
+          link.parentNode.removeChild(link);
+        });
+
+        this.preloader.style.display = 'block';
+      },
+    }, (name) => {
+      this.emit(name);
+    });
+
+    return this;
   }
 
   /**
@@ -159,7 +192,10 @@ export default class P1PayOne extends Events.EventEmitter {
    * @return {Promise<Object>}
    */
   async createOrder() {
-    let result = null;
+    // Dummy data if request is failed
+    let result = {
+      payment_methods: [{}],
+    };
     try {
       const { data } = await axios.post(apiCreateOrderUrl, {
         region: this.region,
@@ -171,17 +207,6 @@ export default class P1PayOne extends Events.EventEmitter {
         payer_ip: '77.233.9.26',
       });
       result = data;
-
-      const centrifuge = new Centrifuge(websocketServerUrl);
-      centrifuge.setToken(data.token);
-
-      const channel = `payment:notify#${data.id}`;
-
-      centrifuge.subscribe(channel, (message) => {
-        console.log(11111, 'payment', message);
-      });
-
-      centrifuge.connect();
     } catch (error) {
       console.error(error);
     }

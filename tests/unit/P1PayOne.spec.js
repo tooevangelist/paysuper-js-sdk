@@ -10,6 +10,20 @@ describe('P1PayOne', () => {
     }).toThrowError(/projectID is required/);
   });
 
+  it('should be able to handle events', () => {
+    const p1PayOne = new P1PayOne({
+      projectID,
+    });
+
+    let check;
+    p1PayOne.on('testEvent', (value) => {
+      check = value;
+    });
+    p1PayOne.emit('testEvent', 'ok');
+
+    expect(check).toEqual('ok');
+  });
+
   describe('setAmount', () => {
     const p1PayOne = new P1PayOne({
       projectID,
