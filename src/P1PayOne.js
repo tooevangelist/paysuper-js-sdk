@@ -140,7 +140,6 @@ export default class P1PayOne extends Events.EventEmitter {
   initIframeMessagesHandling(formData) {
     const postMessageWindow = this.iframe.contentWindow;
     let iframeLoadingErrorTimeout;
-    let popup;
 
     if (process.env.NODE_ENV === 'development') {
       iframeLoadingErrorTimeout = setTimeout(() => {
@@ -164,14 +163,6 @@ export default class P1PayOne extends Events.EventEmitter {
       FORM_RESIZE: ({ width, height }) => {
         this.iframe.setAttribute('width', width);
         this.iframe.setAttribute('height', height);
-      },
-
-      PAYMENT_BEFORE_CREATED: () => {
-        popup = window.open('', '_blank');
-      },
-
-      PAYMENT_CREATED: ({ redirectUrl }) => {
-        popup.location = redirectUrl;
       },
     }, (name) => {
       this.emit(name);
