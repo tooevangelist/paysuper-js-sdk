@@ -1,7 +1,7 @@
 import assert from 'simple-assert';
 import axios from 'axios';
 import Events from 'events';
-import { apiGetProjectPackagesUrl, apiCreateOrderUrl } from './settings';
+import { apiGetProjectPackagesUrl, apiCreateOrderUrl, devPaymentFormUrl } from './settings';
 import { createIframe, createModalLayer } from './createElements';
 import modalTools from './modalTools';
 import { postMessage, receiveMessages } from './postMessage';
@@ -80,13 +80,6 @@ export default class P1PayOne extends Events.EventEmitter {
     this.iframe = null;
   }
 
-  createElements() {
-    this.iframe = createIframe();
-    this.wrapper.appendChild(this.iframe);
-
-    return this;
-  }
-
   /**
    * Renders the payment form into target element
    *
@@ -100,7 +93,7 @@ export default class P1PayOne extends Events.EventEmitter {
 
     const formData = await this.createOrder();
 
-    this.iframe = createIframe();
+    this.iframe = createIframe(formData.id);
     appendContainer.appendChild(this.iframe);
     this.initIframeMessagesHandling(formData);
 
@@ -129,7 +122,7 @@ export default class P1PayOne extends Events.EventEmitter {
     });
     document.body.appendChild(modalLayer);
 
-    this.iframe = createIframe();
+    this.iframe = createIframe(formData.id);
     modalLayerInner.appendChild(this.iframe);
     this.initIframeMessagesHandling(formData);
 
@@ -146,14 +139,20 @@ export default class P1PayOne extends Events.EventEmitter {
    */
   initIframeMessagesHandling(formData) {
     const postMessageWindow = this.iframe.contentWindow;
+    let iframeLoadingErrorTimeout;
+
+    if (process.env.NODE_ENV === 'development') {
+      iframeLoadingErrorTimeout = setTimeout(() => {
+        // eslint-disable-next-line
+        alert(`Can't connect to ${devPaymentFormUrl} to load the form. Check "payone-js-payment-form" package is served`);
+      }, 1000);
+    }
 
     receiveMessages(window, {
       INITED: () => {
-        if (process.env.NODE_ENV !== 'development') {
-          return;
-        }
+        clearTimeout(iframeLoadingErrorTimeout);
         postMessage(postMessageWindow, 'REQUEST_INIT_FORM', {
-          formData,
+          formData: process.env.NODE_ENV === 'development' ? formData : {},
           options: {
             email: this.email,
             language: this.language,
