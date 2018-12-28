@@ -140,6 +140,7 @@ export default class P1PayOne extends Events.EventEmitter {
   initIframeMessagesHandling(formData) {
     const postMessageWindow = this.iframe.contentWindow;
     let iframeLoadingErrorTimeout;
+    let popup;
 
     if (process.env.NODE_ENV === 'development') {
       iframeLoadingErrorTimeout = setTimeout(() => {
@@ -165,16 +166,12 @@ export default class P1PayOne extends Events.EventEmitter {
         this.iframe.setAttribute('height', height);
       },
 
+      PAYMENT_BEFORE_CREATED: () => {
+        popup = window.open('', '_blank');
+      },
+
       PAYMENT_CREATED: ({ redirectUrl }) => {
-        // Hacking browser popups blocking policity
-        const link = document.createElement('a');
-        document.body.appendChild(link);
-        link.setAttribute('href', redirectUrl);
-        link.setAttribute('target', '_blank');
-        link.click();
-        setTimeout(() => {
-          link.parentNode.removeChild(link);
-        });
+        popup.location = redirectUrl;
       },
     }, (name) => {
       this.emit(name);

@@ -11,6 +11,7 @@ export const receivingMessagesNames = invert({
   INITED: 'inited',
   LOADED: 'loaded',
   FORM_RESIZE: 'formResize',
+  PAYMENT_BEFORE_CREATED: 'paymentBeforeCreated',
   PAYMENT_CREATED: 'paymentCreated',
   PAYMENT_FAILED_TO_CREATE: 'paymentFailedToCreate',
   PAYMENT_PENDING: 'paymentPending',
