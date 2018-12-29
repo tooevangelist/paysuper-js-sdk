@@ -16,6 +16,8 @@
 - **projectID** {String} Example - '5be2e16701d96d00012d26c3'
 - **region** {String} Example - 'US'
 - **language** {String} Example - 'en'
+- **amount** {String} Example - 10
+- **currency** {String} Example - 'USD'
 - **email** {String} Default email for bank card payment reports. Hides email field in the form
 - **account** {String} User account name in the current project
 - **paymentMethod** {String}

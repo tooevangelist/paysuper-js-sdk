@@ -61,7 +61,8 @@ export function getLanguage(value) {
 
 export default class P1PayOne extends Events.EventEmitter {
   constructor({
-    projectID, region, email, paymentMethod, account, language, apiUrl,
+    projectID, region, email, paymentMethod, account,
+    currency, amount, language, apiUrl,
   } = {}) {
     super();
     assert(projectID, 'projectID is required for "new P1PayOne(...)"');
@@ -72,8 +73,8 @@ export default class P1PayOne extends Events.EventEmitter {
     this.paymentMethod = paymentMethod;
     this.account = account;
 
-    this.currency = 'USD';
-    this.amount = undefined;
+    this.currency = currency ? this.setCurrency(currency) : 'USD';
+    this.amount = amount ? this.setAmount(amount) : undefined;
 
     this.wrapper = null;
     this.preloader = null;

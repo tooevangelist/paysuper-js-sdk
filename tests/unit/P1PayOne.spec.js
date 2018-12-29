@@ -24,29 +24,61 @@ describe('P1PayOne', () => {
     expect(check).toEqual('ok');
   });
 
-  describe('setAmount', () => {
+  it('should be able to handle custom apiUrl', () => {
+    const customApiUrl = 'https://localhost:3333';
     const p1PayOne = new P1PayOne({
       projectID,
+      apiUrl: customApiUrl,
+    });
+
+    expect(p1PayOne.urls.apiUrl).toEqual(customApiUrl);
+  });
+
+  describe('setAmount', () => {
+    it('should throw error if amount value passed as option is invalid', () => {
+      expect(() => {
+        // eslint-disable-next-line
+        const p1PayOne = new P1PayOne({
+          projectID,
+          amount: {},
+        });
+      }).toThrowError(/Amount value must/);
     });
 
     it('should throw error if no value passed', () => {
+      const p1PayOne = new P1PayOne({
+        projectID,
+      });
       expect(() => {
         p1PayOne.setAmount();
       }).toThrowError(/Amount value must/);
     });
 
     it('should autoconvert strings to numbers', () => {
+      const p1PayOne = new P1PayOne({
+        projectID,
+      });
       p1PayOne.setAmount('5');
       expect(p1PayOne.amount).toEqual(5);
     });
   });
 
   describe('setCurrency', () => {
-    const p1PayOne = new P1PayOne({
-      projectID,
+    it('should throw error if currency value passed as option is invalid', () => {
+      expect(() => {
+        // eslint-disable-next-line
+        const p1PayOne = new P1PayOne({
+          projectID,
+          currency: {},
+        });
+      }).toThrowError(/Currency value must/);
     });
 
     it('should throw error if no value passed', () => {
+      const p1PayOne = new P1PayOne({
+        projectID,
+      });
+
       expect(() => {
         p1PayOne.setCurrency();
       }).toThrowError(/Currency value must/);
