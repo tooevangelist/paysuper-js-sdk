@@ -7,6 +7,9 @@ export const sendingMessagesNames = {
   REQUEST_INIT_FORM: 'requestInitForm',
 };
 
+/**
+ * If a status is not in list the SDK won't react on it (no handling, no event emmitting)
+ */
 export const receivingMessagesNames = invert({
   INITED: 'inited',
   LOADED: 'loaded',
@@ -16,6 +19,7 @@ export const receivingMessagesNames = invert({
   PAYMENT_FAILED_TO_CREATE: 'paymentFailedToCreate',
   PAYMENT_PENDING: 'paymentPending',
   PAYMENT_COMPLETED: 'paymentCompleted',
+  PAYMENT_CANCELLED: 'paymentCancelled',
   PAYMENT_DECLINED: 'paymentDeclined',
 });
 
