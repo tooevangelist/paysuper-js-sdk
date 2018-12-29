@@ -1,5 +1,3 @@
-import { getPaymentFormUrl } from './settings';
-
 /**
  * Comes from "payone-js-payment-form" package devServer options
  */
@@ -7,11 +5,10 @@ import { getPaymentFormUrl } from './settings';
 /**
 * Creates iframe container for payment form
 *
-* @param {String} orderId
+* @param {String} iframeSrc
 * @return {Object}
 */
-export function createIframe(orderId) {
-  const iframeSrc = getPaymentFormUrl(orderId);
+export function createIframe(iframeSrc) {
   const iframe = document.createElement('iframe');
   iframe.setAttribute('frameborder', '0');
   iframe.setAttribute('src', iframeSrc);

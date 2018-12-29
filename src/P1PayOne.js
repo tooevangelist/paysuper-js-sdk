@@ -1,7 +1,7 @@
 import assert from 'simple-assert';
 import axios from 'axios';
 import Events from 'events';
-import { apiGetProjectPackagesUrl, apiCreateOrderUrl, devPaymentFormUrl } from './settings';
+import getFunctionalUrls from './getFunctionalUrls';
 import { createIframe, createModalLayer } from './createElements';
 import modalTools from './modalTools';
 import { postMessage, receiveMessages } from './postMessage';
@@ -61,7 +61,7 @@ export function getLanguage(value) {
 
 export default class P1PayOne extends Events.EventEmitter {
   constructor({
-    projectID, region, email, paymentMethod, account, language,
+    projectID, region, email, paymentMethod, account, language, apiUrl,
   } = {}) {
     super();
     assert(projectID, 'projectID is required for "new P1PayOne(...)"');
@@ -78,6 +78,8 @@ export default class P1PayOne extends Events.EventEmitter {
     this.wrapper = null;
     this.preloader = null;
     this.iframe = null;
+
+    this.urls = getFunctionalUrls(apiUrl || 'https://p1payapi.tst.protocol.one');
   }
 
   /**
@@ -93,7 +95,9 @@ export default class P1PayOne extends Events.EventEmitter {
 
     const formData = await this.createOrder();
 
-    this.iframe = createIframe(formData.id);
+    this.iframe = createIframe(
+      this.urls.getPaymentFormUrl(formData.id),
+    );
     appendContainer.appendChild(this.iframe);
     this.initIframeMessagesHandling(formData);
 
@@ -122,7 +126,9 @@ export default class P1PayOne extends Events.EventEmitter {
     });
     document.body.appendChild(modalLayer);
 
-    this.iframe = createIframe(formData.id);
+    this.iframe = createIframe(
+      this.urls.getPaymentFormUrl(formData.id),
+    );
     modalLayerInner.appendChild(this.iframe);
     this.initIframeMessagesHandling(formData);
 
@@ -144,7 +150,7 @@ export default class P1PayOne extends Events.EventEmitter {
     if (process.env.NODE_ENV === 'development') {
       iframeLoadingErrorTimeout = setTimeout(() => {
         // eslint-disable-next-line
-        alert(`Can't connect to ${devPaymentFormUrl} to load the form. Check "payone-js-payment-form" package is served`);
+        alert(`Can't connect to ${this.urls.devPaymentFormUrl} to load the form. Check "payone-js-payment-form" package is served`);
       }, 1000);
     }
 
@@ -156,6 +162,7 @@ export default class P1PayOne extends Events.EventEmitter {
           options: {
             email: this.email,
             language: this.language,
+            apiUrl: this.urls.apiUrl,
           },
         });
       },
@@ -182,7 +189,7 @@ export default class P1PayOne extends Events.EventEmitter {
       payment_methods: [{}],
     };
     try {
-      const { data } = await axios.post(apiCreateOrderUrl, {
+      const { data } = await axios.post(this.urls.apiCreateOrderUrl, {
         region: this.region,
         amount: this.amount,
         currency: this.currency,
@@ -231,7 +238,7 @@ export default class P1PayOne extends Events.EventEmitter {
    */
   async getAllSku() {
     const { data } = await axios.get(
-      `${apiGetProjectPackagesUrl}/${this.region}/${this.projectID}`,
+      `${this.urls.apiGetProjectPackagesUrl}/${this.region}/${this.projectID}`,
     );
 
     return data;
@@ -246,7 +253,7 @@ export default class P1PayOne extends Events.EventEmitter {
   async getSkuByID(id) {
     assert(id, 'ID is required in getSkuByID method');
     const { data } = await axios.get(
-      `${apiGetProjectPackagesUrl}/${this.region}/${this.projectID}?id[]=${id}`,
+      `${this.urls.apiGetProjectPackagesUrl}/${this.region}/${this.projectID}?id[]=${id}`,
     );
 
     if (!Array.isArray(data) || !data.length) {

@@ -19,6 +19,7 @@
 - **email** {String} Default email for bank card payment reports. Hides email field in the form
 - **account** {String} User account name in the current project
 - **paymentMethod** {String}
+- **apiUrl** {String} Default is 'https://p1payapi.tst.protocol.one'
 
 ### P1PayOne methods
 #### setAmount( value )
