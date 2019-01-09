@@ -123,6 +123,7 @@ export default class P1PayOne extends Events.EventEmitter {
 
     closeButton.addEventListener('click', () => {
       modalLayer.parentNode.removeChild(modalLayer);
+      modalTools.showBodyScrollbar();
       this.emit('modalClosed');
     });
     document.body.appendChild(modalLayer);
