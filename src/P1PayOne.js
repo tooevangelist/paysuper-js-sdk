@@ -100,7 +100,9 @@ export default class P1PayOne extends Events.EventEmitter {
       this.urls.getPaymentFormUrl(formData.id),
     );
     appendContainer.appendChild(this.iframe);
-    this.initIframeMessagesHandling(formData);
+    this.initIframeMessagesHandling(formData, {
+      isModal: false,
+    });
 
     // These sizes are initial
     // Right after App is mounted actual form size is transferred to iframe
@@ -132,7 +134,9 @@ export default class P1PayOne extends Events.EventEmitter {
       this.urls.getPaymentFormUrl(formData.id),
     );
     modalLayerInner.appendChild(this.iframe);
-    this.initIframeMessagesHandling(formData);
+    this.initIframeMessagesHandling(formData, {
+      isModal: true,
+    });
 
     modalTools.hideBodyScrollbar();
     this.emit('modalOpened');
@@ -143,9 +147,10 @@ export default class P1PayOne extends Events.EventEmitter {
   /**
    * Handling iframe message transport with the form
    * @param {Object} formData
+   * @param {Object} options
    * @return {P1PayOne}
    */
-  initIframeMessagesHandling(formData) {
+  initIframeMessagesHandling(formData, options) {
     const postMessageWindow = this.iframe.contentWindow;
     let iframeLoadingErrorTimeout;
 
@@ -157,11 +162,16 @@ export default class P1PayOne extends Events.EventEmitter {
     }
 
     receiveMessages(window, {
+      /**
+       * The form insize iframe is awaiting the command below with listed options to init
+       * Real form rendering start here
+       */
       INITED: () => {
         clearTimeout(iframeLoadingErrorTimeout);
         postMessage(postMessageWindow, 'REQUEST_INIT_FORM', {
           formData: process.env.NODE_ENV === 'development' ? formData : {},
           options: {
+            ...options,
             email: this.email,
             language: this.language,
             apiUrl: this.urls.apiUrl,
