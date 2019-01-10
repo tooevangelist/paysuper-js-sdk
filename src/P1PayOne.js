@@ -59,6 +59,46 @@ export function getLanguage(value) {
   return value.toLowerCase();
 }
 
+export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow, isDev = true) {
+  receiveMessages(currentWindow, {
+    /**
+     * The form insize iframe is awaiting the command below with listed options to init
+     * Real form rendering start here
+     */
+    INITED: () => {
+      clearTimeout(this.iframeLoadingErrorTimeout);
+
+      /**
+       * In development the form receives form data from sdk
+       * but in production the page receives it by itself
+       */
+      postMessage(postMessageWindow, 'REQUEST_INIT_FORM', {
+        formData: isDev ? this.formData : {},
+        options: {
+          ...this.formOptions,
+          email: this.email,
+          language: this.language,
+          apiUrl: this.urls.apiUrl,
+        },
+      });
+    },
+
+    FORM_RESIZE: ({ width, height }) => {
+      this.iframe.setAttribute('width', width);
+      this.iframe.setAttribute('height', height);
+    },
+
+    ORDER_RECREATE_STARTED: async () => {
+      this.formData = await this.createOrder();
+
+      const iframeSrc = this.urls.getPaymentFormUrl(this.formData.id);
+      this.iframe.setAttribute('src', iframeSrc);
+    },
+  }, (name) => {
+    this.emit(name);
+  });
+}
+
 export default class P1PayOne extends Events.EventEmitter {
   constructor({
     projectID, region, email, paymentMethod, account,
@@ -76,11 +116,15 @@ export default class P1PayOne extends Events.EventEmitter {
     this.currency = currency ? this.setCurrency(currency) : 'USD';
     this.amount = amount ? this.setAmount(amount) : undefined;
 
-    this.wrapper = null;
-    this.preloader = null;
     this.iframe = null;
 
     this.urls = getFunctionalUrls(apiUrl || 'https://p1payapi.tst.protocol.one');
+    this.iframeLoadingErrorTimeout = null;
+
+    this.formData = null;
+    this.formOptions = {
+      isModal: false,
+    };
   }
 
   /**
@@ -94,22 +138,15 @@ export default class P1PayOne extends Events.EventEmitter {
     assert(appendContainer, 'Mount element or selector is required for embedded form render');
     assert(this.amount, 'Amount is required. Use setAmount method to set it');
 
-    const formData = await this.createOrder();
+    this.formData = await this.createOrder();
 
     this.iframe = createIframe(
-      this.urls.getPaymentFormUrl(formData.id),
+      this.urls.getPaymentFormUrl(this.formData.id),
     );
     appendContainer.appendChild(this.iframe);
-    this.initIframeMessagesHandling(formData, {
-      isModal: false,
-    });
+    this.initIframeMessagesHandling();
 
-    // These sizes are initial
-    // Right after App is mounted actual form size is transferred to iframe
-    this.iframe.setAttribute('width', '560');
-    this.iframe.setAttribute('height', '628');
-
-    return { wrapper: this.wrapper, iframe: this.iframe };
+    return { iframe: this.iframe };
   }
 
   /**
@@ -120,7 +157,12 @@ export default class P1PayOne extends Events.EventEmitter {
   async renderModal() {
     assert(this.amount, 'Amount is required. Use setAmount method to set it');
 
-    const formData = await this.createOrder();
+    this.formData = await this.createOrder();
+    this.formOptions = {
+      ...this.formOptions,
+      isModal: true,
+    };
+
     const { modalLayer, modalLayerInner, closeButton } = createModalLayer();
 
     closeButton.addEventListener('click', () => {
@@ -131,61 +173,34 @@ export default class P1PayOne extends Events.EventEmitter {
     document.body.appendChild(modalLayer);
 
     this.iframe = createIframe(
-      this.urls.getPaymentFormUrl(formData.id),
+      this.urls.getPaymentFormUrl(this.formData.id),
     );
     modalLayerInner.appendChild(this.iframe);
-    this.initIframeMessagesHandling(formData, {
-      isModal: true,
-    });
+    this.initIframeMessagesHandling();
 
     modalTools.hideBodyScrollbar();
     this.emit('modalOpened');
 
-    return { wrapper: this.wrapper, iframe: this.iframe };
+    return { iframe: this.iframe };
   }
 
   /**
    * Handling iframe message transport with the form
-   * @param {Object} formData
-   * @param {Object} options
+   *
    * @return {P1PayOne}
    */
-  initIframeMessagesHandling(formData, options) {
+  initIframeMessagesHandling() {
     const postMessageWindow = this.iframe.contentWindow;
-    let iframeLoadingErrorTimeout;
+    const isDev = process.env.NODE_ENV === 'development';
 
-    if (process.env.NODE_ENV === 'development') {
-      iframeLoadingErrorTimeout = setTimeout(() => {
+    if (isDev) {
+      this.iframeLoadingErrorTimeout = setTimeout(() => {
         // eslint-disable-next-line
         alert(`Can't connect to ${this.urls.devPaymentFormUrl} to load the form. Check "payone-js-payment-form" package is served`);
       }, 1000);
     }
 
-    receiveMessages(window, {
-      /**
-       * The form insize iframe is awaiting the command below with listed options to init
-       * Real form rendering start here
-       */
-      INITED: () => {
-        clearTimeout(iframeLoadingErrorTimeout);
-        postMessage(postMessageWindow, 'REQUEST_INIT_FORM', {
-          formData: process.env.NODE_ENV === 'development' ? formData : {},
-          options: {
-            ...options,
-            email: this.email,
-            language: this.language,
-            apiUrl: this.urls.apiUrl,
-          },
-        });
-      },
-
-      FORM_RESIZE: ({ width, height }) => {
-        this.iframe.setAttribute('width', width);
-        this.iframe.setAttribute('height', height);
-      },
-    }, (name) => {
-      this.emit(name);
-    });
+    receiveMessagesFromPaymentForm.call(this, window, postMessageWindow, isDev);
 
     return this;
   }

@@ -15,6 +15,11 @@ export function createIframe(iframeSrc) {
   iframe.style.overflow = 'hidden';
   iframe.style.display = 'block';
 
+  // These sizes are initial
+  // Right after App is mounted actual form size is transferred to iframe
+  iframe.setAttribute('width', '150');
+  iframe.setAttribute('height', '150');
+
   return iframe;
 }
 
