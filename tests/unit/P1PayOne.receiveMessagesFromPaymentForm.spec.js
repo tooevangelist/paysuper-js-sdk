@@ -38,6 +38,7 @@ function getP1PayOneMock() {
     email: 'check',
     language: 'en',
     formData: {
+      id: '111',
       check: true,
     },
     urls: {
@@ -56,7 +57,7 @@ function getP1PayOneMock() {
     },
     async createOrder() {
       return {
-        id: '111',
+        id: '222',
       };
     },
     emit() {
@@ -68,16 +69,16 @@ function getP1PayOneMock() {
 describe('P1PayOne.receiveMessagesFromPaymentForm ', () => {
   it('should handle INITED properly', () => {
     const currentWindow = new WindowMock();
-    const postMessageWindowWindow = new WindowMock();
+    const postMessageWindow = new WindowMock();
     const P1PayOneMock = getP1PayOneMock();
     receiveMessagesFromPaymentForm.call(
       P1PayOneMock,
       currentWindow,
-      postMessageWindowWindow,
+      postMessageWindow,
     );
 
     let result;
-    postMessageWindowWindow.addEventListener('message', (event) => {
+    postMessageWindow.addEventListener('message', (event) => {
       result = event.data.data;
     });
 
@@ -91,33 +92,36 @@ describe('P1PayOne.receiveMessagesFromPaymentForm ', () => {
 
   it('should handle INITED properly in production', () => {
     const currentWindow = new WindowMock();
-    const postMessageWindowWindow = new WindowMock();
+    const postMessageWindow = new WindowMock();
     const P1PayOneMock = getP1PayOneMock();
     receiveMessagesFromPaymentForm.call(
       P1PayOneMock,
       currentWindow,
-      postMessageWindowWindow,
+      postMessageWindow,
       false,
     );
 
     let result;
-    postMessageWindowWindow.addEventListener('message', (event) => {
+    postMessageWindow.addEventListener('message', (event) => {
       result = event.data.data;
     });
 
     currentWindow.imitateReceivedMessage('INITED');
 
+    /**
+     * formData should not be passed into form in production
+     */
     expect(result.formData.check).toEqual(undefined);
   });
 
   it('should handle FORM_RESIZE properly', () => {
     const currentWindow = new WindowMock();
-    const postMessageWindowWindow = new WindowMock();
+    const postMessageWindow = new WindowMock();
     const P1PayOneMock = getP1PayOneMock();
     receiveMessagesFromPaymentForm.call(
       P1PayOneMock,
       currentWindow,
-      postMessageWindowWindow,
+      postMessageWindow,
     );
 
     const messageData = {
@@ -133,17 +137,17 @@ describe('P1PayOne.receiveMessagesFromPaymentForm ', () => {
 
 it('should handle ORDER_RECREATE_STARTED properly', (done) => {
   const currentWindow = new WindowMock();
-  const postMessageWindowWindow = new WindowMock();
+  const postMessageWindow = new WindowMock();
   const P1PayOneMock = getP1PayOneMock();
   receiveMessagesFromPaymentForm.call(
     P1PayOneMock,
     currentWindow,
-    postMessageWindowWindow,
+    postMessageWindow,
   );
 
   currentWindow.imitateReceivedMessage('ORDER_RECREATE_STARTED');
   setTimeout(() => {
-    expect(P1PayOneMock.iframe.src).toEqual('test111');
+    expect(P1PayOneMock.iframe.src).toEqual('test222');
     done();
   });
 });
