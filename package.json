@@ -10,7 +10,7 @@
     "lint:style": "vue-cli-service lint:style",
     "test": "vue-cli-service test:unit",
     "test:dev": "vue-cli-service test:unit --watchAll",
-    "coverage": "jest --coverage --coverageReporters=text-lcov",
+    "coverage": "jest --coverage --coverageReporters=lcov --silent",
     "coverage:publish": "npm run coverage && codecov"
   },
   "dependencies": {
