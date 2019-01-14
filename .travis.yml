@@ -31,7 +31,8 @@ jobs:
     - npm run lint
     - npm run test
     - npm run build
-    - rclone copy dist :s3://payone/sdk/dev/ --s3-access-key-id=$S3_ACCESS_KEY --s3-endpoint=$S3_HOST --s3-secret-access-key=$S3_SECRET_KEY    
+    - rclone copy dist :s3://payone/sdk/dev/ --s3-access-key-id=$S3_ACCESS_KEY --s3-endpoint=$S3_HOST --s3-secret-access-key=$S3_SECRET_KEY
+    - npm run coverage:publish
   - name: release
     if: (tag =~ ^v)
     script:
@@ -46,9 +47,3 @@ notifications:
   email: false
   slack:
     secure: EfqPW3dwulj/+GsA3mMSTEAJGkt9XJ0YiapBHiiyfoVg0YToqto8st5LcJAhmQ+5XPyvnZ5fyZmOFQbYdLSV4JoZDx5AspObe2C0rM7mcdYA9JzTxseOr48XagZH2KOtf5+fgVuCANmfrxTv2xZAGC37hX9/YFdunG3SEvfmc1j1mSmwQqwDChsEDET6XzcgA/Q3tplLNcfLKXf2j4GR0Y1Lc+E6lsnRmRXeDVW6R9hI4rcfkCeSy+vWzAaa31t9i+O4zxZGcCxlTxKcbDVpBidCfu3pasbAjf+CCApfFNzEWRrfD7Wx77nrbdrUpta663YYB2gqU9/6dVLHbRCZIJMzc5KmAtrdxFC4kSf0V+g72oUXPe/0F6VxhJR68ymW8JZvWuiWCmfVqR4t3O90S1BXlL2Ccw5YOGs1NID6ZiPNn4XYBGp8LGpSqPgq/XCmJQgwYb7+ASZAj+P5EOjTrEHZJ01n/jxgRsmGxq6MYlFSywfeVxgRLL5ZJSTj1u05s+UadYtrUD6dN3dJaX+j5ZN/x4Su1FbT8KFKYzNmabQH9ireNzdvfZJkSPpxC1IByRB7LZWvDNCce0kCmqvBP9r7XVmRp7UNPIr2Zxyghq/6wGfxMTqZUN3vgJIqBwm+NumjbyIhAFFavBcRXlelVmL+khpNMof6X/DJ3n7fbG0=
-
-install:
-  - npm install -g codecov
-after_success:
-  - npm run coverage
-  - codecov

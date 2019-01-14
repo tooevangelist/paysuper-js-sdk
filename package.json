@@ -10,10 +10,12 @@
     "lint:style": "vue-cli-service lint:style",
     "test": "vue-cli-service test:unit",
     "test:dev": "vue-cli-service test:unit --watchAll",
-    "coverage": "jest --coverage --coverageReporters=text-lcov"
+    "coverage": "jest --coverage --coverageReporters=text-lcov",
+    "coverage:publish": "npm run coverage && codecov"
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "codecov": "^3.1.0",
     "lodash-es": "^4.17.11",
     "simple-assert": "^1.0.0"
   },
@@ -29,7 +31,6 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",
-    "codecov": "^3.1.0",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0-0",
     "node-sass": "^4.9.0",
