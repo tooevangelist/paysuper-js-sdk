@@ -1,6 +1,6 @@
 # ProtocolONE PayOne
 [![Build Status](https://api.travis-ci.org/ProtocolONE/payone-js-sdk.svg?branch=master)](https://travis-ci.org/ProtocolONE/token_one)
-[![Coverage Status](https://coveralls.io/repos/github/ProtocolONE/payone-js-sdk/badge.svg?branch=master)](https://coveralls.io/github/ProtocolONE/payone-js-sdk?branch=master)
+[![codecov](https://codecov.io/gh/ProtocolONE/payone-js-sdk/branch/master/graph/badge.svg)](https://codecov.io/gh/ProtocolONE/payone-js-sdk)
 
 ## Usage
 ```html
