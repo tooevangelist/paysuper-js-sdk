@@ -6,7 +6,6 @@ node_modules
 /tests/e2e/screenshots/
 
 /coverage/
-.coveralls.yml
 
 # local env files
 .env.local

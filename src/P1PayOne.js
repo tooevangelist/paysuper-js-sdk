@@ -224,6 +224,7 @@ export default class P1PayOne extends Events.EventEmitter {
         project: this.projectID,
         payment_method: this.paymentMethod,
         payer_ip: '77.233.9.26',
+        url_success: 'https://p1payfront.tst.protocol.one/payment_finished/',
       });
       result = data;
     } catch (error) {
