@@ -1,7 +1,7 @@
 /**
  * App entry point
  */
-import * as Sentry from '@sentry/browser';
+import Raven from 'raven-js';
 import P1PayOne from './P1PayOne';
 
 // Public API
@@ -10,11 +10,10 @@ if (typeof window !== 'undefined') {
 }
 export default P1PayOne;
 
-Sentry.init({
-  dsn: 'https://3e4a24900f064243a9de45162660a66d@sentry.tst.protocol.one/3',
-  // ...
-});
-
+Raven.config('https://3e4a24900f064243a9de45162660a66d@sentry.tst.protocol.one/3').install();
 // Raven.context(function () {
 //   initMyApp();
 // });
+setTimeout(() => {
+  Raven.captureException('TEST');
+}, 2000);

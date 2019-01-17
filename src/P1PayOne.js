@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/browser';
 import assert from 'simple-assert';
 import axios from 'axios';
 import Events from 'events';
@@ -229,7 +228,6 @@ export default class P1PayOne extends Events.EventEmitter {
       });
       result = data;
     } catch (error) {
-      Sentry.captureException(error);
       console.error(error);
     }
     return result;
