@@ -10,6 +10,8 @@
 */
 export function createIframe(iframeSrc) {
   const iframe = document.createElement('iframe');
+
+  iframe.setAttribute('allowpaymentrequest', 'true');
   iframe.setAttribute('frameborder', '0');
   iframe.setAttribute('src', iframeSrc);
   iframe.style.overflow = 'hidden';
