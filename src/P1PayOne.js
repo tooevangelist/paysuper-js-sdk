@@ -59,6 +59,30 @@ export function getLanguage(value) {
   return value.toLowerCase();
 }
 
+function getFormViewOptions(windowWidth) {
+  const map = [
+    { max: 1690, name: 'xl' },
+    { max: 1280, name: 'l' },
+    { max: 980, name: 'm' },
+    { max: 736, name: 's' },
+    { max: 480, name: 'xs' },
+  ];
+
+  const viewSize = [];
+
+  map.forEach(({ max, name }) => {
+    if (windowWidth > max) {
+      return;
+    }
+    viewSize.push(name);
+  });
+
+  return {
+    windowWidth,
+    viewSize,
+  };
+}
+
 export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow, isDev = true) {
   receiveMessages(currentWindow, {
     /**
@@ -67,6 +91,7 @@ export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow,
      */
     INITED: () => {
       clearTimeout(this.iframeLoadingErrorTimeout);
+      const { viewSize } = getFormViewOptions(window.innerWidth);
 
       /**
        * In development the form receives form data from sdk
@@ -79,6 +104,7 @@ export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow,
           email: this.email,
           language: this.language,
           apiUrl: this.urls.apiUrl,
+          viewSize,
         },
       });
     },
