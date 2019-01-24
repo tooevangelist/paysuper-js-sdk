@@ -1,48 +1,39 @@
 language: node_js
 node_js:
 - 11
-
 sudo: true
-
-#before_install:
-#- sudo apt-get install python-pip
-#- sudo pip install --upgrade pip
-#- sudo pip install s3cmd
-#- curl https://rclone.org/install.sh | sudo bash
-
 env:
   global:
-  - secure: OeOWTtVlW4LaD1jhT3mEqMbnOc+Zkcmy8Y5imWJcLnj9eBM/x4swTsDGLX9si6hA/hAVkx+wbNKEahbyl1PaAMHYiDllHhTebgEgOuU5HnqKpv3BFO5h+hzGeGSUz9i4wCBMhZ3XAEqrzUA7zWxU0OfTmZ4/oB/lkubGf3ERQzQ2b+uAHU4sQNomHeQ8Zq8yGE0JjC30Z22QODIRr6bLvJhHQbDFFbjafAUJ9wCEGmqUcsEqMHICbt1qlVSYivkPTRQ/JYMz45A9TonEBFyipXdIq5hpblD02MOJaCLHaIUjv3740O0WWBJwTEY2oy/ZTBL6dFdRH02uVuoVtPAsaXfbcFMJ2Cl8fSV8uZb8B9OC6NXdVukjIV41NmE6bcpSg1qWAB1CUfWbTblNti+gJg3AHXvqOsogl5cuzBJDuKYCbmRDtiABMh1wcog6UsGtM2H2HhKNsD0FhNXENgo/4615MRcDE5/ZQ3cUn92RMb+2aK5Hv7zJ0xbx+33fVcQRu6sba4LK+B+CsF7YoVOfK623OuLUXUMOokNrlNyvniRcJBaTNfFSgvonmTMV9tEt6DPwE66goL1/cYPzcG3c21ZF7uMghE9Jbr3rBX3jxEuSAil0y8AL/jhYWFNmj2pllD5dTv5GnV3s/pZOs79BMsWEV3VvY0EZP/x6eoKZCrc=
-  - secure: IrKX68dZwLUot3XBk8LfuR2rYXbmq2aMsfZcQmf6abbMJvzzt9pEx+s9LacfxcXw7v35yCbhQthJejfznxMheTYOdy8oxljCjnJ5bLE90K6PymyLAEaLCUD6KFzj0wC53Dh7ZAunYDvKMYbQo+YGYTQfvXlC2yuTTOJS4il7l8WSGFDAh0G49+grF1QaC441U4lxlt1kYpC1uDR4iN3t+a5z6CRxwBzwXnoI5cq/re2eO0VDNvC07bGtZTm1OakKPyOyc43NepdjVpp9E9ZKjbkYgFaMKSJKOCSvyCqsmzldXeLZPirrIBxZd/StG+dvO7EWkwIO3jw5z53tD8gnf4ixcl6RKtwEQpJYrpAjjuGqkhYQhVL6JSgp3uGtEPZLVIbieGMu7YpQjKhJLhE2+kfs0qiBG3GWIYegthiF30o+ehnPR770jr+QD4NalhNaf7hckMorWeXHIExyr/OnK7n/MVyPkuaIp2DzWnyAkgZCBecVuTjGXbInMo4RS5hK2Rf61/dBiCmoiB5t5i6fgKGzFBDx6EF3oxCyHn4bgGIRGRUiRupBvsnYsF1TuF4bScQXztjuunhAlgfj34kXg7fWe+Qz6X37uFSMXifmp9S9Azx5RHz9JJUfXPunh4uBR/nMMJLe+YCSG5IBTXC643aRStFZ4mBnqfYfwRPVGEY=
-  - secure: aQXk7BYtpwTGPEwESzczIaNyWwwbsylELI/oge/DvBaXgHej9/LdzUTPbYd5HF1XN1gyT6Gl7NM3Ru66zDfSIVGzksoB/5czA49BrQ8LxIUunT19kznX/eig2Qv8ZsVrfOuHOAU1zzxhVgdQinKxA7On3C+rNDZexLBhOfm2xp8WXfHXuMy0Ksh2LwF2sMMjITQYyTw08Wp7IIm2+zCbODcj4Nk+heKPc3bQocCR1BiL1mgQ7rpKkiIWraDTar4YZ02YBhGnnzNjCaphuXy+5yVcEKQKFBZLih198C4Hp831KIr8s++uz/u7IQGR3zZTC8j6ZmrgOzgUOf/lccrYVXnZpiHeLCcgDqBfQRhFiCX944cBbdsESVcMINfup8HWL2EghaUxZSwvqlNfGDs/wJ+28EwF37B7rIIESBf4oAaZAjC2DXzQaaWWtS+lxEcr6M9qCQEvi0ScEDj7Ryq9QGxGelJf5mi93/br/n7e791JzCCJBWqFGs3Phg46m//fvicIkUZpjc8rFDYUyR7T939tqH0VaAUQaOFUXvV5UAqAGJhGq2f8bQQYZzjehIFRWLWuKSAlTIq9wVuVARJ86AydAbS5NrKjIAmPl7uTkWgGAWEmfYVlZkbs2RbxDQucdcgAa57y+pbnB9uOOS/THvB7XDl5xbPXdUIYJudOFNQ=
-
-#stages:
-#- test
-#- release
-
+  #host
+  - secure: BywnmmKs5A9gHTWC9nzzZacRoITZYbTZpe1WdQEPn6ENkFrXmTdOnoyLNLFRAUE1qqt+hjW65cQnRuLmCOtpR+gjlWAci6EvZDgAHVxetsfhW3BYRR0X/kPy/Io5Rhb+kjIi8vl00VmYx5YsvO6SeO3M//HitjQVjWS7kx3nLk6WowtsvC5ByhP1C+tqpXNwsZwlPHREWAMRmpIYiX/iv08EXjljHWNr84O7SOkrWB64BAdWZM+t3Wuz7fx6AMlHEeMGkQ8HXRRDV6M/pMqEFFyBvkOF5pr6IZ4Jwahj1Em/Fb2rcucoZ1JTGiBgm9wcWTJa9qAQ05ggv8gxf2HAgmU+F7bA+an8A7Zt2HY9w4BLYMvV9XQZ/dvgn0wKB3d52dY+63VZ9icf4QfkXRgAytys5QjOT77wVfjjnUrefSFXfHw0pGWDRxW5OhPxipl6KJgSjdGEUnIXND/gAca+CYC4pdh61VDAuutDLwMJTukLRk/pw6u4mIJz7x8WSopCAOgPpi/GQRjV+fgKIuAhJg+F0yxvybnSWvV5u3v+Reru+2YGQ8buXoJEgaZb2ImWCzX0+FUsVqWZmMvV+48mKxBc5AfBEf8eyOqZWryiUTc6OvY4OIkW8leG70zAmSlBw4X5oq+ZVSYnD6I87WHPKnDj5gaadErk2W75T3ky+HY=
+  #access_key  
+  - secure: Mvu+r62cAwNWiok3R7V2Ia54XVQJdjDFn9TXv6/uy+tzUM1hO1tlwtvwn1jW/Qp3WkeNdQIb5TQPfQ+f2K53J7lfoGt3R/Gi+pLIUWPucH+2Iwz/yoVb7eOTiAh3NBADBLk2NAeO7rbtAp3MvG5TAA44Q5N6I//V3mU2apn78ts0rfDukbxsva3c1EbyT5pdLp/pD0J36CtwDsvjT1oy+teUS5t6O3smkh9zQ1Gy0cnsLt754qmtbLQR9R0wFFZY5RH2GNYCEkwrvS6GXZ4g1EoAxA8MFJopsvgXgK4QA9qDBySc9OA4leDA5TvXtnT3Y6hR7HGA5Z9UJu0UR872AgJ4KpSiznlOBkEFuzaXWFZBqcsRDCQzXOmHEnoCXx1wyCQBzI9UFjSWpeVDfCxmYl01Iq7FMetl5VUyhByJYLrhTRL9vKW6mRV37R4mwyGRi9goF/3CKMcz6foMWqSEZUlHs0j3M4DFguqn8Wh8gjzUUImF9iho2IXAu5x+r+KEgCWO8xR5NMnATaJy+g3eW6zT0/Up6dgW/lkt2DWPKD2lWGCD6GlWFOa6Lu8uAIN8uMKL/hka2B/mJwn6pO2Lb5o/sW8ukW0Ytmaq6f0WGh0TTBcx1k0EPikXEyKI7IYb2UsCKdwR6gwhqur4tb1Rf6YZPLvYhxPFbuT4PXPLwbI=
+  #secret_key
+  - secure: G8OIs9z5VMIV9tNjaPzQaQdgse3f4Dgfit8QPImbSafi8jIskIbMKdp9vxcUyJaeRmRb/l9UuCYM0dgmEvgHiXXFiuyqvWFTMS0S9/6q/sn9H5utIsm6e2wC/QYpbEGMk74rWEZOwLZrbjMf8FR5VKJkNb0XsFj+wE+2b9eQePJE9Ou7etSJfPkn1Z7M/wyq6I3YIAdBOJdyUHcNSTQn6QJUOV2UAmDNwB961j3bR9jENwQbCqjsaGXibBEMVx8hQSLlAbpY7mAvrcCOlhiKDpQuoy45ZHFjVlDqsuXs1x5YGPmR9/k9/q7w27xilJH70QIiQLxepDX0rP8WL9Lx8uC0RNdf2sXW0jEtfH6kljae74Td+YsXjgr/DE15/3G+A6V2R2QXnm+mWjz+gRVqjKh7ZT5F1oDKHuBNhVtf5ekdtHk5I2QnM4wdTl9gzQ0Cxv8qkWuX/zcFrsW4/sDWfvdbU10PTWo63QNxsXETCjoTCGgnZEQnat0ct+2M6Ays9RR5aA39IPP8e2zzRBtdLlEzZKUZPfe4K6Zc6soro/hjBoDCwJe+gAB6gSUZ0goeqCWZRDNqDtP8Z4TKIn51TSEsVuwfdUhJoWGuVwj/bXi2vylpchG8n/XrKsN5OBnnUkjUeWqAn7kFf1vPtXv1rddNpkEtcVV3F9B4ALxN+ms=
 before_script: curl https://rclone.org/install.sh | sudo bash
-
 jobs:
   include:
   - name: dev
-    if: (branch = master) or (tag =~ ^v)
+    if: "(branch = master) or (tag =~ ^v)"
     script:
     - set -e
     - npm run lint
     - npm run test
     - npm run build
-    - rclone copy dist :s3://payone/sdk/dev/ --s3-access-key-id="$S3_ACCESS_KEY" --s3-endpoint=$S3_HOST --s3-secret-access-key="$S3_SECRET_KEY"
+    - rclone copy dist :s3://payone/sdk/dev/ --s3-access-key-id="$S3_ACCESS_KEY" --s3-endpoint=$S3_HOST
+      --s3-secret-access-key="$S3_SECRET_KEY"
     - npm run coverage:publish
   - name: release
-    if: (tag =~ ^v)
+    if: "(tag =~ ^v)"
     script:
     - set -e
     - npm run lint
     - npm run test
     - npm run build
-    - rclone copy dist :s3://payone/sdk/latest/ --s3-access-key-id="$S3_ACCESS_KEY" --s3-secret-access-key="$S3_SECRET_KEY" --s3-endpoint=$S3_HOST
-    - rclone copy dist :s3://payone/sdk/$TRAVIS_TAG/ --s3-access-key-id="$S3_ACCESS_KEY" --s3-secret-access-key="$S3_SECRET_KEY" --s3-endpoint=$S3_HOST
-
+    - rclone copy dist :s3://payone/sdk/latest/ --s3-access-key-id="$S3_ACCESS_KEY"
+      --s3-secret-access-key="$S3_SECRET_KEY" --s3-endpoint=$S3_HOST
+    - rclone copy dist :s3://payone/sdk/$TRAVIS_TAG/ --s3-access-key-id="$S3_ACCESS_KEY"
+      --s3-secret-access-key="$S3_SECRET_KEY" --s3-endpoint=$S3_HOST
 notifications:
   email: false
   slack:
