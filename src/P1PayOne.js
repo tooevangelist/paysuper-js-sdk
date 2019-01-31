@@ -165,6 +165,10 @@ export default class P1PayOne extends Events.EventEmitter {
     assert(this.amount, 'Amount is required. Use setAmount method to set it');
 
     this.formData = await this.createOrder();
+    this.formOptions = {
+      ...this.formOptions,
+      isModal: false,
+    };
 
     this.iframe = createIframe(
       this.urls.getPaymentFormUrl(this.formData.id),
