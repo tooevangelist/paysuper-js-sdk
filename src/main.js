@@ -1,10 +1,10 @@
 /**
  * App entry point
  */
-import P1PayOne from './P1PayOne';
+import PaySuper from './PaySuper';
 
 // Public API
 if (typeof window !== 'undefined') {
-  window.P1PayOne = P1PayOne;
+  window.PaySuper = PaySuper;
 }
-export default P1PayOne;
+export default PaySuper;

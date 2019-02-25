@@ -53,14 +53,14 @@ export function createIframe(iframeSrc, containerToAppend, language) {
 
 export function createModalLayer() {
   const modalLayer = document.createElement('div');
-  modalLayer.className = 'p1payone-js-sdk-modal-layer';
+  modalLayer.className = 'paysuper-js-sdk-modal-layer';
 
   const modalLayerInner = document.createElement('div');
-  modalLayerInner.className = 'p1payone-js-sdk-modal-layer__inner';
+  modalLayerInner.className = 'paysuper-js-sdk-modal-layer__inner';
   modalLayer.appendChild(modalLayerInner);
 
   const closeButton = document.createElement('span');
-  closeButton.className = 'p1payone-js-sdk-modal-layer__close';
+  closeButton.className = 'paysuper-js-sdk-modal-layer__close';
   closeButton.innerHTML = `
     <svg viewBox="0 0 8 8" width="16" height="16" fill="#999" xmlns="http://www.w3.org/2000/svg">
       <g>

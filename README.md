@@ -1,4 +1,4 @@
-# ProtocolONE PayOne
+# PaySuper JS SDK
 [![Build Status](https://api.travis-ci.org/ProtocolONE/payone-js-sdk.svg?branch=master)](https://travis-ci.org/ProtocolONE/token_one)
 [![codecov](https://codecov.io/gh/ProtocolONE/payone-js-sdk/branch/master/graph/badge.svg)](https://codecov.io/gh/ProtocolONE/payone-js-sdk)
 
@@ -6,7 +6,7 @@
 ```html
 <script src="https://static.protocol.one/payone/sdk/latest/p1payone.js"></script>
 <script>
-  const payoneForm = new P1PayOne({
+  const payoneForm = new PaySuper({
     projectID: '5be2e16701d96d00012d26c3',
     region: 'US',
   });
@@ -14,7 +14,7 @@
 </script>
 ```
 
-### P1PayOne options
+### PaySuper options
 - **projectID** {String} Example - '5be2e16701d96d00012d26c3'
 - **region** {String} Example - 'US'
 - **language** {String} Example - 'en'
@@ -25,15 +25,15 @@
 - **paymentMethod** {String}
 - **apiUrl** {String} Default is 'https://p1payapi.tst.protocol.one'
 
-### P1PayOne methods
+### PaySuper methods
 #### setAmount( value )
 - param: **value** {String|Number}
-- return: {P1PayOne}
+- return: {PaySuper}
 Sets payment amount
 
 #### setCurrency( value )
 - param: **value** {String|Number} Example - 'USD'
-- return: {P1PayOne}
+- return: {PaySuper}
 
 #### render( selector )
 - param: **selector** {String|DomElement}
@@ -53,10 +53,10 @@ Returns context object.
 - param: **value** {String}
 - return: {Object}
 
-### P1PayOne events
+### PaySuper events
 ```js
 payoneForm.on('init', function() {
-  console.log('P1PayOne is initialized')
+  console.log('PaySuper is initialized')
 })
 payoneForm.setAmount(5).renderModal('#app');
 ```

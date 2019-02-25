@@ -31,7 +31,7 @@
     
     <script>
       document.addEventListener('DOMContentLoaded', function() {
-          const payoneForm = new P1PayOne({
+          const paySuper = new PaySuper({
           projectID: '5be2e16701d96d00012d26c3',
           region: 'US',
           // language: 'en',
@@ -39,7 +39,7 @@
           // paymentMethod: '',
           account: 'raiky@yandex.ru'
         });
-        payoneForm.setAmount(5).renderModal('#app');
+        paySuper.setAmount(5).renderModal('#app');
       });
     </script>
     <!-- built files will be auto injected -->

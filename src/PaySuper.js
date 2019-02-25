@@ -136,13 +136,13 @@ export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow,
   });
 }
 
-export default class P1PayOne extends Events.EventEmitter {
+export default class PaySuper extends Events.EventEmitter {
   constructor({
     projectID, region, email, paymentMethod, account,
     currency, amount, language, apiUrl,
   } = {}) {
     super();
-    assert(projectID, 'projectID is required for "new P1PayOne(...)"');
+    assert(projectID, 'projectID is required for "new PaySuper(...)"');
     this.projectID = projectID;
     this.region = getRegion(region, navigator);
     this.defaultLanguage = getDefaultLanguage();
@@ -168,7 +168,7 @@ export default class P1PayOne extends Events.EventEmitter {
    * Renders the payment form into target element
    *
    * @param {String|DomElement} selectorOrElement
-   * @return {P1PayOne}
+   * @return {PaySuper}
    */
   async render(selectorOrElement) {
     const appendContainer = getDomElement(selectorOrElement);
@@ -194,7 +194,7 @@ export default class P1PayOne extends Events.EventEmitter {
   /**
    * Renders the payment form in modal dialog layer
    *
-   * @return {P1PayOne}
+   * @return {PaySuper}
    */
   async renderModal() {
     assert(this.amount, 'Amount is required. Use setAmount method to set it');
@@ -230,7 +230,7 @@ export default class P1PayOne extends Events.EventEmitter {
   /**
    * Handling iframe message transport with the form
    *
-   * @return {P1PayOne}
+   * @return {PaySuper}
    */
   initIframeMessagesHandling() {
     const postMessageWindow = this.iframe.contentWindow;
@@ -272,7 +272,7 @@ export default class P1PayOne extends Events.EventEmitter {
    * Renders the payment form
    *
    * @param {String|DomElement} appendContainer
-   * @return {P1PayOne}
+   * @return {PaySuper}
    */
   setAmount(amount) {
     const amountIsValidType = (typeof amount === 'string' || typeof amount === 'number');
@@ -285,7 +285,7 @@ export default class P1PayOne extends Events.EventEmitter {
    * Setups the currency
    *
    * @param {String} currency example: "US"
-   * @return {P1PayOne}
+   * @return {PaySuper}
    */
   setCurrency(currency) {
     assert(typeof currency === 'string', 'Currency value must be a string');

@@ -32,7 +32,7 @@ module.exports = {
 
   configureWebpack: {
     output: {
-      filename: 'p1payone.js',
+      filename: 'paysuper.js',
       chunkFilename: '[name].js',
     },
     plugins:

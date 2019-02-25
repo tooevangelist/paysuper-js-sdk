@@ -1,4 +1,4 @@
-import { receiveMessagesFromPaymentForm } from '@/P1PayOne';
+import { receiveMessagesFromPaymentForm } from '@/PaySuper';
 import { payonePaymentFormSourceName, receivingMessagesNames } from '@/postMessage';
 import { invert } from 'lodash-es';
 
@@ -33,7 +33,7 @@ class WindowMock {
   }
 }
 
-function getP1PayOneMock() {
+function getPaySuperMock() {
   return {
     email: 'check',
     language: 'en',
@@ -66,13 +66,13 @@ function getP1PayOneMock() {
   };
 }
 
-describe('P1PayOne.receiveMessagesFromPaymentForm ', () => {
+describe('PaySuper.receiveMessagesFromPaymentForm ', () => {
   it('should handle INITED properly', () => {
     const currentWindow = new WindowMock();
     const postMessageWindow = new WindowMock();
-    const P1PayOneMock = getP1PayOneMock();
+    const PaySuperMock = getPaySuperMock();
     receiveMessagesFromPaymentForm.call(
-      P1PayOneMock,
+      PaySuperMock,
       currentWindow,
       postMessageWindow,
     );
@@ -93,9 +93,9 @@ describe('P1PayOne.receiveMessagesFromPaymentForm ', () => {
   it('should handle INITED properly in production', () => {
     const currentWindow = new WindowMock();
     const postMessageWindow = new WindowMock();
-    const P1PayOneMock = getP1PayOneMock();
+    const PaySuperMock = getPaySuperMock();
     receiveMessagesFromPaymentForm.call(
-      P1PayOneMock,
+      PaySuperMock,
       currentWindow,
       postMessageWindow,
       false,
@@ -117,9 +117,9 @@ describe('P1PayOne.receiveMessagesFromPaymentForm ', () => {
   it('should handle FORM_RESIZE properly', () => {
     const currentWindow = new WindowMock();
     const postMessageWindow = new WindowMock();
-    const P1PayOneMock = getP1PayOneMock();
+    const PaySuperMock = getPaySuperMock();
     receiveMessagesFromPaymentForm.call(
-      P1PayOneMock,
+      PaySuperMock,
       currentWindow,
       postMessageWindow,
     );
@@ -130,24 +130,24 @@ describe('P1PayOne.receiveMessagesFromPaymentForm ', () => {
     };
     currentWindow.imitateReceivedMessage('FORM_RESIZE', messageData);
 
-    expect(P1PayOneMock.iframe.width).toEqual(messageData.width);
-    expect(P1PayOneMock.iframe.height).toEqual(messageData.height);
+    expect(PaySuperMock.iframe.width).toEqual(messageData.width);
+    expect(PaySuperMock.iframe.height).toEqual(messageData.height);
   });
 });
 
 it('should handle ORDER_RECREATE_STARTED properly', (done) => {
   const currentWindow = new WindowMock();
   const postMessageWindow = new WindowMock();
-  const P1PayOneMock = getP1PayOneMock();
+  const PaySuperMock = getPaySuperMock();
   receiveMessagesFromPaymentForm.call(
-    P1PayOneMock,
+    PaySuperMock,
     currentWindow,
     postMessageWindow,
   );
 
   currentWindow.imitateReceivedMessage('ORDER_RECREATE_STARTED');
   setTimeout(() => {
-    expect(P1PayOneMock.iframe.src).toEqual('test222');
+    expect(PaySuperMock.iframe.src).toEqual('test222');
     done();
   });
 });

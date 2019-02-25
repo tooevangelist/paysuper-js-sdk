@@ -1,17 +1,17 @@
-import P1PayOne, { getRegion, getLanguage } from '@/P1PayOne';
+import PaySuper, { getRegion, getLanguage } from '@/PaySuper';
 
 const projectID = '5be2e16701d96d00012d26c3';
 
-describe('P1PayOne', () => {
+describe('PaySuper', () => {
   it('should require projectID to init', () => {
     expect(() => {
       // eslint-disable-next-line
-      new P1PayOne();
+      new PaySuper();
     }).toThrowError(/projectID is required/);
   });
 
   it('should be able to handle events', () => {
-    const p1PayOne = new P1PayOne({
+    const p1PayOne = new PaySuper({
       projectID,
     });
 
@@ -26,7 +26,7 @@ describe('P1PayOne', () => {
 
   it('should be able to handle custom apiUrl', () => {
     const customApiUrl = 'https://localhost:3333';
-    const p1PayOne = new P1PayOne({
+    const p1PayOne = new PaySuper({
       projectID,
       apiUrl: customApiUrl,
     });
@@ -38,7 +38,7 @@ describe('P1PayOne', () => {
     it('should throw error if amount value passed as option is invalid', () => {
       expect(() => {
         // eslint-disable-next-line
-        const p1PayOne = new P1PayOne({
+        const p1PayOne = new PaySuper({
           projectID,
           amount: {},
         });
@@ -46,7 +46,7 @@ describe('P1PayOne', () => {
     });
 
     it('should throw error if no value passed', () => {
-      const p1PayOne = new P1PayOne({
+      const p1PayOne = new PaySuper({
         projectID,
       });
       expect(() => {
@@ -55,7 +55,7 @@ describe('P1PayOne', () => {
     });
 
     it('should autoconvert strings to numbers', () => {
-      const p1PayOne = new P1PayOne({
+      const p1PayOne = new PaySuper({
         projectID,
       });
       p1PayOne.setAmount('5');
@@ -67,7 +67,7 @@ describe('P1PayOne', () => {
     it('should throw error if currency value passed as option is invalid', () => {
       expect(() => {
         // eslint-disable-next-line
-        const p1PayOne = new P1PayOne({
+        const p1PayOne = new PaySuper({
           projectID,
           currency: {},
         });
@@ -75,7 +75,7 @@ describe('P1PayOne', () => {
     });
 
     it('should throw error if no value passed', () => {
-      const p1PayOne = new P1PayOne({
+      const p1PayOne = new PaySuper({
         projectID,
       });
 
