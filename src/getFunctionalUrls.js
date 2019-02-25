@@ -5,6 +5,9 @@ export default function getFunctionalUrls(apiUrl) {
     apiGetProjectPackagesUrl: `${apiUrl}/api/v1/project/package`,
     devPaymentFormUrl: 'http://localhost:4040/',
     getPaymentFormUrl(orderId) {
+      if (!orderId) {
+        return undefined;
+      }
       if (process.env.NODE_ENV === 'development') {
         return this.devPaymentFormUrl;
       }

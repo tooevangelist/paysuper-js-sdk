@@ -59,6 +59,18 @@ export function getLanguage(value) {
   return value.toLowerCase();
 }
 
+/**
+ * Cuts out language 2-letters code from navigator.language
+ *
+ * @return {String}
+ */
+function getDefaultLanguage() {
+  if (navigator && navigator.language) {
+    return navigator.language.slice(0, 2);
+  }
+  return 'en';
+}
+
 function getFormViewOptions(windowWidth) {
   const map = [
     { max: 1690, name: 'xl' },
@@ -90,7 +102,6 @@ export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow,
      * Real form rendering start here
      */
     INITED: () => {
-      clearTimeout(this.iframeLoadingErrorTimeout);
       const { viewSize } = getFormViewOptions(window.innerWidth);
 
       /**
@@ -120,8 +131,8 @@ export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow,
       const iframeSrc = this.urls.getPaymentFormUrl(this.formData.id);
       this.iframe.setAttribute('src', iframeSrc);
     },
-  }, (name) => {
-    this.emit(name);
+  }, (name, data) => {
+    this.emit(name, data);
   });
 }
 
@@ -134,6 +145,7 @@ export default class P1PayOne extends Events.EventEmitter {
     assert(projectID, 'projectID is required for "new P1PayOne(...)"');
     this.projectID = projectID;
     this.region = getRegion(region, navigator);
+    this.defaultLanguage = getDefaultLanguage();
     this.language = getLanguage(language);
     this.email = email;
     this.paymentMethod = paymentMethod;
@@ -145,7 +157,6 @@ export default class P1PayOne extends Events.EventEmitter {
     this.iframe = null;
 
     this.urls = getFunctionalUrls(apiUrl || 'https://p1payapi.tst.protocol.one');
-    this.iframeLoadingErrorTimeout = null;
 
     this.formData = null;
     this.formOptions = {
@@ -172,8 +183,9 @@ export default class P1PayOne extends Events.EventEmitter {
 
     this.iframe = createIframe(
       this.urls.getPaymentFormUrl(this.formData.id),
+      appendContainer,
+      this.defaultLanguage,
     );
-    appendContainer.appendChild(this.iframe);
     this.initIframeMessagesHandling();
 
     return { iframe: this.iframe };
@@ -204,8 +216,9 @@ export default class P1PayOne extends Events.EventEmitter {
 
     this.iframe = createIframe(
       this.urls.getPaymentFormUrl(this.formData.id),
+      modalLayerInner,
+      this.defaultLanguage,
     );
-    modalLayerInner.appendChild(this.iframe);
     this.initIframeMessagesHandling();
 
     modalTools.hideBodyScrollbar();
@@ -222,14 +235,6 @@ export default class P1PayOne extends Events.EventEmitter {
   initIframeMessagesHandling() {
     const postMessageWindow = this.iframe.contentWindow;
     const isDev = process.env.NODE_ENV === 'development';
-
-    if (isDev) {
-      this.iframeLoadingErrorTimeout = setTimeout(() => {
-        // eslint-disable-next-line
-        alert(`Can't connect to ${this.urls.devPaymentFormUrl} to load the form. Check "payone-js-payment-form" package is served`);
-      }, 1000);
-    }
-
     receiveMessagesFromPaymentForm.call(this, window, postMessageWindow, isDev);
 
     return this;
@@ -243,7 +248,7 @@ export default class P1PayOne extends Events.EventEmitter {
   async createOrder() {
     // Dummy data if request is failed
     let result = {
-      payment_methods: [{}],
+      hasError: true,
     };
     try {
       const { data } = await axios.post(this.urls.apiCreateOrderUrl, {
