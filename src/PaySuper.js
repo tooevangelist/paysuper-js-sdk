@@ -71,30 +71,6 @@ function getDefaultLanguage() {
   return 'en';
 }
 
-function getFormViewOptions(windowWidth) {
-  const map = [
-    { max: 1690, name: 'xl' },
-    { max: 1280, name: 'l' },
-    { max: 980, name: 'm' },
-    { max: 736, name: 's' },
-    { max: 480, name: 'xs' },
-  ];
-
-  const viewSize = [];
-
-  map.forEach(({ max, name }) => {
-    if (windowWidth > max) {
-      return;
-    }
-    viewSize.push(name);
-  });
-
-  return {
-    windowWidth,
-    viewSize,
-  };
-}
-
 export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow, isDev = true) {
   receiveMessages(currentWindow, {
     /**
@@ -102,8 +78,6 @@ export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow,
      * Real form rendering start here
      */
     INITED: () => {
-      const { viewSize } = getFormViewOptions(window.innerWidth);
-
       /**
        * In development the form receives form data from sdk
        * but in production the page receives it by itself
@@ -111,24 +85,30 @@ export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow,
       postMessage(postMessageWindow, 'REQUEST_INIT_FORM', {
         formData: isDev ? this.formData : {},
         options: {
-          ...this.formOptions,
-          email: this.email,
-          language: this.language,
+          ...(this.language ? { language: this.language } : {}),
+          layout: 'modal',
           apiUrl: this.urls.apiUrl,
-          viewSize,
         },
       });
     },
 
-    FORM_RESIZE: ({ width, height }) => {
-      this.iframe.setAttribute('width', width);
-      this.iframe.setAttribute('height', height);
+    LOADED: () => {
+      this.iframe.classList.remove('paysuper-js-sdk-modal-layer__iframe--loading');
+    },
+
+    // FORM_RESIZE: ({ width, height }) => {
+    //   this.iframe.setAttribute('width', width);
+    //   this.iframe.setAttribute('height', height);
+    // },
+
+    MODAL_CLOSED: () => {
+      this.closeModal();
     },
 
     ORDER_RECREATE_STARTED: async () => {
       this.formData = await this.createOrder();
 
-      const iframeSrc = this.urls.getPaymentFormUrl(this.formData.id);
+      const iframeSrc = this.urls.getPaymentFormUrl(this.formData.payment_form_url);
       this.iframe.setAttribute('src', iframeSrc);
     },
   }, (name, data) => {
@@ -138,93 +118,81 @@ export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow,
 
 export default class PaySuper extends Events.EventEmitter {
   constructor({
-    projectID, region, email, paymentMethod, account,
-    currency, amount, language, apiUrl,
+    projectId, token, currency, amount, language, apiUrl, products,
   } = {}) {
     super();
-    assert(projectID, 'projectID is required for "new PaySuper(...)"');
-    this.projectID = projectID;
-    this.region = getRegion(region, navigator);
+    assert(projectId, 'projectId is required for "new PaySuper(...)"');
+    this.projectId = projectId;
     this.defaultLanguage = getDefaultLanguage();
     this.language = getLanguage(language);
-    this.email = email;
-    this.paymentMethod = paymentMethod;
-    this.account = account;
+    this.token = token;
 
-    this.currency = currency ? this.setCurrency(currency) : 'USD';
-    this.amount = amount ? this.setAmount(amount) : undefined;
+    if (currency) {
+      this.setCurrency(currency);
+    } else {
+      this.currency = undefined;
+    }
+    if (amount) {
+      this.setAmount(amount);
+    } else {
+      this.amount = undefined;
+    }
+    if (products) {
+      this.setProducts(products);
+    } else {
+      this.products = undefined;
+    }
 
     this.iframe = null;
+    this.modalLayer = null;
 
     this.urls = getFunctionalUrls(apiUrl || 'https://p1payapi.tst.protocol.one');
 
     this.formData = null;
-    this.formOptions = {
-      isModal: false,
-    };
-  }
-
-  /**
-   * Renders the payment form into target element
-   *
-   * @param {String|DomElement} selectorOrElement
-   * @return {PaySuper}
-   */
-  async render(selectorOrElement) {
-    const appendContainer = getDomElement(selectorOrElement);
-    assert(appendContainer, 'Mount element or selector is required for embedded form render');
-    assert(this.amount, 'Amount is required. Use setAmount method to set it');
-
-    this.formData = await this.createOrder();
-    this.formOptions = {
-      ...this.formOptions,
-      isModal: false,
-    };
-
-    this.iframe = createIframe(
-      this.urls.getPaymentFormUrl(this.formData.id),
-      appendContainer,
-      this.defaultLanguage,
-    );
-    this.initIframeMessagesHandling();
-
-    return { iframe: this.iframe };
+    this.isInited = false;
   }
 
   /**
    * Renders the payment form in modal dialog layer
    *
+   * @param {String|DomElement} selectorOrElement
    * @return {PaySuper}
    */
-  async renderModal() {
-    assert(this.amount, 'Amount is required. Use setAmount method to set it');
+  async renderModal(selectorOrElement) {
+    if (this.isInited) {
+      console.warn('PaySuper: the form is already rendering or finished rendering');
+      return this;
+    }
+    this.isInited = true;
+    const appendContainer = selectorOrElement ? getDomElement(selectorOrElement) : document.body;
+    // assert(this.amount, 'Amount is required. Use setAmount method to set it');
 
     this.formData = await this.createOrder();
-    this.formOptions = {
-      ...this.formOptions,
-      isModal: true,
-    };
 
-    const { modalLayer, modalLayerInner, closeButton } = createModalLayer();
+    const { modalLayer } = createModalLayer();
+    this.modalLayer = modalLayer;
 
-    closeButton.addEventListener('click', () => {
-      modalLayer.parentNode.removeChild(modalLayer);
-      modalTools.showBodyScrollbar();
-      this.emit('modalClosed');
-    });
-    document.body.appendChild(modalLayer);
+    appendContainer.innerHTML = '';
+    appendContainer.appendChild(this.modalLayer);
 
     this.iframe = createIframe(
-      this.urls.getPaymentFormUrl(this.formData.id),
-      modalLayerInner,
+      this.urls.getPaymentFormUrl(this.formData.payment_form_url),
+      this.modalLayer,
       this.defaultLanguage,
     );
-    this.initIframeMessagesHandling();
+
+    if (!this.formData.hasError) {
+      this.initIframeMessagesHandling();
+    } else {
+      setTimeout(() => {
+        this.closeModal();
+      }, 3000);
+    }
 
     modalTools.hideBodyScrollbar();
     this.emit('modalOpened');
 
-    return { iframe: this.iframe };
+    return this;
   }
 
   /**
@@ -245,27 +213,58 @@ export default class PaySuper extends Events.EventEmitter {
    *
    * @return {Promise<Object>}
    */
+  // async createOrder() {
+  //   // Dummy data if request is failed
+  //   let result = {
+  //     hasError: true,
+  //   };
+  //   try {
+  //     const { data } = await axios.post(this.urls.apiCreateOrderUrl, {
+  //       region: this.region,
+  //       amount: this.amount,
+  //       currency: this.currency,
+  //       account: this.account,
+  //       project: this.projectId,
+  //       payment_method: this.paymentMethod,
+  //       payer_ip: '77.233.9.26',
+  //       url_success: 'https://p1payfront.tst.protocol.one/payment_finished/',
+  //     });
+  //     result = data;
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  //   return result;
+  // }
+
   async createOrder() {
     // Dummy data if request is failed
     let result = {
       hasError: true,
     };
+    if (this.amount) {
+      assert(this.currency, 'PaySuper: currency is not set');
+    }
     try {
       const { data } = await axios.post(this.urls.apiCreateOrderUrl, {
-        region: this.region,
-        amount: this.amount,
-        currency: this.currency,
-        account: this.account,
-        project: this.projectID,
-        payment_method: this.paymentMethod,
-        payer_ip: '77.233.9.26',
-        url_success: 'https://p1payfront.tst.protocol.one/payment_finished/',
+        project: this.projectId,
+        ...(this.token ? { token: this.token } : {}),
+        ...(this.products ? { products: this.products } : {}),
+        ...(this.amount ? { amount: this.amount, currency: this.currency } : {}),
       });
       result = data;
     } catch (error) {
+      this.isInited = false;
       console.error(error);
     }
     return result;
+  }
+
+  closeModal() {
+    this.modalLayer.parentNode.removeChild(this.modalLayer);
+    modalTools.showBodyScrollbar();
+    this.iframe = null;
+    this.formData = null;
+    this.isInited = false;
   }
 
   /**
@@ -294,6 +293,18 @@ export default class PaySuper extends Events.EventEmitter {
   }
 
   /**
+   * Setups the products
+   *
+   * @param {String[]} products example: "US"
+   * @return {PaySuper}
+   */
+  setProducts(products) {
+    assert(Array.isArray(products), 'Products value must be an array');
+    this.products = products;
+    return this;
+  }
+
+  /**
    * Fetches and returns array of project packages
    *
    * @param {String} id package ID
@@ -301,7 +312,7 @@ export default class PaySuper extends Events.EventEmitter {
    */
   async getAllSku() {
     const { data } = await axios.get(
-      `${this.urls.apiGetProjectPackagesUrl}/${this.region}/${this.projectID}`,
+      `${this.urls.apiGetProjectPackagesUrl}/${this.region}/${this.projectId}`,
     );
 
     return data;
@@ -316,7 +327,7 @@ export default class PaySuper extends Events.EventEmitter {
   async getSkuByID(id) {
     assert(id, 'ID is required in getSkuByID method');
     const { data } = await axios.get(
-      `${this.urls.apiGetProjectPackagesUrl}/${this.region}/${this.projectID}?id[]=${id}`,
+      `${this.urls.apiGetProjectPackagesUrl}/${this.region}/${this.projectId}?id[]=${id}`,
     );
 
     if (!Array.isArray(data) || !data.length) {

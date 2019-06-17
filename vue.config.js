@@ -45,4 +45,8 @@ module.exports = {
     lintStyleOnBuild: false,
     stylelint: {},
   },
+
+  devServer: {
+    port: 5050,
+  },
 };

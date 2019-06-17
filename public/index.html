@@ -9,11 +9,7 @@
       body {
         background: #f9f9f9;
         overflow-y: scroll;
-      }
-
-      .container {
-        display: flex;
-        justify-content: center;
+        margin: 0;
       }
     </style>
   </head>
@@ -25,21 +21,24 @@
         Please enable it to continue.</strong>
     </noscript>
     
-    <div class="container">
-      <div id="app"></div>
+    <div id="app">
     </div>
-    
+
     <script>
       document.addEventListener('DOMContentLoaded', function() {
           const paySuper = new PaySuper({
-          projectID: '5be2e16701d96d00012d26c3',
-          region: 'US',
+          // projectId: '5cd5620f06ae110001509185',
+          projectId: '5cda856f38e0e20001769886',
+          amount: 10,
+          currency: 'USD',
+          // products: ['5cda8d3938e0e2000176988b']
+          // region: 'US',
           // language: 'en',
           // email: 'raiky@yandex.ru',
           // paymentMethod: '',
-          account: 'raiky@yandex.ru'
+          // account: 'raiky@yandex.ru'
         });
-        paySuper.setAmount(5).renderModal('#app');
+        paySuper.renderModal('#app');
       });
     </script>
     <!-- built files will be auto injected -->

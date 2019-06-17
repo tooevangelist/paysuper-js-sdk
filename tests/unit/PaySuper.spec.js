@@ -1,18 +1,18 @@
 import PaySuper, { getRegion, getLanguage } from '@/PaySuper';
 
-const projectID = '5be2e16701d96d00012d26c3';
+const projectId = '5be2e16701d96d00012d26c3';
 
 describe('PaySuper', () => {
-  it('should require projectID to init', () => {
+  it('should require projectId to init', () => {
     expect(() => {
       // eslint-disable-next-line
       new PaySuper();
-    }).toThrowError(/projectID is required/);
+    }).toThrowError(/projectId is required/);
   });
 
   it('should be able to handle events', () => {
     const p1PayOne = new PaySuper({
-      projectID,
+      projectId,
     });
 
     let check;
@@ -27,7 +27,7 @@ describe('PaySuper', () => {
   it('should be able to handle custom apiUrl', () => {
     const customApiUrl = 'https://localhost:3333';
     const p1PayOne = new PaySuper({
-      projectID,
+      projectId,
       apiUrl: customApiUrl,
     });
 
@@ -35,11 +35,28 @@ describe('PaySuper', () => {
   });
 
   describe('setAmount', () => {
+    const amount = 5;
+    it('should set the value as instance option', () => {
+      const p1PayOne = new PaySuper({
+        projectId,
+        amount,
+      });
+      expect(p1PayOne.amount).toEqual(amount);
+    });
+
+    it('should set the value as instance option', () => {
+      const p1PayOne = new PaySuper({
+        projectId,
+      });
+      p1PayOne.setAmount(amount);
+      expect(p1PayOne.amount).toEqual(amount);
+    });
+
     it('should throw error if amount value passed as option is invalid', () => {
       expect(() => {
         // eslint-disable-next-line
         const p1PayOne = new PaySuper({
-          projectID,
+          projectId,
           amount: {},
         });
       }).toThrowError(/Amount value must/);
@@ -47,7 +64,7 @@ describe('PaySuper', () => {
 
     it('should throw error if no value passed', () => {
       const p1PayOne = new PaySuper({
-        projectID,
+        projectId,
       });
       expect(() => {
         p1PayOne.setAmount();
@@ -56,7 +73,7 @@ describe('PaySuper', () => {
 
     it('should autoconvert strings to numbers', () => {
       const p1PayOne = new PaySuper({
-        projectID,
+        projectId,
       });
       p1PayOne.setAmount('5');
       expect(p1PayOne.amount).toEqual(5);
@@ -64,11 +81,28 @@ describe('PaySuper', () => {
   });
 
   describe('setCurrency', () => {
+    const currency = 'USD';
+    it('should set the value as instance option', () => {
+      const p1PayOne = new PaySuper({
+        projectId,
+        currency,
+      });
+      expect(p1PayOne.currency).toEqual(currency);
+    });
+
+    it('should set the value as instance option', () => {
+      const p1PayOne = new PaySuper({
+        projectId,
+      });
+      p1PayOne.setCurrency(currency);
+      expect(p1PayOne.currency).toEqual(currency);
+    });
+
     it('should throw error if currency value passed as option is invalid', () => {
       expect(() => {
         // eslint-disable-next-line
         const p1PayOne = new PaySuper({
-          projectID,
+          projectId,
           currency: {},
         });
       }).toThrowError(/Currency value must/);
@@ -76,7 +110,7 @@ describe('PaySuper', () => {
 
     it('should throw error if no value passed', () => {
       const p1PayOne = new PaySuper({
-        projectID,
+        projectId,
       });
 
       expect(() => {
@@ -143,6 +177,45 @@ describe('PaySuper', () => {
       expect(() => {
         getLanguage('omg');
       }).toThrowError(/Language value must be in 2-characters format/);
+    });
+  });
+
+  describe('setProducts', () => {
+    const products = ['5cda8d3938e0e2000176988b'];
+    it('should set the value as instance option', () => {
+      const p1PayOne = new PaySuper({
+        projectId,
+        products,
+      });
+      expect(p1PayOne.products).toEqual(products);
+    });
+
+    it('should set the value as instance option', () => {
+      const p1PayOne = new PaySuper({
+        projectId,
+      });
+      p1PayOne.setProducts(products);
+      expect(p1PayOne.products).toEqual(products);
+    });
+
+    it('should throw error if products value passed as option is invalid', () => {
+      expect(() => {
+        // eslint-disable-next-line
+        const p1PayOne = new PaySuper({
+          projectId,
+          products: {},
+        });
+      }).toThrowError(/Products value must/);
+    });
+
+    it('should throw error if no value passed', () => {
+      const p1PayOne = new PaySuper({
+        projectId,
+      });
+
+      expect(() => {
+        p1PayOne.setProducts();
+      }).toThrowError(/Products value must/);
     });
   });
 });

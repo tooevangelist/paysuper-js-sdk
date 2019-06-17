@@ -7,7 +7,7 @@
 <script src="https://static.protocol.one/payone/sdk/latest/p1payone.js"></script>
 <script>
   const payoneForm = new PaySuper({
-    projectID: '5be2e16701d96d00012d26c3',
+    projectId: '5be2e16701d96d00012d26c3',
     region: 'US',
   });
   payoneForm.setAmount(5).render('#app');
@@ -15,14 +15,11 @@
 ```
 
 ### PaySuper options
-- **projectID** {String} Example - '5be2e16701d96d00012d26c3'
-- **region** {String} Example - 'US'
+- **projectId** {String} Example - '5be2e16701d96d00012d26c3'
 - **language** {String} Example - 'en'
 - **amount** {String} Example - 10
 - **currency** {String} Example - 'USD'
-- **email** {String} Default email for bank card payment reports. Hides email field in the form
-- **account** {String} User account name in the current project
-- **paymentMethod** {String}
+- **token** {String} Example - 'DWuGy6S1ADGUqR2Crnp4V2q26Jk309b3'
 - **apiUrl** {String} Default is 'https://p1payapi.tst.protocol.one'
 
 ### PaySuper methods

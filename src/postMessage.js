@@ -23,6 +23,7 @@ export const receivingMessagesNames = invert({
   PAYMENT_DECLINED: 'paymentDeclined',
   PAYMENT_INTERRUPTED: 'paymentInterrupted',
   ORDER_RECREATE_STARTED: 'orderRecreateStarted',
+  MODAL_CLOSED: 'modalClosed',
 });
 
 export function postMessage(targetWindow, nameID, data = {}) {
