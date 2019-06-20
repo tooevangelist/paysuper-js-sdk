@@ -1,6 +1,7 @@
 # PaySuper JS SDK
 [![Build Status](https://api.travis-ci.org/ProtocolONE/payone-js-sdk.svg?branch=master)](https://travis-ci.org/ProtocolONE/token_one)
 [![codecov](https://codecov.io/gh/ProtocolONE/payone-js-sdk/branch/master/graph/badge.svg)](https://codecov.io/gh/ProtocolONE/payone-js-sdk)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=paysuper_paysuper-js-sdk&metric=alert_status)](https://sonarcloud.io/dashboard?id=paysuper_paysuper-js-sdk)
 
 ## Usage
 ```html

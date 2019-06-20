@@ -2,6 +2,10 @@ language: node_js
 node_js:
 - 11
 sudo: true
+dist: trusty
+addons:
+  sonarcloud:
+    organization: "paysuper"
 env:
   global:
   #host
@@ -23,6 +27,7 @@ jobs:
     - rclone copy dist :s3://paysuper/sdk/dev/ --s3-access-key-id="$S3_ACCESS_KEY" --s3-endpoint=$S3_HOST
       --s3-secret-access-key="$S3_SECRET_KEY"
     - npm run coverage:publish
+    - sonar-scanner
   - name: release
     if: "(tag =~ ^v)"
     script:
