@@ -1,5 +1,4 @@
 import assert from 'simple-assert';
-import axios from 'axios';
 import Events from 'events';
 import getFunctionalUrls from './getFunctionalUrls';
 import { createIframe, createModalLayer } from './createElements';
@@ -59,19 +58,7 @@ export function getLanguage(value) {
   return value.toLowerCase();
 }
 
-/**
- * Cuts out language 2-letters code from navigator.language
- *
- * @return {String}
- */
-function getDefaultLanguage() {
-  if (navigator && navigator.language) {
-    return navigator.language.slice(0, 2);
-  }
-  return 'en';
-}
-
-export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow, isDev = true) {
+export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow) {
   receiveMessages(currentWindow, {
     /**
      * The form insize iframe is awaiting the command below with listed options to init
@@ -83,7 +70,12 @@ export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow,
        * but in production the page receives it by itself
        */
       postMessage(postMessageWindow, 'REQUEST_INIT_FORM', {
-        formData: isDev ? this.formData : {},
+        orderParams: {
+          project: this.project,
+          ...(this.token ? { token: this.token } : {}),
+          ...(this.products ? { products: this.products } : {}),
+          ...(this.amount ? { amount: this.amount, currency: this.currency } : {}),
+        },
         options: {
           ...(this.language ? { language: this.language } : {}),
           layout: 'modal',
@@ -93,7 +85,7 @@ export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow,
     },
 
     LOADED: () => {
-      this.iframe.classList.remove('paysuper-js-sdk-modal-layer__iframe--loading');
+      this.modalLayer.classList.remove('paysuper-js-sdk-modal-layer--loading');
     },
 
     // FORM_RESIZE: ({ width, height }) => {
@@ -105,12 +97,12 @@ export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow,
       this.closeModal();
     },
 
-    ORDER_RECREATE_STARTED: async () => {
-      this.formData = await this.createOrder();
+    // ORDER_RECREATE_STARTED: async () => {
+    //   this.orderParams = await this.createOrder();
 
-      const iframeSrc = this.urls.getPaymentFormUrl(this.formData.payment_form_url);
-      this.iframe.setAttribute('src', iframeSrc);
-    },
+    //   const iframeSrc = this.urls.getPaymentFormUrl(this.orderParams.payment_form_url);
+    //   this.iframe.setAttribute('src', iframeSrc);
+    // },
   }, (name, data) => {
     this.emit(name, data);
   });
@@ -118,12 +110,11 @@ export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow,
 
 export default class PaySuper extends Events.EventEmitter {
   constructor({
-    projectId, token, currency, amount, language, apiUrl, products,
+    project, token, currency, amount, language, apiUrl, products,
   } = {}) {
     super();
-    assert(projectId, 'projectId is required for "new PaySuper(...)"');
-    this.projectId = projectId;
-    this.defaultLanguage = getDefaultLanguage();
+    assert(project, 'project is required for "new PaySuper(...)"');
+    this.project = project;
     this.language = getLanguage(language);
     this.token = token;
 
@@ -148,7 +139,6 @@ export default class PaySuper extends Events.EventEmitter {
 
     this.urls = getFunctionalUrls(apiUrl || 'https://p1payapi.tst.protocol.one');
 
-    this.formData = null;
     this.isInited = false;
   }
 
@@ -165,9 +155,6 @@ export default class PaySuper extends Events.EventEmitter {
     }
     this.isInited = true;
     const appendContainer = selectorOrElement ? getDomElement(selectorOrElement) : document.body;
-    // assert(this.amount, 'Amount is required. Use setAmount method to set it');
-
-    this.formData = await this.createOrder();
 
     const { modalLayer } = createModalLayer();
     this.modalLayer = modalLayer;
@@ -176,18 +163,11 @@ export default class PaySuper extends Events.EventEmitter {
     appendContainer.appendChild(this.modalLayer);
 
     this.iframe = createIframe(
-      this.urls.getPaymentFormUrl(this.formData.payment_form_url),
+      this.urls.paymentFormUrl,
       this.modalLayer,
-      this.defaultLanguage,
     );
 
-    if (!this.formData.hasError) {
-      this.initIframeMessagesHandling();
-    } else {
-      setTimeout(() => {
-        this.closeModal();
-      }, 3000);
-    }
+    this.initIframeMessagesHandling();
 
     modalTools.hideBodyScrollbar();
     this.emit('modalOpened');
@@ -202,68 +182,14 @@ export default class PaySuper extends Events.EventEmitter {
    */
   initIframeMessagesHandling() {
     const postMessageWindow = this.iframe.contentWindow;
-    const isDev = process.env.NODE_ENV === 'development';
-    receiveMessagesFromPaymentForm.call(this, window, postMessageWindow, isDev);
-
+    receiveMessagesFromPaymentForm.call(this, window, postMessageWindow);
     return this;
-  }
-
-  /**
-   * Creates order and returns its data
-   *
-   * @return {Promise<Object>}
-   */
-  // async createOrder() {
-  //   // Dummy data if request is failed
-  //   let result = {
-  //     hasError: true,
-  //   };
-  //   try {
-  //     const { data } = await axios.post(this.urls.apiCreateOrderUrl, {
-  //       region: this.region,
-  //       amount: this.amount,
-  //       currency: this.currency,
-  //       account: this.account,
-  //       project: this.projectId,
-  //       payment_method: this.paymentMethod,
-  //       payer_ip: '77.233.9.26',
-  //       url_success: 'https://p1payfront.tst.protocol.one/payment_finished/',
-  //     });
-  //     result = data;
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  //   return result;
-  // }
-
-  async createOrder() {
-    // Dummy data if request is failed
-    let result = {
-      hasError: true,
-    };
-    if (this.amount) {
-      assert(this.currency, 'PaySuper: currency is not set');
-    }
-    try {
-      const { data } = await axios.post(this.urls.apiCreateOrderUrl, {
-        project: this.projectId,
-        ...(this.token ? { token: this.token } : {}),
-        ...(this.products ? { products: this.products } : {}),
-        ...(this.amount ? { amount: this.amount, currency: this.currency } : {}),
-      });
-      result = data;
-    } catch (error) {
-      this.isInited = false;
-      console.error(error);
-    }
-    return result;
   }
 
   closeModal() {
     this.modalLayer.parentNode.removeChild(this.modalLayer);
     modalTools.showBodyScrollbar();
     this.iframe = null;
-    this.formData = null;
     this.isInited = false;
   }
 
@@ -302,38 +228,5 @@ export default class PaySuper extends Events.EventEmitter {
     assert(Array.isArray(products), 'Products value must be an array');
     this.products = products;
     return this;
-  }
-
-  /**
-   * Fetches and returns array of project packages
-   *
-   * @param {String} id package ID
-   * @return {Object[]}
-   */
-  async getAllSku() {
-    const { data } = await axios.get(
-      `${this.urls.apiGetProjectPackagesUrl}/${this.region}/${this.projectId}`,
-    );
-
-    return data;
-  }
-
-  /**
-   * Fetches and returns single project package
-   *
-   * @param {String} id package ID
-   * @return {Object}
-   */
-  async getSkuByID(id) {
-    assert(id, 'ID is required in getSkuByID method');
-    const { data } = await axios.get(
-      `${this.urls.apiGetProjectPackagesUrl}/${this.region}/${this.projectId}?id[]=${id}`,
-    );
-
-    if (!Array.isArray(data) || !data.length) {
-      return null;
-    }
-
-    return data[0];
   }
 }

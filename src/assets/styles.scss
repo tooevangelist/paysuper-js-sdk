@@ -5,12 +5,49 @@
   right: 0;
   bottom: 0;
   z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.7);
 
-  &__iframe {
-    &--loading {
-      background-position: center;
-      background-repeat: no-repeat;
-      background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjAiIHdpZHRoPSI2NHB4IiBoZWlnaHQ9IjY0cHgiIHZpZXdCb3g9IjAgMCAxMjggMTI4IiB4bWw6c3BhY2U9InByZXNlcnZlIj48Zz48cGF0aCBkPSJNLjYgNTcuNTRjNS43My02LjIzIDE3LjMzLTE1LjUgMzMuNjYtMTIuMzVDNTUuNCA0OC41IDY0IDYzLjk1IDY0IDYzLjk1UzQyLjQyIDY1IDMwLjI4IDgzLjYzYTM4LjYzIDM4LjYzIDAgMCAwLTMuNCAzMi4xNSA2NC40NyA2NC40NyAwIDAgMS01LjUyLTQuNDRBNjMuNjQgNjMuNjQgMCAwIDEgLjYgNTcuNTR6IiBmaWxsPSIjZmZjYjAyIi8+PHBhdGggZD0iTTY1LjMyIDI5LjA1YzcuNjUgMTkuOTgtMS40NCAzNS4xOC0xLjQ0IDM1LjE4UzUyLjIgNDYuMDUgMzAuMDMgNDQuODVBMzguNiAzOC42IDAgMCAwIC41NiA1Ny45MyA2My44IDYzLjggMCAwIDEgMzcuNTYgNmM4LjIgMS44IDIyLjI2IDcuMTYgMjcuNzYgMjMuMDV6IiBmaWxsPSIjZmY5ZTAyIi8+PHBhdGggZD0iTTk0LjkyIDQ3LjdjLTEzLjQ4IDE2LjYzLTMxLjIgMTYuMzYtMzEuMiAxNi4zNnM5LjkyLTE5LjItLjEzLTM5YTM4LjYgMzguNiAwIDAgMC0yNi4xOC0xOSA2My43OCA2My43OCAwIDAgMSA2My41MiA2LjAzYzIuNTYgOCA0Ljk4IDIyLjg1LTYuMDUgMzUuNnoiIGZpbGw9IiNmZjRiNDIiLz48cGF0aCBkPSJNOTMuNTIgODIuNTNDNzIuMzggNzkuMTcgNjMuNzUgNjMuNyA2My43NSA2My43czIxLjYtMS4wMiAzMy43LTE5LjYzYTM4LjYgMzguNiAwIDAgMCAzLjQzLTMyLjA0IDY0LjMzIDY0LjMzIDAgMCAxIDUuNzQgNC42IDYzLjYzIDYzLjYzIDAgMCAxIDIwLjgyIDUzLjI2Yy01LjYyIDYuMi0xNy4zNCAxNS44LTMzLjk0IDEyLjZ6IiBmaWxsPSIjYzA2M2Q2Ii8+PHBhdGggZD0iTTYyLjUgOTljLTcuNjUtMTkuOTggMS40NC0zNS4xNyAxLjQ0LTM1LjE3Uzc1LjU2IDgxLjYgOTcuNzQgODIuOGEzOS4xIDM5LjEgMCAwIDAgMjkuNzMtMTMuMDMgNjMuOCA2My44IDAgMCAxLTM3LjE2IDUyLjNjLTguMi0xLjgtMjIuMjUtNy4xNS0yNy44LTIzLjA2eiIgZmlsbD0iIzE3YTRmNiIvPjxwYXRoIGQ9Ik0yNi42NCAxMTUuNjNDMjQgMTA3LjYgMjEuNiA5My4wNiAzMi41IDgwLjVjMTMuNDgtMTYuNjIgMzEuNTgtMTYuNTUgMzEuNTgtMTYuNTVzLTkuNiAxOS4wNi40NCAzOC44NmEzOC44MiAzOC44MiAwIDAgMCAyNi4wNSAxOS4xNyA2My43OCA2My43OCAwIDAgMS02My45My02LjN6IiBmaWxsPSIjNGZjYTI0Ii8+PGFuaW1hdGVUcmFuc2Zvcm0gYXR0cmlidXRlTmFtZT0idHJhbnNmb3JtIiB0eXBlPSJyb3RhdGUiIGZyb209IjAgNjQgNjQiIHRvPSIzNjAgNjQgNjQiIGR1cj0iMjcwMG1zIiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSI+PC9hbmltYXRlVHJhbnNmb3JtPjwvZz48L3N2Zz4=');
+  &--loading {
+    .paysuper-js-sdk-modal-layer__preloader {
+      display: block;
+    }
+  }
+
+  &__preloader {
+    $border-width: 4px;
+    $default-position: 45deg;
+    $size: 32px;
+    
+    display: none;
+    position: absolute;
+    z-index: 100;
+    left: 50%;
+    top: 50%;
+    margin-top: -($size / 2)px;
+    margin-left: -($size / 2)px;
+  
+    animation: {
+      name: paysuper-js-sdk-modal-layer-rotate;
+      duration: 0.8s;
+      timing-function: linear;
+      iteration-count: infinite;
+    }
+  
+    border-color: rgba(255, 255, 255, 0.1);
+    border-top-color: #06eaa7;
+    background-color: transparent;
+    border-radius: $size / 2;
+    border-style: solid;
+    border-width: $border-width;
+    box-sizing: border-box;
+    transform: rotate($default-position);
+    height: $size;
+    width: $size;
+
+    @keyframes paysuper-js-sdk-modal-layer-rotate {
+      100% {
+        transform: rotate(360deg + $default-position);
+      }
     }
   }
 }

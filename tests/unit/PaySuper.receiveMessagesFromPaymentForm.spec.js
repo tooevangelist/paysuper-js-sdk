@@ -35,13 +35,12 @@ class WindowMock {
 
 function getPaySuperMock() {
   return {
-    email: 'check',
     language: 'en',
-    formData: {
-      id: '111',
-      payment_form_url: 'https://test.ru',
-      check: true,
-    },
+    project: '123',
+    products: ['111', '222'],
+    token: '456',
+    amount: 10,
+    currency: 'USD',
     urls: {
       apiUrl: 'check',
       getPaymentFormUrl(url) {
@@ -86,69 +85,14 @@ describe('PaySuper.receiveMessagesFromPaymentForm ', () => {
 
     currentWindow.imitateReceivedMessage('INITED');
 
-    expect(result.formData.check).toEqual(true);
-    expect(result.options.language).toEqual('en');
-    expect(result.options.apiUrl).toEqual('check');
-  });
+    expect(result.orderParams.project).toEqual(PaySuperMock.project);
+    expect(result.orderParams.products).toEqual(PaySuperMock.products);
+    expect(result.orderParams.token).toEqual(PaySuperMock.token);
+    expect(result.orderParams.amount).toEqual(PaySuperMock.amount);
+    expect(result.orderParams.currency).toEqual(PaySuperMock.currency);
 
-  it('should handle INITED properly in production', () => {
-    const currentWindow = new WindowMock();
-    const postMessageWindow = new WindowMock();
-    const PaySuperMock = getPaySuperMock();
-    receiveMessagesFromPaymentForm.call(
-      PaySuperMock,
-      currentWindow,
-      postMessageWindow,
-      false,
-    );
-
-    let result;
-    postMessageWindow.addEventListener('message', (event) => {
-      result = event.data.data;
-    });
-
-    currentWindow.imitateReceivedMessage('INITED');
-
-    /**
-     * formData should not be passed into form in production
-     */
-    expect(result.formData.check).toEqual(undefined);
-  });
-
-  // it('should handle FORM_RESIZE properly', () => {
-  //   const currentWindow = new WindowMock();
-  //   const postMessageWindow = new WindowMock();
-  //   const PaySuperMock = getPaySuperMock();
-  //   receiveMessagesFromPaymentForm.call(
-  //     PaySuperMock,
-  //     currentWindow,
-  //     postMessageWindow,
-  //   );
-
-  //   const messageData = {
-  //     width: 222,
-  //     height: 111,
-  //   };
-  //   currentWindow.imitateReceivedMessage('FORM_RESIZE', messageData);
-
-  //   expect(PaySuperMock.iframe.width).toEqual(messageData.width);
-  //   expect(PaySuperMock.iframe.height).toEqual(messageData.height);
-  // });
-});
-
-it('should handle ORDER_RECREATE_STARTED properly', (done) => {
-  const currentWindow = new WindowMock();
-  const postMessageWindow = new WindowMock();
-  const PaySuperMock = getPaySuperMock();
-  receiveMessagesFromPaymentForm.call(
-    PaySuperMock,
-    currentWindow,
-    postMessageWindow,
-  );
-
-  currentWindow.imitateReceivedMessage('ORDER_RECREATE_STARTED');
-  setTimeout(() => {
-    expect(PaySuperMock.iframe.src).toEqual('https://test.com');
-    done();
+    expect(result.options.language).toEqual(PaySuperMock.language);
+    expect(result.options.apiUrl).toEqual(PaySuperMock.urls.apiUrl);
+    expect(result.options.layout).toEqual('modal');
   });
 });

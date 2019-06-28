@@ -6,14 +6,14 @@ import { extend } from 'lodash-es';
 * @param {String} iframeSrc
 * @return {Object}
 */
-export function createIframe(iframeSrc, containerToAppend, language) {
+export function createIframe(iframeSrc, containerToAppend) {
   const iframe = document.createElement('iframe');
 
   iframe.setAttribute('allowpaymentrequest', 'true');
   iframe.setAttribute('frameborder', '0');
   iframe.style.overflow = 'hidden';
   iframe.style.display = 'block';
-  iframe.className = 'paysuper-js-sdk-modal-layer__iframe paysuper-js-sdk-modal-layer__iframe--loading';
+  iframe.className = 'paysuper-js-sdk-modal-layer__iframe';
 
   // These sizes are initial
   // Right after App is mounted actual form size is transferred to iframe
@@ -35,11 +35,6 @@ export function createIframe(iframeSrc, containerToAppend, language) {
       lineHeight: '20px',
     });
 
-    if (language === 'ru') {
-      iframeBody.innerHTML = 'Извините, прием <br />платежей временно недоступен';
-    } else {
-      iframeBody.innerHTML = 'Sorry, payments <br />are temporarily unavailable';
-    }
     return iframe;
   }
 
@@ -49,6 +44,10 @@ export function createIframe(iframeSrc, containerToAppend, language) {
 
 export function createModalLayer() {
   const modalLayer = document.createElement('div');
-  modalLayer.className = 'paysuper-js-sdk-modal-layer';
+  modalLayer.className = 'paysuper-js-sdk-modal-layer paysuper-js-sdk-modal-layer--loading';
+  const preloader = document.createElement('div');
+  preloader.className = 'paysuper-js-sdk-modal-layer__preloader';
+
+  modalLayer.appendChild(preloader);
   return { modalLayer };
 }

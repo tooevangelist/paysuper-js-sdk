@@ -10,7 +10,7 @@
 <script src="https://static.protocol.one/payone/sdk/latest/p1payone.js"></script>
 <script>
   const payoneForm = new PaySuper({
-    projectId: '5be2e16701d96d00012d26c3',
+    project: '5be2e16701d96d00012d26c3',
     region: 'US',
   });
   payoneForm.setAmount(5).render('#app');
@@ -18,7 +18,7 @@
 ```
 
 ### PaySuper options
-- **projectId** {String} Example - '5be2e16701d96d00012d26c3'
+- **project** {String} Example - '5be2e16701d96d00012d26c3'
 - **language** {String} Example - 'en'
 - **amount** {String} Example - 10
 - **currency** {String} Example - 'USD'
