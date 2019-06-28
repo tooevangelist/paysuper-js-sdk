@@ -47,7 +47,10 @@ export function createModalLayer() {
   modalLayer.className = 'paysuper-js-sdk-modal-layer paysuper-js-sdk-modal-layer--loading';
   const preloader = document.createElement('div');
   preloader.className = 'paysuper-js-sdk-modal-layer__preloader';
-
   modalLayer.appendChild(preloader);
+
+  setTimeout(() => {
+    modalLayer.classList.add('paysuper-js-sdk-modal-layer--enter');
+  }, 0);
   return { modalLayer };
 }
