@@ -110,7 +110,7 @@ export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow)
 
 export default class PaySuper extends Events.EventEmitter {
   constructor({
-    project, token, currency, amount, language, apiUrl, products,
+    project, token, currency, amount, language, apiUrl, formUrl, products,
   } = {}) {
     super();
     assert(project, 'project is required for "new PaySuper(...)"');
@@ -138,6 +138,7 @@ export default class PaySuper extends Events.EventEmitter {
     this.modalLayer = null;
 
     this.urls = getFunctionalUrls(apiUrl || 'https://p1payapi.tst.protocol.one');
+    this.formUrl = formUrl || this.urls.paymentFormUrl;
 
     this.isInited = false;
   }
@@ -163,7 +164,7 @@ export default class PaySuper extends Events.EventEmitter {
     appendContainer.appendChild(this.modalLayer);
 
     this.iframe = createIframe(
-      this.urls.paymentFormUrl,
+      this.formUrl,
       this.modalLayer,
     );
 
