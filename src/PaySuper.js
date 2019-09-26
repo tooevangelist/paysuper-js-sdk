@@ -75,6 +75,7 @@ export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow)
           ...(this.token ? { token: this.token } : {}),
           ...(this.products ? { products: this.products } : {}),
           ...(this.amount ? { amount: this.amount, currency: this.currency } : {}),
+          ...(this.type ? { type: this.type } : {}),
         },
         options: {
           ...(this.language ? { language: this.language } : {}),
@@ -110,13 +111,14 @@ export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow)
 
 export default class PaySuper extends Events.EventEmitter {
   constructor({
-    project, token, currency, amount, language, apiUrl, formUrl, products,
+    project, token, currency, amount, language, apiUrl, formUrl, products, type,
   } = {}) {
     super();
     assert(project, 'project is required for "new PaySuper(...)"');
     this.project = project;
     this.language = getLanguage(language);
     this.token = token;
+    this.type = null;
 
     if (currency) {
       this.setCurrency(currency);
@@ -133,6 +135,7 @@ export default class PaySuper extends Events.EventEmitter {
     } else {
       this.products = undefined;
     }
+    this.setType(type);
 
     this.iframe = null;
     this.modalLayer = null;
@@ -228,6 +231,21 @@ export default class PaySuper extends Events.EventEmitter {
   setProducts(products) {
     assert(Array.isArray(products), 'Products value must be an array');
     this.products = products;
+    return this;
+  }
+
+  setType(type) {
+    if (type) {
+      this.type = type;
+      return this;
+    }
+    if (this.amount) {
+      this.type = 'simple';
+    } else if (this.products) {
+      this.type = 'product';
+    } else {
+      this.type = null;
+    }
     return this;
   }
 }

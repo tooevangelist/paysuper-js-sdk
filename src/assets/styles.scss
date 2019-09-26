@@ -29,8 +29,8 @@
     z-index: 100;
     left: 50%;
     top: 50%;
-    margin-top: -($size / 2)px;
-    margin-left: -($size / 2)px;
+    margin-top: -($size / 2);
+    margin-left: -($size / 2);
   
     animation: {
       name: paysuper-js-sdk-modal-layer-rotate;
