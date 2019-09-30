@@ -9,13 +9,13 @@
 ```html
 <script src="https://static.protocol.one/payone/sdk/latest/p1payone.js"></script>
 <script>
-  const payoneForm = new PaySuper({
+  const paySuper = new PaySuper({
     token: '5cd5620f06ae110001509185'
   });
-  payoneForm.on('paymentCompleted', function() {
+  paySuper.on('paymentCompleted', function() {
     // You can show a message about payment is completed;
-  })
-  payoneForm.renderModal();
+  });
+  paySuper.renderModal();
 </script>
 ```
 
@@ -26,6 +26,9 @@
 - **products** {Array} Example - ['5d848f484dd6a50001970479']
 - **amount** {Number|String} Example - 59.9
 - **currency** {String} Example - 'USD'
+
+- **viewScheme** {String} Default is 'dark'
+- **viewSchemeConfig** {Object} Example - { headerTextColor: '#333333' }
 - **apiUrl** {String} Default is 'https://p1payapi.tst.protocol.one'
 
 ### PaySuper form methods
@@ -55,10 +58,10 @@ Closes the modal dialog.
 
 ### PaySuper events
 ```js
-payoneForm.on('inited', function() {
+paySuper.on('inited', function() {
   console.log('PaySuper is initialized')
 })
-payoneForm.renderModal();
+paySuper.renderModal();
 ```
 #### Events list
 - **inited** 

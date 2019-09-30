@@ -81,6 +81,8 @@ export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow)
           ...(this.language ? { language: this.language } : {}),
           layout: 'modal',
           apiUrl: this.urls.apiUrl,
+          viewScheme: this.viewScheme,
+          viewSchemeConfig: this.viewSchemeConfig,
         },
       });
     },
@@ -112,6 +114,7 @@ export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow)
 export default class PaySuper extends Events.EventEmitter {
   constructor({
     project, token, currency, amount, language, apiUrl, formUrl, products, type,
+    viewScheme, viewSchemeConfig,
   } = {}) {
     super();
     assert(project || token, 'project or token is required for "new PaySuper(...)"');
@@ -119,6 +122,8 @@ export default class PaySuper extends Events.EventEmitter {
     this.language = getLanguage(language);
     this.token = token;
     this.type = null;
+    this.viewScheme = viewScheme || 'dark';
+    this.viewSchemeConfig = viewSchemeConfig || null;
 
     if (currency) {
       this.setCurrency(currency);
