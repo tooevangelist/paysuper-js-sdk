@@ -3,11 +3,11 @@ import PaySuper, { getRegion, getLanguage } from '@/PaySuper';
 const project = '5be2e16701d96d00012d26c3';
 
 describe('PaySuper', () => {
-  it('should require project to init', () => {
+  it('should require project or token to init', () => {
     expect(() => {
       // eslint-disable-next-line
       new PaySuper();
-    }).toThrowError(/project is required/);
+    }).toThrowError(/project or token is required/);
   });
 
   it('should be able to handle events', () => {

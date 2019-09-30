@@ -71,7 +71,7 @@ export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow)
        */
       postMessage(postMessageWindow, 'REQUEST_INIT_FORM', {
         orderParams: {
-          project: this.project,
+          ...(this.project ? { project: this.project } : {}),
           ...(this.token ? { token: this.token } : {}),
           ...(this.products ? { products: this.products } : {}),
           ...(this.amount ? { amount: this.amount, currency: this.currency } : {}),
@@ -114,7 +114,7 @@ export default class PaySuper extends Events.EventEmitter {
     project, token, currency, amount, language, apiUrl, formUrl, products, type,
   } = {}) {
     super();
-    assert(project, 'project is required for "new PaySuper(...)"');
+    assert(project || token, 'project or token is required for "new PaySuper(...)"');
     this.project = project;
     this.language = getLanguage(language);
     this.token = token;

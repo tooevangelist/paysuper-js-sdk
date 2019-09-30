@@ -10,61 +10,68 @@
 <script src="https://static.protocol.one/payone/sdk/latest/p1payone.js"></script>
 <script>
   const payoneForm = new PaySuper({
-    project: '5be2e16701d96d00012d26c3',
-    region: 'US',
+    token: '5cd5620f06ae110001509185'
   });
-  payoneForm.setAmount(5).render('#app');
+  payoneForm.on('paymentCompleted', function() {
+    // You can show a message about payment is completed;
+  })
+  payoneForm.renderModal();
 </script>
 ```
 
 ### PaySuper options
-- **project** {String} Example - '5be2e16701d96d00012d26c3'
-- **language** {String} Example - 'en'
-- **amount** {String} Example - 10
-- **currency** {String} Example - 'USD'
 - **token** {String} Example - 'DWuGy6S1ADGUqR2Crnp4V2q26Jk309b3'
+- **project** {String} Example - '5be2e16701d96d00012d26c3'
+- **type** {String} Available options: 'simple', 'key', 'product'
+- **products** {Array} Example - ['5d848f484dd6a50001970479']
+- **amount** {Number|String} Example - 59.9
+- **currency** {String} Example - 'USD'
 - **apiUrl** {String} Default is 'https://p1payapi.tst.protocol.one'
 
-### PaySuper methods
-#### setAmount( value )
-- param: **value** {String|Number}
+### PaySuper form methods
+#### renderModal()
 - return: {PaySuper}
-Sets payment amount
+Renders the form in modal dialog.
+
+#### closeModal()
+- return: {PaySuper}
+Closes the modal dialog.
+
+#### setAmount( value )
+- param: **value** {Number|String} Example - 59.9
+- return: {PaySuper}
 
 #### setCurrency( value )
-- param: **value** {String|Number} Example - 'USD'
+- param: **value** {String} Example - 'USD'
 - return: {PaySuper}
 
-#### render( selector )
-- param: **selector** {String|DomElement}
-- return: {Object}
-Renders the form in the certaion place in page. 
-Returns context object.
+#### setProducts( value )
+- param: **value** {Array} Example - ['5d848f484dd6a50001970479']
+- return: {PaySuper}
 
-#### renderModal()
-- return: {Object}
-Renders the form in modal dialog.
-Returns context object.
-
-#### getAllSku()
-- return: {Object[]}
-
-#### getSkuByID( value )
-- param: **value** {String}
-- return: {Object}
+#### setType( value )
+- param: **value** {String} Example - 'product'
+- return: {PaySuper}
 
 ### PaySuper events
 ```js
-payoneForm.on('init', function() {
+payoneForm.on('inited', function() {
   console.log('PaySuper is initialized')
 })
-payoneForm.setAmount(5).renderModal('#app');
+payoneForm.renderModal();
 ```
 #### Events list
-- **created** - the form begins to initialize
-- **loaded** - the in fully loaded
-- **modalOpened** - if `renderModal` methods used notifies about modal dialog opening
-- **modalClosed** - if `renderModal` methods used notifies about modal dialog closing
+- **inited** 
+- **loaded**
+- **paymentBeforeCreated**
+- **paymentFailedToCreate**
+- **paymentFailedToBegin**
+- **paymentCreated**
+- **paymentCompleted**
+- **paymentCancelled**
+- **paymentDeclined**
+- **paymentInterrupted**
+- **modalClosed**
 
 
 ### Library URLs
