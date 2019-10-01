@@ -69,18 +69,18 @@ paySuper.on('inited', function() {
 paySuper.renderModal();
 ```
 #### Events list
-- **modalOpened** Modal dialog for initilizing PaySuper form is opened. In case the form runs inside modal dialog.
-- **pageInited** PaySuper form began to initialize as a page.
-- **inited** PaySuper form scripts are downloaded and started to load.
-- **loaded** PaySuper form is finished its loading and ready to operate.
-- **paymentFailedToBegin** En error has occured while fetching the order.
-- **paymentBeforeCreated** A moment before the payment is created.
-- **paymentCreated** The payment is created, but not finished yet.
-- **paymentFailedToCreate** An error has occured while creating the payments.
-- **paymentCompleted** The payment is successful.
-- **paymentDeclined** The payment is declined buy payment system.
-- **paymentInterrupted** The payment is interrupted by user.
-- **modalClosed** PaySuper form modal dialog is closed. In case the form runs inside modal dialog.
+- **modalOpened** - Modal dialog for initilizing PaySuper form is opened. In case the form runs inside modal dialog.
+- **pageInited** - PaySuper form began to initialize as a page.
+- **inited** - PaySuper form scripts are downloaded and started to load.
+- **loaded** - PaySuper form is finished its loading and ready to operate.
+- **paymentFailedToBegin** - En error has occured while fetching the order.
+- **paymentBeforeCreated** - A moment before the payment is created.
+- **paymentCreated** - The payment is created, but not finished yet.
+- **paymentFailedToCreate** - An error has occured while creating the payments.
+- **paymentCompleted** - The payment is successful.
+- **paymentDeclined** - The payment is declined buy payment system.
+- **paymentInterrupted** - The payment is interrupted by user.
+- **modalClosed** - PaySuper form modal dialog is closed. In case the form runs inside modal dialog.
 
 
 ### Library URLs
