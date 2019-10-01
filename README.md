@@ -36,6 +36,11 @@
 - return: {PaySuper}
 Renders the form in modal dialog.
 
+#### renderPage()
+- return: {PaySuper}
+Renders the form in bare iframe to represent it as a simple page
+`iframe` height is automatic
+
 #### closeModal()
 - return: {PaySuper}
 Closes the modal dialog.

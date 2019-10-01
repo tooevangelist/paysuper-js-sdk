@@ -79,7 +79,7 @@ export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow)
         },
         options: {
           ...(this.language ? { language: this.language } : {}),
-          layout: 'modal',
+          layout: this.layout,
           apiUrl: this.urls.apiUrl,
           viewScheme: this.viewScheme,
           viewSchemeConfig: this.viewSchemeConfig,
@@ -91,10 +91,10 @@ export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow)
       this.modalLayer.classList.remove('paysuper-js-sdk-modal-layer--loading');
     },
 
-    // FORM_RESIZE: ({ width, height }) => {
-    //   this.iframe.setAttribute('width', width);
-    //   this.iframe.setAttribute('height', height);
-    // },
+    FORM_RESIZE: ({ height }) => {
+      // this.iframe.setAttribute('width', width);
+      this.iframe.setAttribute('height', height);
+    },
 
     MODAL_CLOSED: () => {
       this.closeModal();
@@ -149,6 +149,7 @@ export default class PaySuper extends Events.EventEmitter {
     this.formUrl = formUrl || this.urls.paymentFormUrl;
 
     this.isInited = false;
+    this.layout = null;
   }
 
   /**
@@ -163,6 +164,7 @@ export default class PaySuper extends Events.EventEmitter {
       return this;
     }
     this.isInited = true;
+    this.layout = 'modal';
     const appendContainer = selectorOrElement ? getDomElement(selectorOrElement) : document.body;
 
     const { modalLayer } = createModalLayer();
@@ -185,6 +187,34 @@ export default class PaySuper extends Events.EventEmitter {
   }
 
   /**
+   * Renders the payment form in iframe as a page
+   *
+   * @param {String|DomElement} selectorOrElement
+   * @return {PaySuper}
+   */
+  async renderPage(selectorOrElement) {
+    if (this.isInited) {
+      console.warn('PaySuper: the form is already rendering or finished rendering');
+      return this;
+    }
+    this.isInited = true;
+    this.layout = 'page';
+    const appendContainer = selectorOrElement ? getDomElement(selectorOrElement) : document.body;
+    appendContainer.innerHTML = '';
+
+    this.iframe = createIframe(
+      this.formUrl,
+      appendContainer,
+    );
+
+    this.initIframeMessagesHandling();
+
+    this.emit('pageInited');
+
+    return this;
+  }
+
+  /**
    * Handling iframe message transport with the form
    *
    * @return {PaySuper}
@@ -198,6 +228,7 @@ export default class PaySuper extends Events.EventEmitter {
   closeModal() {
     this.modalLayer.parentNode.removeChild(this.modalLayer);
     modalTools.showBodyScrollbar();
+    this.modalLayer = null;
     this.iframe = null;
     this.isInited = false;
   }
