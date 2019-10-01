@@ -68,9 +68,9 @@ paySuper.on('inited', function() {
 })
 paySuper.renderModal();
 ```
-#### Events list
-- **modalOpened** - Modal dialog for initilizing PaySuper form is opened. In case the form runs inside modal dialog.
-- **pageInited** - PaySuper form began to initialize as a page.
+#### Full events list in expected order of execution
+- **pageBeforeInit** - PaySuper form is started to render as page
+- **modalBeforeInit** - PaySuper form is started to render as modal dialog
 - **inited** - PaySuper form scripts are downloaded and started to load.
 - **loaded** - PaySuper form is finished its loading and ready to operate.
 - **paymentFailedToBegin** - En error has occured while fetching the order.

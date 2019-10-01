@@ -181,7 +181,7 @@ export default class PaySuper extends Events.EventEmitter {
     this.initIframeMessagesHandling();
 
     modalTools.hideBodyScrollbar();
-    this.emit('modalOpened');
+    this.emit('modalBeforeInit');
 
     return this;
   }
@@ -209,7 +209,7 @@ export default class PaySuper extends Events.EventEmitter {
 
     this.initIframeMessagesHandling();
 
-    this.emit('pageInited');
+    this.emit('pageBeforeInit');
 
     return this;
   }
