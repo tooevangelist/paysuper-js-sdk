@@ -9,62 +9,78 @@
 ```html
 <script src="https://static.protocol.one/payone/sdk/latest/p1payone.js"></script>
 <script>
-  const payoneForm = new PaySuper({
-    project: '5be2e16701d96d00012d26c3',
-    region: 'US',
+  const paySuper = new PaySuper({
+    token: '5cd5620f06ae110001509185'
   });
-  payoneForm.setAmount(5).render('#app');
+  paySuper.on('paymentCompleted', function() {
+    // You can show a message about payment is completed;
+  });
+  paySuper.renderModal();
 </script>
 ```
 
 ### PaySuper options
-- **project** {String} Example - '5be2e16701d96d00012d26c3'
-- **language** {String} Example - 'en'
-- **amount** {String} Example - 10
-- **currency** {String} Example - 'USD'
 - **token** {String} Example - 'DWuGy6S1ADGUqR2Crnp4V2q26Jk309b3'
+- **project** {String} Example - '5be2e16701d96d00012d26c3'
+- **type** {String} Available options: 'simple', 'key', 'product'
+- **products** {Array} Example - ['5d848f484dd6a50001970479']
+- **amount** {Number|String} Example - 59.9
+- **currency** {String} Example - 'USD'
+
+- **viewScheme** {String} Default is 'dark'
+- **viewSchemeConfig** {Object} Example - { headerTextColor: '#333333' }
 - **apiUrl** {String} Default is 'https://p1payapi.tst.protocol.one'
 
-### PaySuper methods
-#### setAmount( value )
-- param: **value** {String|Number}
+### PaySuper form methods
+#### renderModal()
 - return: {PaySuper}
-Sets payment amount
+Renders the form in modal dialog.
+
+#### renderPage()
+- return: {PaySuper}
+Renders the form in bare iframe to represent it as a simple page
+`iframe` height is automatic
+
+#### closeModal()
+- return: {PaySuper}
+Closes the modal dialog.
+
+#### setAmount( value )
+- param: **value** {Number|String} Example - 59.9
+- return: {PaySuper}
 
 #### setCurrency( value )
-- param: **value** {String|Number} Example - 'USD'
+- param: **value** {String} Example - 'USD'
 - return: {PaySuper}
 
-#### render( selector )
-- param: **selector** {String|DomElement}
-- return: {Object}
-Renders the form in the certaion place in page. 
-Returns context object.
+#### setProducts( value )
+- param: **value** {Array} Example - ['5d848f484dd6a50001970479']
+- return: {PaySuper}
 
-#### renderModal()
-- return: {Object}
-Renders the form in modal dialog.
-Returns context object.
-
-#### getAllSku()
-- return: {Object[]}
-
-#### getSkuByID( value )
-- param: **value** {String}
-- return: {Object}
+#### setType( value )
+- param: **value** {String} Example - 'product'
+- return: {PaySuper}
 
 ### PaySuper events
 ```js
-payoneForm.on('init', function() {
+paySuper.on('inited', function() {
   console.log('PaySuper is initialized')
 })
-payoneForm.setAmount(5).renderModal('#app');
+paySuper.renderModal();
 ```
-#### Events list
-- **created** - the form begins to initialize
-- **loaded** - the in fully loaded
-- **modalOpened** - if `renderModal` methods used notifies about modal dialog opening
-- **modalClosed** - if `renderModal` methods used notifies about modal dialog closing
+#### Full events list in expected order of execution
+- **pageBeforeInit** - PaySuper form is started to render as page
+- **modalBeforeInit** - PaySuper form is started to render as modal dialog
+- **inited** - PaySuper form scripts are downloaded and started to load.
+- **loaded** - PaySuper form is finished its loading and ready to operate.
+- **paymentFailedToBegin** - En error has occured while fetching the order.
+- **paymentBeforeCreated** - A moment before the payment is created.
+- **paymentCreated** - The payment is created, but not finished yet.
+- **paymentFailedToCreate** - An error has occured while creating the payments.
+- **paymentCompleted** - The payment is successful.
+- **paymentDeclined** - The payment is declined buy payment system.
+- **paymentInterrupted** - The payment is interrupted by user.
+- **modalClosed** - PaySuper form modal dialog is closed. In case the form runs inside modal dialog.
 
 
 ### Library URLs

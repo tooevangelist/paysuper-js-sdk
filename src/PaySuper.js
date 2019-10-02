@@ -71,15 +71,18 @@ export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow)
        */
       postMessage(postMessageWindow, 'REQUEST_INIT_FORM', {
         orderParams: {
-          project: this.project,
+          ...(this.project ? { project: this.project } : {}),
           ...(this.token ? { token: this.token } : {}),
           ...(this.products ? { products: this.products } : {}),
           ...(this.amount ? { amount: this.amount, currency: this.currency } : {}),
+          ...(this.type ? { type: this.type } : {}),
         },
         options: {
           ...(this.language ? { language: this.language } : {}),
-          layout: 'modal',
+          layout: this.layout,
           apiUrl: this.urls.apiUrl,
+          viewScheme: this.viewScheme,
+          viewSchemeConfig: this.viewSchemeConfig,
         },
       });
     },
@@ -88,10 +91,10 @@ export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow)
       this.modalLayer.classList.remove('paysuper-js-sdk-modal-layer--loading');
     },
 
-    // FORM_RESIZE: ({ width, height }) => {
-    //   this.iframe.setAttribute('width', width);
-    //   this.iframe.setAttribute('height', height);
-    // },
+    FORM_RESIZE: ({ height }) => {
+      // this.iframe.setAttribute('width', width);
+      this.iframe.setAttribute('height', height);
+    },
 
     MODAL_CLOSED: () => {
       this.closeModal();
@@ -110,13 +113,17 @@ export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow)
 
 export default class PaySuper extends Events.EventEmitter {
   constructor({
-    project, token, currency, amount, language, apiUrl, formUrl, products,
+    project, token, currency, amount, language, apiUrl, formUrl, products, type,
+    viewScheme, viewSchemeConfig,
   } = {}) {
     super();
-    assert(project, 'project is required for "new PaySuper(...)"');
+    assert(project || token, 'project or token is required for "new PaySuper(...)"');
     this.project = project;
     this.language = getLanguage(language);
     this.token = token;
+    this.type = null;
+    this.viewScheme = viewScheme || 'dark';
+    this.viewSchemeConfig = viewSchemeConfig || null;
 
     if (currency) {
       this.setCurrency(currency);
@@ -133,6 +140,7 @@ export default class PaySuper extends Events.EventEmitter {
     } else {
       this.products = undefined;
     }
+    this.setType(type);
 
     this.iframe = null;
     this.modalLayer = null;
@@ -141,6 +149,7 @@ export default class PaySuper extends Events.EventEmitter {
     this.formUrl = formUrl || this.urls.paymentFormUrl;
 
     this.isInited = false;
+    this.layout = null;
   }
 
   /**
@@ -155,6 +164,7 @@ export default class PaySuper extends Events.EventEmitter {
       return this;
     }
     this.isInited = true;
+    this.layout = 'modal';
     const appendContainer = selectorOrElement ? getDomElement(selectorOrElement) : document.body;
 
     const { modalLayer } = createModalLayer();
@@ -171,7 +181,35 @@ export default class PaySuper extends Events.EventEmitter {
     this.initIframeMessagesHandling();
 
     modalTools.hideBodyScrollbar();
-    this.emit('modalOpened');
+    this.emit('modalBeforeInit');
+
+    return this;
+  }
+
+  /**
+   * Renders the payment form in iframe as a page
+   *
+   * @param {String|DomElement} selectorOrElement
+   * @return {PaySuper}
+   */
+  async renderPage(selectorOrElement) {
+    if (this.isInited) {
+      console.warn('PaySuper: the form is already rendering or finished rendering');
+      return this;
+    }
+    this.isInited = true;
+    this.layout = 'page';
+    const appendContainer = selectorOrElement ? getDomElement(selectorOrElement) : document.body;
+    appendContainer.innerHTML = '';
+
+    this.iframe = createIframe(
+      this.formUrl,
+      appendContainer,
+    );
+
+    this.initIframeMessagesHandling();
+
+    this.emit('pageBeforeInit');
 
     return this;
   }
@@ -190,6 +228,7 @@ export default class PaySuper extends Events.EventEmitter {
   closeModal() {
     this.modalLayer.parentNode.removeChild(this.modalLayer);
     modalTools.showBodyScrollbar();
+    this.modalLayer = null;
     this.iframe = null;
     this.isInited = false;
   }
@@ -228,6 +267,21 @@ export default class PaySuper extends Events.EventEmitter {
   setProducts(products) {
     assert(Array.isArray(products), 'Products value must be an array');
     this.products = products;
+    return this;
+  }
+
+  setType(type) {
+    if (type) {
+      this.type = type;
+      return this;
+    }
+    if (this.amount) {
+      this.type = 'simple';
+    } else if (this.products) {
+      this.type = 'product';
+    } else {
+      this.type = null;
+    }
     return this;
   }
 }

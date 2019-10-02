@@ -41,6 +41,9 @@ function getPaySuperMock() {
     token: '456',
     amount: 10,
     currency: 'USD',
+    layout: 'modal',
+    viewScheme: 'light',
+    viewSchemeConfig: { headerTextColor: '#333333' },
     urls: {
       apiUrl: 'check',
       getPaymentFormUrl(url) {
@@ -93,6 +96,8 @@ describe('PaySuper.receiveMessagesFromPaymentForm ', () => {
 
     expect(result.options.language).toEqual(PaySuperMock.language);
     expect(result.options.apiUrl).toEqual(PaySuperMock.urls.apiUrl);
-    expect(result.options.layout).toEqual('modal');
+    expect(result.options.layout).toEqual(PaySuperMock.layout);
+    expect(result.options.viewScheme).toEqual(PaySuperMock.viewScheme);
+    expect(result.options.viewSchemeConfig).toEqual(PaySuperMock.viewSchemeConfig);
   });
 });
