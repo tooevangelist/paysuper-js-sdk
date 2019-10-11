@@ -56,13 +56,12 @@ function buyItems() {
 | Method | Type and Example | Description |
 |---|---|---|
 | ``renderModal()`` | return: {PaySuper} | Renders the form in modal dialog. |
-|``renderPage()``|return: {PaySuper}|Renders the form in bare iframe to represent it as a simple page
-`iframe` height is automatic|
+|``renderPage()``|return: {PaySuper}|Renders the form in bare iframe to represent it as a simple page `iframe` height is automatic|
 |``closeModal()``|return: {PaySuper}|Closes the modal dialog.|
-|``setAmount( value )`` |param: **value** {Number|String} Example - 59.9, return: {PaySuper}|description|
-|``setCurrency( value )``|param: **value** {String} Example - 'USD', return: {PaySuper}|description|
-|``setProducts( value )``|param: **value** {Array} Example - ['5d848f484dd6a50001970479'], return: {PaySuper}|description|
-|``setType( value )``|param: **value** {String} Example - 'product', return: {PaySuper}|description|
+|``setAmount( value )`` |param: **value** {Number\|String} Example - 59.9, return: {PaySuper}||
+|``setCurrency( value )``|param: **value** {String} Example - 'USD', return: {PaySuper}||
+|``setProducts( value )``|param: **value** {Array} Example - ['5d848f484dd6a50001970479'], return: {PaySuper}||
+|``setType( value )``|param: **value** {String} Example - 'product', return: {PaySuper}||
 
 ### PaySuper Form events
 
