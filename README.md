@@ -5,7 +5,7 @@
 [![codecov](https://codecov.io/gh/paysuper/paysuper-js-sdk/branch/master/graph/badge.svg)](https://codecov.io/gh/paysuper/paysuper-js-sdk)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=paysuper_paysuper-js-sdk&metric=alert_status)](https://sonarcloud.io/dashboard?id=paysuper_paysuper-js-sdk)
 
-Javascript SDK is designed to integrate a PaySuper Payment Form on your site.
+Javascript SDK is designed to integrate a [PaySuper Payment Form](https://docs.stg.pay.super.com/getting-started/glossary/#payment-form) on your site.
 
 1. [Usage](#usage)
 2. [Parameters](#paysuper-form-parameters)
@@ -17,17 +17,21 @@ Javascript SDK is designed to integrate a PaySuper Payment Form on your site.
 
 ## Usage
 
-This is how the code for a Payment Form may look like. Don’t forget to use your own IDs for Project and Products. You can find them in PaySuper Admin.
+You can create an instance of a PaySuper Form on your website using this sample code. 
+
+> Use your own IDs for Project and Products being in your merchant account in the PaySuper Admin.
 
 ```html
 <script src="https://static.protocol.one/payone/sdk/latest/p1payone.js"></script>
 
 <script>
 function buyItems() {
+    // Create an instance of Payment Form with required order parameters
     const paySuper = new PaySuper({
         token: '5cd5620f06ae110001509185'
     });
     
+    // Display a modal window with the payment form
     paySuper.renderModal();
 
     paySuper.on('paymentCompleted', function() {
@@ -67,14 +71,13 @@ function buyItems() {
 ### PaySuper Form events
 
 ```js
+// Handle events of the payment form and payment statuses
 paySuper.on('inited', function() {
   console.log('PaySuper is initialized')
 })
-
-paySuper.renderModal();
 ```
 
-#### Full events list in expected order of execution
+#### Full events list in the expected order of execution
 
 | Method | Description |
 |---|---|
@@ -136,6 +139,10 @@ npm run test
 ```
 npm run test:dev
 ```
+
+## About
+
+Learn more about PaySuper at https://pay.super.com
 
 ## Contributing
 
