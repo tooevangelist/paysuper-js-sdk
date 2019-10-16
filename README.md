@@ -19,7 +19,7 @@ Javascript SDK is designed to integrate a [PaySuper Payment Form](https://docs.s
 
 You can create an instance of a PaySuper Form on your website using this sample code. 
 
-> Use your own IDs for Project and Products being in your merchant account in the PaySuper Admin.
+> Use your IDs for Project and Products being in your merchant account in the PaySuper Admin.
 
 ```html
 <script src="https://static.protocol.one/payone/sdk/latest/p1payone.js"></script>
