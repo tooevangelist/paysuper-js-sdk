@@ -6,6 +6,7 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=paysuper_paysuper-js-sdk&metric=alert_status)](https://sonarcloud.io/dashboard?id=paysuper_paysuper-js-sdk)
 
 ## Usage
+You can create an instance of a PaySuper Form on your website using this sample code: 
 ```html
 <script src="https://static.protocol.one/payone/sdk/latest/p1payone.js"></script>
 <script>
@@ -68,7 +69,7 @@ paySuper.on('inited', function() {
 })
 paySuper.renderModal();
 ```
-#### Full events list in expected order of execution
+#### Full events list in the expected order of execution
 - **pageBeforeInit** - PaySuper form is started to render as page
 - **modalBeforeInit** - PaySuper form is started to render as modal dialog
 - **inited** - PaySuper form scripts are downloaded and started to load.
@@ -122,6 +123,9 @@ npm run test
 ```
 npm run test:dev
 ```
+
+## About
+Learn more about PaySuper at https://pay.super.com
 
 ## Contributing
 We feel that a welcoming community is important and we ask that you follow PaySuper's [Open Source Code of Conduct](https://github.com/paysuper/code-of-conduct/blob/master/README.md) in all interactions with the community.
