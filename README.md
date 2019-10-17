@@ -19,7 +19,7 @@ PaySuper Javascript SDK is designed to integrate a [PaySuper Payment Form](https
 
 You can create an instance of a PaySuper Form on your website using this sample code. 
 
-> Use your IDs for the Project and Products found in your merchant account in the PaySuper Admin. To get the Project and Product IDs click on the Product from the Products list page and copy the ID 
+> Use your IDs for the Project and Products found in your merchant account in the PaySuper Admin. To get the Project and Product IDs click on the Product from the Products list page and copy the ID from an opened page URL.
 
 ```html
 <script src="https://cdn.pay.super.com/paysdk/latest/paysuper.js"></script>
