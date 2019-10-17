@@ -5,7 +5,7 @@
 [![codecov](https://codecov.io/gh/paysuper/paysuper-js-sdk/branch/master/graph/badge.svg)](https://codecov.io/gh/paysuper/paysuper-js-sdk)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=paysuper_paysuper-js-sdk&metric=alert_status)](https://sonarcloud.io/dashboard?id=paysuper_paysuper-js-sdk)
 
-Javascript SDK is designed to integrate a [PaySuper Payment Form](https://docs.stg.pay.super.com/getting-started/glossary/#payment-form) on your site.
+PaySuper Javascript SDK is designed to integrate a [PaySuper Payment Form](https://docs.stg.pay.super.com/getting-started/glossary/#payment-form) on your website.
 
 1. [Usage](#usage)
 2. [Parameters](#paysuper-form-parameters)
@@ -19,19 +19,19 @@ Javascript SDK is designed to integrate a [PaySuper Payment Form](https://docs.s
 
 You can create an instance of a PaySuper Form on your website using this sample code. 
 
-> Use your IDs for Project and Products being in your merchant account in the PaySuper Admin.
+> Use your IDs for the Project and Products found in your merchant account in the PaySuper Admin.
 
 ```html
 <script src="https://static.protocol.one/payone/sdk/latest/p1payone.js"></script>
 
 <script>
 function buyItems() {
-    // Create an instance of Payment Form with required order parameters
+    // Create an instance of the Payment Form with required order parameters
     const paySuper = new PaySuper({
         token: '5cd5620f06ae110001509185'
     });
     
-    // Display a modal window with the payment form
+    // Display a modal window with the Payment Form
     paySuper.renderModal();
 
     paySuper.on('paymentCompleted', function() {
@@ -46,22 +46,22 @@ function buyItems() {
 
 | Method | Type and Example | Description |
 |---|---|---|
-| ``token`` | String, Example - 'DWuGy6S1ADGUqR2Crnp4V2q26Jk309b3' | An order parameters as a secure string generated with [Tokens API](https://docs.stg.pay.super.com/api-reference/token/#endpoints) |
-|``project``|String, Example - '5be2e16701d96d00012d26c3'|Project unique identifier in PaySuper|
+| ``token`` | String, Example - 'DWuGy6S1ADGUqR2Crnp4V2q26Jk309b3' | Order parameters as a secure string generated with [Tokens API](/api-reference/token/#endpoints) |
+|``project``|String, Example - '5be2e16701d96d00012d26c3'|Project unique identifier for PaySuper|
 |``type``|String, Available options: 'simple', 'key', 'product'||
-|``products``|Array, Example - ['5d848f484dd6a50001970479']|Unique identifiers of Products being in the Project|
+|``products``|Array, Example - ['5d848f484dd6a50001970479']|Unique identifiers of Products for a given Project|
 |``amount``|Number\|String, Example - 59.9|Order amount|
-|``currency``|String, Example - 'USD'|Order currency by ISO 4217 (3 chars). If this field sent, then we're process amount in this currency. |
-|``viewScheme``|String, Available options: 'dark' (default), 'light'|[Theme style](docs/CUSTOMIZATION.md)|
-|``viewSchemeConfig``|Object, Example - { headerTextColor: '#333333' }|[Colors styles](docs/CUSTOMIZATION.md)|
-|``apiUrl``|String, Default is 'https://p1payapi.tst.protocol.one'|Base URL|
+|``currency``|String, Example - 'USD'|Order currency by ISO 4217 (3 chars). We're process amount in the currency set by this field. |
+|``viewScheme``|String, Available options: 'dark' (default), 'light'|Sample code is available at [Theme style](docs/CUSTOMIZATION.md)|
+|``viewSchemeConfig``|Object, Example - { headerTextColor: '#333333' }|Sample code is available at [Colors styles](docs/CUSTOMIZATION.md)|
+|``apiUrl``|String, Default is 'https://p1payapi.tst.protocol.one'||
 
 ### PaySuper Form methods
 
 | Method | Type and Example | Description |
 |---|---|---|
-| ``renderModal()`` | return: {PaySuper} | Renders the form in modal dialog. |
-|``renderPage()``|return: {PaySuper}|Renders the form in bare iframe to represent it as a simple page `iframe` height is automatic|
+| ``renderModal()`` | return: {PaySuper} | Renders the form in a modal dialog. |
+|``renderPage()``|return: {PaySuper}|Renders the form in a bare iframe. Height is determined automatically|
 |``closeModal()``|return: {PaySuper}|Closes the modal dialog.|
 |``setAmount( value )`` |param: **value** {Number\|String} Example - 59.9, return: {PaySuper}||
 |``setCurrency( value )``|param: **value** {String} Example - 'USD', return: {PaySuper}||
@@ -71,7 +71,7 @@ function buyItems() {
 ### PaySuper Form events
 
 ```js
-// Handle events of the payment form and payment statuses
+// Handles events of the Payment Form and payment statuses
 paySuper.on('inited', function() {
   console.log('PaySuper is initialized')
 })
@@ -81,18 +81,18 @@ paySuper.on('inited', function() {
 
 | Method | Description |
 |---|---|
-| ``pageBeforeInit`` | PaySuper form is started to render as page. |
-| ``modalBeforeInit`` | PaySuper form is started to render as modal dialog. |
-| ``inited`` | PaySuper form scripts are downloaded and started to load. |
-| ``loaded`` | PaySuper form is finished its loading and ready to operate. |
-| ``paymentFailedToBegin`` | En error has occured while fetching the order. |
-| ``paymentBeforeCreated`` | A moment before the payment is created. |
-| ``paymentCreated`` | The payment is created, but not finished yet. |
-| ``paymentFailedToCreate`` | An error has occured while creating the payments. |
+| ``pageBeforeInit`` | PaySuper form has started to render as a page. |
+| ``modalBeforeInit`` | PaySuper form has started to render as a modal dialog. |
+| ``inited`` | PaySuper form scripts have been downloaded and have started to load. |
+| ``loaded`` | PaySuper form has finished to load and is ready to operate. |
+| ``paymentFailedToBegin`` | An error has occured while fetching the order. |
+| ``paymentBeforeCreated`` | The moment before the payment is created. |
+| ``paymentCreated`` | The payment has been created, but has not finished yet. |
+| ``paymentFailedToCreate`` | An error has occured while creating the payment. |
 | ``paymentCompleted`` | The payment is successful. |
-| ``paymentDeclined`` | The payment is declined buy payment system. |
-| ``paymentInterrupted`` | The payment is interrupted by user. |
-| ``modalClosed`` | PaySuper form modal dialog is closed. In case the form runs inside modal dialog. |
+| ``paymentDeclined`` | The payment is declined by the payment system. |
+| ``paymentInterrupted`` | The payment is interrupted by the user. |
+| ``modalClosed`` | PaySuper form modal dialog is closed. Applicable when the form was created inside a modal dialog. |
 
 ## Library URLs
 
@@ -125,7 +125,7 @@ npm run serve
 npm run build
 ```
 
-### Like `run build` but with dist file size analysis
+### Like `run build` but with a dist file size analysis
 ```
 npm run check-size
 ```
