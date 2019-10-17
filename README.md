@@ -5,7 +5,7 @@
 [![codecov](https://codecov.io/gh/paysuper/paysuper-js-sdk/branch/master/graph/badge.svg)](https://codecov.io/gh/paysuper/paysuper-js-sdk)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=paysuper_paysuper-js-sdk&metric=alert_status)](https://sonarcloud.io/dashboard?id=paysuper_paysuper-js-sdk)
 
-Javascript SDK is designed to integrate a [PaySuper Payment Form](https://docs.stg.pay.super.com/getting-started/glossary/#payment-form) on your site.
+PaySuper Javascript SDK is designed to integrate a [PaySuper Payment Form](https://docs.stg.pay.super.com/getting-started/glossary/#payment-form) on your website.
 
 1. [Usage](#usage)
 2. [Parameters](#paysuper-form-parameters)
@@ -19,18 +19,18 @@ Javascript SDK is designed to integrate a [PaySuper Payment Form](https://docs.s
 
 You can create an instance of a PaySuper Form on your website using this sample code. 
 
-> Use your IDs for Project and Products being in your merchant account in the PaySuper Admin.
+> Use your IDs for the Project and Products found in your merchant account in the PaySuper Admin. To get the Project and Product IDs click on the Product from the Products list page and copy the ID 
 
 ```html
 <script src="https://cdn.pay.super.com/paysdk/latest/paysuper.js"></script>
 <script>
 function buyItems() {
-    // Create an instance of Payment Form with required order parameters
+    // Create an instance of the Payment Form with required order parameters
     const paySuper = new PaySuper({
         token: '5cd5620f06ae110001509185'
     });
     
-    // Display a modal window with the payment form
+    // Display a modal window with the Payment Form
     paySuper.renderModal();
 
     paySuper.on('paymentCompleted', function() {
@@ -38,6 +38,7 @@ function buyItems() {
     });
  }
 </script>
+
 <button onclick="buyItems()">BUY</button>
 ```
 
@@ -45,23 +46,53 @@ function buyItems() {
 
 | Method | Type and Example | Description |
 |---|---|---|
-| ``token`` | String, Example - 'DWuGy6S1ADGUqR2Crnp4V2q26Jk309b3' | An order parameters as a secure string generated with [Tokens API](https://docs.stg.pay.super.com/api-reference/token/#endpoints) |
-|``project``|String, Example - '5be2e16701d96d00012d26c3'|Project unique identifier in PaySuper|
-|``type``|String, Available options: 'simple', 'key', 'product'||
-|``products``|Array, Example - ['5d848f484dd6a50001970479']|Unique identifiers of Products being in the Project|
-|``amount``|Number\|String, Example - 59.9|Order amount|
-|``currency``|String, Example - 'USD'|Order currency by ISO 4217 (3 chars). If this field sent, then we're process amount in this currency. |
-|``viewScheme``|String, Available options: 'dark' (default), 'light'|[Theme style](docs/CUSTOMIZATION.md)|
-|``viewSchemeConfig``|Object, Example - { headerTextColor: '#333333' }|[Colors styles](docs/CUSTOMIZATION.md)|
-|``apiUrl``|String, Default is 'https://p1payapi.tst.protocol.one'|Base URL|
+| ``token`` | String, Example - 'DWuGy6S1ADGUqR2Crnp4V2q26Jk309b3' | Order parameters as a secure string generated with [Tokens API](https://docs.stg.pay.super.com/api-reference/token/#endpoints). You should generate secure strings of order and user parameters with Tokens API. Otherwise, |
+|``project``|String, Example - '5be2e16701d96d00012d26c3'| Unique identifier of the Project in PaySuper Admin.|
+|``type``|String, Available options: 'simple' (default), 'key', 'product'|The Type depends on your products in the payment order: set a `type` to **'product'** for the [Virtual items](https://docs.stg.pay.super.com/getting-started/glossary/#virtual-items), set a `type` to **'key'** for the [Game keys](https://docs.stg.pay.super.com/getting-started/glossary/#game-keys), the default `type` is set for the [Virtual currency](https://docs.stg.pay.super.com/getting-started/glossary/#virtual-currency).|
+|``products``|Array, Example - ['5d848f484dd6a50001970479']|Unique identifier of the Product being in the Project. The order can have multiple Products.|
+|``amount``|Number\|String, Example - 59.9|The order amount of the [Virtual currency](https://docs.stg.pay.super.com/getting-started/glossary/#virtual-currency).|
+|``currency``|String, Example - 'USD'|The order currency. Three-letter Currency Code ISO 4217. If this field sent, then we're process amount in this field. |
+|``viewScheme``|String, Available options: 'dark' (default), 'light'|Sample code is available at [Theme style](docs/CUSTOMIZATION.md)|
+|``viewSchemeConfig``|Object, Example - { headerTextColor: '#333333' }|Sample code is available at [Colors styles](docs/CUSTOMIZATION.md)|
+
+### Sample code of the Payment form for the Virtual item order:
+
+```html
+const paySuper = new PaySuper({
+    project: '5cd5620f06ae110001509185',
+    products: ['5d848f484dd6a50001970479', '5d8c7a219e362100013de214'],
+    type: 'product'
+});
+```
+
+### Sample code of the Payment form for the Game key order:
+
+```html
+const paySuper = new PaySuper({
+    project: '5cd5620f06ae110001509185',
+    products: ['5d7baee015ff7d0001b986a8'],
+    platform_id: 'gog',
+    type: 'key'
+});
+```
+
+### Sample code of the Payment form for the Virtual currency order:
+
+```html
+const paySuper = new PaySuper({
+    project: '5cd5624a06ae110001509186',
+    amount: 50,
+    currency: 'USD'
+});
+```
 
 ### PaySuper Form methods
 
 | Method | Type and Example | Description |
 |---|---|---|
-| ``renderModal()`` | return: {PaySuper} | Renders the form in modal dialog. |
-|``renderPage()``|return: {PaySuper}|Renders the form in bare iframe to represent it as a simple page `iframe` height is automatic|
-|``closeModal()``|return: {PaySuper}|Closes the modal dialog.|
+| ``renderModal()`` | return: {PaySuper} | Renders the form in a modal dialog. |
+|``renderPage()``|return: {PaySuper}|Renders the form in a bare iframe. Height is determined automatically.|
+|``closeModal()``|return: {PaySuper}|Closes a modal dialog.|
 |``setAmount( value )`` |param: **value** {Number\|String} Example - 59.9, return: {PaySuper}||
 |``setCurrency( value )``|param: **value** {String} Example - 'USD', return: {PaySuper}||
 |``setProducts( value )``|param: **value** {Array} Example - ['5d848f484dd6a50001970479'], return: {PaySuper}||
@@ -70,7 +101,7 @@ function buyItems() {
 ### PaySuper Form events
 
 ```js
-// Handle events of the payment form and payment statuses
+// Handles events of the Payment Form and payment statuses
 paySuper.on('inited', function() {
   console.log('PaySuper is initialized')
 })
@@ -80,18 +111,18 @@ paySuper.on('inited', function() {
 
 | Method | Description |
 |---|---|
-| ``pageBeforeInit`` | PaySuper form is started to render as page. |
-| ``modalBeforeInit`` | PaySuper form is started to render as modal dialog. |
-| ``inited`` | PaySuper form scripts are downloaded and started to load. |
-| ``loaded`` | PaySuper form is finished its loading and ready to operate. |
-| ``paymentFailedToBegin`` | En error has occured while fetching the order. |
-| ``paymentBeforeCreated`` | A moment before the payment is created. |
-| ``paymentCreated`` | The payment is created, but not finished yet. |
-| ``paymentFailedToCreate`` | An error has occured while creating the payments. |
+| ``pageBeforeInit`` | PaySuper form has started to render as a page. |
+| ``modalBeforeInit`` | PaySuper form has started to render as a modal dialog. |
+| ``inited`` | PaySuper form scripts have been downloaded and have started to load. |
+| ``loaded`` | PaySuper form has finished to load and is ready to operate. |
+| ``paymentFailedToBegin`` | An error has occured while fetching the order. |
+| ``paymentBeforeCreated`` | The moment before the payment is created. |
+| ``paymentCreated`` | The payment has been created, but has not finished yet. |
+| ``paymentFailedToCreate`` | An error has occured while creating the payment. |
 | ``paymentCompleted`` | The payment is successful. |
-| ``paymentDeclined`` | The payment is declined buy payment system. |
-| ``paymentInterrupted`` | The payment is interrupted by user. |
-| ``modalClosed`` | PaySuper form modal dialog is closed. In case the form runs inside modal dialog. |
+| ``paymentDeclined`` | The payment is declined by the payment system. |
+| ``paymentInterrupted`` | The payment is interrupted by the user. |
+| ``modalClosed`` | PaySuper form modal dialog is closed. Applicable when the form was created inside a modal dialog. |
 
 ## Library URLs
 
@@ -124,7 +155,7 @@ npm run serve
 npm run build
 ```
 
-### Like `run build` but with dist file size analysis
+### Like `run build` but with a dist file size analysis
 ```
 npm run check-size
 ```
