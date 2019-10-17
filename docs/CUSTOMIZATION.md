@@ -4,6 +4,7 @@
 
 ```html
 const paySuper = new PaySuper({
+    token: '5cd5620f06ae110001509185',
     viewScheme: 'light'
   });
 ```
