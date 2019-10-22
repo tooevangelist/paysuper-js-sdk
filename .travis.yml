@@ -34,7 +34,7 @@ jobs:
     - set -e
     - npm run lint
     - npm run test
-    - npm run build
+    - npm run build-release
     - rclone copy dist :s3://paysuper/sdk/latest/ --s3-access-key-id="$S3_ACCESS_KEY" --s3-secret-access-key="$S3_SECRET_KEY" --s3-endpoint=$S3_HOST
     - rclone copy dist :s3://paysuper/sdk/$TRAVIS_TAG/ --s3-access-key-id="$S3_ACCESS_KEY" --s3-secret-access-key="$S3_SECRET_KEY" --s3-endpoint=$S3_HOST
     - rclone copy dist :s3://cdn.pay.super.com/paysdk/latest/ --s3-access-key-id=$AWS_CDN_ACCESS_KEY_ID --s3-secret-access-key=$AWS_CDN_SECRET_KEY --s3-region=eu-west-1

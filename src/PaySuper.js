@@ -145,8 +145,8 @@ export default class PaySuper extends Events.EventEmitter {
     this.iframe = null;
     this.modalLayer = null;
 
-    this.urls = getFunctionalUrls(apiUrl || 'https://p1payapi.tst.protocol.one');
-    this.formUrl = formUrl || this.urls.paymentFormUrl;
+    this.urls = getFunctionalUrls({ apiUrl, formUrl });
+    this.formUrl = this.urls.formUrl;
 
     this.isInited = false;
     this.layout = null;
