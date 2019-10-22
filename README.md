@@ -7,7 +7,7 @@
 
 ## Usage
 ```html
-<script src="https://static.protocol.one/payone/sdk/latest/p1payone.js"></script>
+<script src="https://cdn.pay.super.com/paysdk/latest/paysuper.js"></script>
 <script>
   const paySuper = new PaySuper({
     token: '5cd5620f06ae110001509185'
@@ -68,7 +68,7 @@ paySuper.on('inited', function() {
 })
 paySuper.renderModal();
 ```
-#### Full events list in expected order of execution
+#### Full events list in the expected order of execution
 - **pageBeforeInit** - PaySuper form is started to render as page
 - **modalBeforeInit** - PaySuper form is started to render as modal dialog
 - **inited** - PaySuper form scripts are downloaded and started to load.
@@ -88,12 +88,12 @@ paySuper.renderModal();
 https://static.protocol.one/minio/payone/
 
 #### Dev version
-https://static.protocol.one/payone/sdk/dev/p1payone.js
+https://static.protocol.one/payone/sdk/dev/paysuper.js
 Updates automatically with `master` branch updates
 
-#### By release
-https://static.protocol.one/payone/sdk/latest/p1payone.js
-https://static.protocol.one/payone/sdk/v1.0.9/p1payone.js
+#### Production release
+https://cdn.pay.super.com/paysdk/latest/paysuper.js
+https://cdn.pay.super.com/paysdk/v2.2.1-alpha/paysuper.js
 Updates width actual version releases (`v*` tag pushed into repo)
 
 ## Development

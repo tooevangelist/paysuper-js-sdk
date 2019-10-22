@@ -170,7 +170,6 @@ export default class PaySuper extends Events.EventEmitter {
     const { modalLayer } = createModalLayer();
     this.modalLayer = modalLayer;
 
-    appendContainer.innerHTML = '';
     appendContainer.appendChild(this.modalLayer);
 
     this.iframe = createIframe(
