@@ -29,7 +29,6 @@
 
 - **viewScheme** {String} Default is 'dark'
 - **viewSchemeConfig** {Object} Example - { headerTextColor: '#333333' }
-- **apiUrl** {String} Default is 'https://p1payapi.tst.protocol.one'
 
 ### PaySuper form methods
 #### renderModal()
