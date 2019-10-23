@@ -46,7 +46,7 @@ function buyItems() {
 
 | Method | Type and Example | Description |
 |---|---|---|
-| ``token`` | String, Example - 'DWuGy6S1ADGUqR2Crnp4V2q26Jk309b3' | Order parameters as a secure string generated with [Tokens API](https://docs.stg.pay.super.com/api-reference/token/#endpoints). You should generate secure strings of order and user parameters with Tokens API. Otherwise, |
+| ``token`` | String, Example - 'DWuGy6S1ADGUqR2Crnp4V2q26Jk309b3' | Order parameters as a secure string generated with [Tokens API](https://docs.stg.pay.super.com/api-reference/token/#endpoints). You should generate secure strings of order and user parameters with Tokens API. |
 |``project``|String, Example - '5be2e16701d96d00012d26c3'| Unique identifier of the Project in PaySuper Admin.|
 |``type``|String, Available options: 'simple' (default), 'virtual_currency', 'key', 'product'|The Type depends on your products in the payment order: set a `type` to **'product'** for a [Virtual item](https://docs.stg.pay.super.com/getting-started/glossary/#virtual-items), **'key'** for a [Game key](https://docs.stg.pay.super.com/getting-started/glossary/#game-keys), **'virtual_currency'** for a [Virtual currency](https://docs.stg.pay.super.com/getting-started/glossary/#virtual-currency). Default type is set to 'simple' for a [simple checkout payment](https://docs.stg.pay.super.com/getting-started/glossary/#simple-checkout).|
 |``products``|Array, Example - ['5d848f484dd6a50001970479']|Unique identifier of the Product being in the Project. The order can have multiple Products.|
