@@ -18,7 +18,7 @@ before_script: curl https://rclone.org/install.sh | sudo bash
 jobs:
   include:
   - name: dev
-    if: "(branch = dev)"
+    if: "(branch = master)"
     script:
     - set -e
     - npm run lint
