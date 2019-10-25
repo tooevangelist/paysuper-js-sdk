@@ -59,7 +59,7 @@ export function getLanguage(value) {
 }
 
 export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow) {
-  receiveMessages(currentWindow, {
+  return receiveMessages(currentWindow, {
     /**
      * The form insize iframe is awaiting the command below with listed options to init
      * Real form rendering start here
@@ -144,6 +144,7 @@ export default class PaySuper extends Events.EventEmitter {
 
     this.iframe = null;
     this.modalLayer = null;
+    this.cancelIframeMessagesHandling = null;
 
     this.urls = getFunctionalUrls({ apiUrl, formUrl });
     this.formUrl = this.urls.formUrl;
@@ -220,16 +221,19 @@ export default class PaySuper extends Events.EventEmitter {
    */
   initIframeMessagesHandling() {
     const postMessageWindow = this.iframe.contentWindow;
-    receiveMessagesFromPaymentForm.call(this, window, postMessageWindow);
+    this.cancelIframeMessagesHandling = receiveMessagesFromPaymentForm
+      .call(this, window, postMessageWindow);
     return this;
   }
 
   closeModal() {
-    this.modalLayer.parentNode.removeChild(this.modalLayer);
     modalTools.showBodyScrollbar();
+    this.modalLayer.parentNode.removeChild(this.modalLayer);
     this.modalLayer = null;
     this.iframe = null;
     this.isInited = false;
+    this.cancelIframeMessagesHandling();
+    this.cancelIframeMessagesHandling = null;
   }
 
   /**

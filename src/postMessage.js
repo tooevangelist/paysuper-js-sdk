@@ -37,7 +37,7 @@ export function postMessage(targetWindow, nameID, data = {}) {
 }
 
 export function receiveMessages(from, objectWithCallbacks, callbackEvery) {
-  from.addEventListener('message', (event) => {
+  function handler(event) {
     if (event.data && event.data.source !== payonePaymentFormSourceName) {
       return;
     }
@@ -52,5 +52,10 @@ export function receiveMessages(from, objectWithCallbacks, callbackEvery) {
       return;
     }
     callback(event.data.data);
-  });
+  }
+  from.addEventListener('message', handler);
+
+  return () => {
+    from.removeEventListener('message', handler);
+  };
 }

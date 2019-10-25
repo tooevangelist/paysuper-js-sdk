@@ -21,11 +21,13 @@
         Please enable it to continue.</strong>
     </noscript>
 
-    <div id="app"></div>
+    <button onclick="buyItems()">
+      Buy something
+    </button>
     
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-          const paySuper = new PaySuper({
+      function buyItems() {
+        const paySuper = new PaySuper({
           // project: '5cd5620f06ae110001509185',
           project: '5cda856f38e0e20001769886',
           amount: 10,
@@ -37,10 +39,8 @@
           // paymentMethod: '',
           // account: 'raiky@yandex.ru'
         });
-        paySuper.renderModal('#app');
-
-
-      });
+        paySuper.renderModal();
+     }
     </script>
     <!-- built files will be auto injected -->
   </body>
