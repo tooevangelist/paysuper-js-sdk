@@ -93,11 +93,11 @@ describe('PaySuper.receiveMessagesFromPaymentForm ', () => {
     // expect(result.orderParams.token).toEqual(PaySuperMock.token);
     // expect(result.orderParams.amount).toEqual(PaySuperMock.amount);
     // expect(result.orderParams.currency).toEqual(PaySuperMock.currency);
-    // expect(result.options.apiUrl).toEqual(PaySuperMock.urls.apiUrl);
 
     expect(result.options.language).toEqual(PaySuperMock.language);
     expect(result.options.layout).toEqual(PaySuperMock.layout);
     expect(result.options.viewScheme).toEqual(PaySuperMock.viewScheme);
     expect(result.options.viewSchemeConfig).toEqual(PaySuperMock.viewSchemeConfig);
+    expect(result.options.apiUrl).toEqual(PaySuperMock.urls.apiUrl);
   });
 });

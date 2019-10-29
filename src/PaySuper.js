@@ -76,6 +76,7 @@ export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow)
           layout: this.layout,
           viewScheme: this.viewScheme,
           viewSchemeConfig: this.viewSchemeConfig,
+          apiUrl: this.urls.apiUrl,
         },
       });
     },
