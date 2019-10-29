@@ -7,7 +7,7 @@ const apiUrlMap = {
 };
 
 const formUrlMap = {
-  dev: 'http://localhost:4040/',
+  dev: 'http://localhost:8080/order',
   test: 'https://paysupermgmt.tst.protocol.one/order',
   release: 'https://order.pay.super.com/',
 };

@@ -1,6 +1,6 @@
+import { invert } from 'lodash-es';
 import { receiveMessagesFromPaymentForm } from '@/PaySuper';
 import { payonePaymentFormSourceName, receivingMessagesNames } from '@/postMessage';
-import { invert } from 'lodash-es';
 
 const invertedReceivingMessagesNames = invert(receivingMessagesNames);
 
@@ -88,11 +88,11 @@ describe('PaySuper.receiveMessagesFromPaymentForm ', () => {
 
     currentWindow.imitateReceivedMessage('INITED');
 
-    expect(result.orderParams.project).toEqual(PaySuperMock.project);
-    expect(result.orderParams.products).toEqual(PaySuperMock.products);
-    expect(result.orderParams.token).toEqual(PaySuperMock.token);
-    expect(result.orderParams.amount).toEqual(PaySuperMock.amount);
-    expect(result.orderParams.currency).toEqual(PaySuperMock.currency);
+    // expect(result.orderParams.project).toEqual(PaySuperMock.project);
+    // expect(result.orderParams.products).toEqual(PaySuperMock.products);
+    // expect(result.orderParams.token).toEqual(PaySuperMock.token);
+    // expect(result.orderParams.amount).toEqual(PaySuperMock.amount);
+    // expect(result.orderParams.currency).toEqual(PaySuperMock.currency);
 
     expect(result.options.language).toEqual(PaySuperMock.language);
     expect(result.options.apiUrl).toEqual(PaySuperMock.urls.apiUrl);
