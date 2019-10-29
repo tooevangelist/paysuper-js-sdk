@@ -147,7 +147,7 @@ export default class PaySuper extends Events.EventEmitter {
       ...(this.products ? { products: this.products } : {}),
       ...(this.amount ? { amount: this.amount, currency: this.currency } : {}),
       ...(this.type ? { type: this.type } : {}),
-      ...(this.customApiUrl ? { apiUrl: this.this.urls.apiUrl } : {}),
+      ...(this.customApiUrl ? { apiUrl: this.urls.apiUrl } : {}),
     };
     return `${this.formUrl}?${qs.stringify(orderParams)}`;
   }
