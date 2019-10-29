@@ -1,5 +1,6 @@
 import assert from 'simple-assert';
 import Events from 'events';
+import qs from 'qs';
 import getFunctionalUrls from './getFunctionalUrls';
 import { createIframe, createModalLayer } from './createElements';
 import modalTools from './modalTools';
@@ -70,13 +71,6 @@ export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow)
        * but in production the page receives it by itself
        */
       postMessage(postMessageWindow, 'REQUEST_INIT_FORM', {
-        orderParams: {
-          ...(this.project ? { project: this.project } : {}),
-          ...(this.token ? { token: this.token } : {}),
-          ...(this.products ? { products: this.products } : {}),
-          ...(this.amount ? { amount: this.amount, currency: this.currency } : {}),
-          ...(this.type ? { type: this.type } : {}),
-        },
         options: {
           ...(this.language ? { language: this.language } : {}),
           layout: this.layout,
@@ -99,13 +93,6 @@ export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow)
     MODAL_CLOSED: () => {
       this.closeModal();
     },
-
-    // ORDER_RECREATE_STARTED: async () => {
-    //   this.orderParams = await this.createOrder();
-
-    //   const iframeSrc = this.urls.getPaymentFormUrl(this.orderParams.payment_form_url);
-    //   this.iframe.setAttribute('src', iframeSrc);
-    // },
   }, (name, data) => {
     this.emit(name, data);
   });
@@ -153,6 +140,17 @@ export default class PaySuper extends Events.EventEmitter {
     this.layout = null;
   }
 
+  getIframeSrc() {
+    const orderParams = {
+      ...(this.project ? { project: this.project } : {}),
+      ...(this.token ? { token: this.token } : {}),
+      ...(this.products ? { products: this.products } : {}),
+      ...(this.amount ? { amount: this.amount, currency: this.currency } : {}),
+      ...(this.type ? { type: this.type } : {}),
+    };
+    return `${this.formUrl}?${qs.stringify(orderParams)}`;
+  }
+
   /**
    * Renders the payment form in modal dialog layer
    *
@@ -174,7 +172,7 @@ export default class PaySuper extends Events.EventEmitter {
     appendContainer.appendChild(this.modalLayer);
 
     this.iframe = createIframe(
-      this.formUrl,
+      this.getIframeSrc(),
       this.modalLayer,
     );
 
@@ -203,7 +201,7 @@ export default class PaySuper extends Events.EventEmitter {
     appendContainer.innerHTML = '';
 
     this.iframe = createIframe(
-      this.formUrl,
+      this.getIframeSrc(),
       appendContainer,
     );
 
