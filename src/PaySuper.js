@@ -74,7 +74,6 @@ export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow)
         options: {
           ...(this.language ? { language: this.language } : {}),
           layout: this.layout,
-          apiUrl: this.urls.apiUrl,
           viewScheme: this.viewScheme,
           viewSchemeConfig: this.viewSchemeConfig,
         },
@@ -133,6 +132,7 @@ export default class PaySuper extends Events.EventEmitter {
     this.modalLayer = null;
     this.cancelIframeMessagesHandling = null;
 
+    this.customApiUrl = apiUrl;
     this.urls = getFunctionalUrls({ apiUrl, formUrl });
     this.formUrl = this.urls.formUrl;
 
@@ -147,6 +147,7 @@ export default class PaySuper extends Events.EventEmitter {
       ...(this.products ? { products: this.products } : {}),
       ...(this.amount ? { amount: this.amount, currency: this.currency } : {}),
       ...(this.type ? { type: this.type } : {}),
+      ...(this.customApiUrl ? { apiUrl: this.this.urls.apiUrl } : {}),
     };
     return `${this.formUrl}?${qs.stringify(orderParams)}`;
   }
