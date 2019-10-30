@@ -54,10 +54,11 @@ function buyItems() {
 |``currency``|String, Example - 'USD'|The order currency. Three-letter Currency Code ISO 4217. If this field sent, then we're process amount in this field. |
 |``viewScheme``|String, Available options: 'dark' (default), 'light'|Sample code is available at [Theme style](docs/CUSTOMIZATION.md)|
 |``viewSchemeConfig``|Object, Example - { headerTextColor: '#333333' }|Sample code is available at [Colors styles](docs/CUSTOMIZATION.md)|
+|``formUrl``|String, Example - 'https://order.pay.super.com/?order_id=14e9be11-42c2-4e12-8737-5a5b8e6b25b8'|You can get the payment form URL via PaySuper Tokens API or PaySuper Order API methods. |
 
 ### Sample code of the Payment form for the Virtual item order:
 
-```html
+```js
 const paySuper = new PaySuper({
     project: '5cd5620f06ae110001509185',
     products: ['5d848f484dd6a50001970479', '5d8c7a219e362100013de214'],
@@ -67,18 +68,17 @@ const paySuper = new PaySuper({
 
 ### Sample code of the Payment form for the Game key order:
 
-```html
+```js
 const paySuper = new PaySuper({
     project: '5cd5620f06ae110001509185',
     products: ['5d7baee015ff7d0001b986a8'],
-    platform_id: 'gog',
     type: 'key'
 });
 ```
 
 ### Sample code of the Payment form for a simple checkout payment:
 
-```html
+```js
 const paySuper = new PaySuper({
     project: '5cd5624a06ae110001509186',
     amount: 50,
@@ -86,11 +86,20 @@ const paySuper = new PaySuper({
 });
 ```
 
+### Sample code of the Payment form as a standalone web-page:
+
+```js
+const paySuper = new PaySuper({
+    formUrl: 'https://order.pay.super.com/?order_id=14e9be11-42c2-4e12-8737-5a5b8e6b25b8'
+});
+paySuper.renderPage();
+```
+
 ### PaySuper Form methods
 
 | Method | Type and Example | Description |
 |---|---|---|
-| ``renderModal()`` | return: {PaySuper} | Renders the form in a modal dialog. |
+|``renderModal()``| return: {PaySuper} | Renders the form in a modal dialog. |
 |``renderPage()``|return: {PaySuper}|Renders the form in a bare iframe. Height is determined automatically.|
 |``closeModal()``|return: {PaySuper}|Closes a modal dialog.|
 |``setAmount( value )`` |param: **value** {Number\|String} Example - 59.9, return: {PaySuper}||
@@ -128,7 +137,7 @@ paySuper.on('inited', function() {
 
 ### Hub with navigation
 
-``https://static.protocol.one/minio/payone/``
+``https://static.protocol.one/minio/paysuper/sdk/``
 
 ### Dev version
 

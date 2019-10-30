@@ -2,41 +2,53 @@
 
 ### Change the theme
 
-```html
+```js
 const paySuper = new PaySuper({
     token: '5cd5620f06ae110001509185',
     viewScheme: 'light'
-  });
+});
 ```
 
 ### Change the colors
 
-```html
+```js
 const paySuper = new PaySuper({
     token: '5cd5620f06ae110001509185',
     viewSchemeConfig: { 
-        <!-- headerTextColor overrides the default value of the viewSchemeConfig object -->
+        // headerTextColor overrides the default value of the viewSchemeConfig object
         headerTextColor: '#333333'
     }
-  });
+});
 ```
 
 ### Available parameters of viewSchemeConfig
 
-```html
-viewSchemeConfig: 
-{
-    headerTextColor: 'rgba(255, 255, 255, 0.7)',
+```js
+viewSchemeConfig: {
+    baseHoverColor: '#00d697',
+
+    modalCloseIconColor: 'rgba(255, 255, 255, 0.5)',
+
+    iconBaseColor: '#333B50',
+    iconOutlineColor: '#ffffff',
+    iconSublineColor: '#5B88DE',
+    iconPositiveColor: '#00d697',
+    iconNegativeColor: '#FF4CF8',
+
+    layoutTextColor: 'rgba(255, 255, 255, 0.7)',
+
     headerProjectTitleColor: '#fff',
     headerServiceTitleColor: '#fff',
 
     cartBackgroundColor: '#333b50',
     cartBoxShadowColor: 'rgba(51, 59, 80, 0.8)',
-    cartHoverTextColor: '#06eaa7',
     cartOldPriceColor: 'rgba(255, 255, 255, 0.3)',
     cartTextColor: 'rgba(255, 255, 255, 0.7)',
-    cartTotalStrokeColor: 'rgba(255, 255, 255, 0.2)',
-    cartTotalTextColor: '#06eaa7',
+    cartStrokeColor: 'rgba(255, 255, 255, 0.2)',
+    cartAccentColor: '#06eaa7',
+    cartIconsColor: 'rgba(255, 255, 255, 0.3)',
+    cartSelectedBackgroundColor: '#424C66',
+    cartSelectedIconsColor: '#fff',
 
     formBackgroundColor: '#424c66',
 
@@ -45,7 +57,6 @@ viewSchemeConfig:
     localeChangerModalColor: 'rgba(255, 255, 255, 0.7)',
     localeChangerModalCurrentColor: '#06eaa7',
     localeChangerModalHoverBorderColor: 'rgba(255, 255, 255, 0.5)',
-    localeChangerModalHoverColor: '#06eaa7',
 
     localeChangerPageBorderColor: 'rgba(255, 255, 255, 0.2)',
     localeChangerPageBoxColor: '#333b50',
@@ -78,9 +89,6 @@ viewSchemeConfig:
     inputBoxColor: 'transparent',
     inputColor: '#fff',
     inputDisabledOpacity: '0.5',
-    inputErrorBorderColor: '#fc7e57',
-    inputErrorBoxColor: '#fc7e57',
-    inputErrorColor: '#fff',
     inputFocusBorderColor: '#06eaa7',
     inputFocusLabelColor: 'rgba(255, 255, 255, 0.3)',
     inputHoverBorderColor: 'rgba(255, 255, 255, 0.5)',
@@ -96,14 +104,16 @@ viewSchemeConfig:
     selectOptionsBoxColor: '#424c66',
     selectRemoveColor: '#fc7e57',
 
+    errorBorderColor: '#fc7e57',
+    errorBoxColor: '#fc7e57',
+    errorColor: '#fff',
+
     cardSelectAddCardColor: '#fff',
-    cardSelectAddCardHoverColor: '#06eaa7',
 
     tipCartBoxColor: '#424c66',
     tipContentColor: 'rgba(255, 255, 255, 0.5)',
     tipFormBoxColor: '#333B50',
-    tipHeaderColor: '#fff',
-    tipLinkHoverColor: '#06eaa7',
+    tipLinkColor: '#fff',
 
     iconInfoColor: 'rgba(255, 255, 255, 0.3)',
     iconInfoHoverColor: '#06eaa7',
@@ -114,5 +124,20 @@ viewSchemeConfig:
     stubSpinContentColorSecondary: 'rgba(255, 255, 255, 0.1)',
     stubTotalColor: 'rgba(6, 234, 167, 0.3)',
     stubSpinTotalColor: 'rgba(6, 234, 167, 0.2)',
-  }
+
+    warningTitleColor: '#ffffff',
+    warningTextColor: '#f3da58',
+
+    processTitleColor: '#ffffff',
+    processTextColor: '#ffffff',
+
+    resultTitleColor: '#ffffff',
+    resultSubtitleColor: '#ffffff',
+    resultTextColor: '#ffffff',
+    resultSubtextColor: '#b3b3b3',
+    resultCodeColor: '#06eaa7',
+    resultEmailColor: '#ffffff',
+
+    scrollbarColor: 'rgba(0, 0, 0, 0.7)',
+}
 ```
