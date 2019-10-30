@@ -1,12 +1,22 @@
 import { extend } from 'lodash-es';
 
+function setIframeViewAsPage(iframe) {
+  extend(iframe.style, {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    zIndex: 1000,
+  });
+  return iframe;
+}
+
 /**
 * Creates iframe container for payment form
 *
 * @param {String} iframeSrc
 * @return {Object}
 */
-export function createIframe(iframeSrc, containerToAppend) {
+export function createIframe(iframeSrc, containerToAppend, asPage) {
   const iframe = document.createElement('iframe');
 
   iframe.setAttribute('allowpaymentrequest', 'true');
@@ -36,6 +46,10 @@ export function createIframe(iframeSrc, containerToAppend) {
     });
 
     return iframe;
+  }
+
+  if (asPage) {
+    setIframeViewAsPage(iframe);
   }
 
   iframe.setAttribute('src', iframeSrc);

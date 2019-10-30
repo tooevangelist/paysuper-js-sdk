@@ -3,11 +3,27 @@ import PaySuper, { getRegion, getLanguage } from '@/PaySuper';
 const project = '5be2e16701d96d00012d26c3';
 
 describe('PaySuper', () => {
-  it('should require project or token to init', () => {
+  it('should require project, token or formUrl to init', () => {
     expect(() => {
       // eslint-disable-next-line
       new PaySuper();
-    }).toThrowError(/project or token is required/);
+    }).toThrowError(/project, token or formUrl is required/);
+  });
+
+  it('should work well with formUrl only', () => {
+    const formUrl = 'https://ya.ru';
+    const paySuper = new PaySuper({
+      formUrl,
+    });
+    expect(paySuper.formUrl).toEqual(formUrl);
+  });
+
+  it('should work well with token only', () => {
+    const token = '123123123';
+    const paySuper = new PaySuper({
+      token,
+    });
+    expect(paySuper.token).toEqual(token);
   });
 
   it('should be able to handle events', () => {

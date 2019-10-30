@@ -82,12 +82,10 @@ export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow)
     },
 
     LOADED: () => {
+      if (!this.modalLayer) {
+        return;
+      }
       this.modalLayer.classList.remove('paysuper-js-sdk-modal-layer--loading');
-    },
-
-    FORM_RESIZE: ({ height }) => {
-      // this.iframe.setAttribute('width', width);
-      this.iframe.setAttribute('height', height);
     },
 
     MODAL_CLOSED: () => {
@@ -104,7 +102,7 @@ export default class PaySuper extends Events.EventEmitter {
     viewScheme, viewSchemeConfig,
   } = {}) {
     super();
-    assert(project || token, 'project or token is required for "new PaySuper(...)"');
+    assert(project || token || formUrl, 'project, token or formUrl is required for "new PaySuper(...)"');
     this.project = project;
     this.language = getLanguage(language);
     this.token = token;
@@ -164,6 +162,10 @@ export default class PaySuper extends Events.EventEmitter {
       console.warn('PaySuper: the form is already rendering or finished rendering');
       return this;
     }
+    if (!this.project && !this.token) {
+      console.warn('PaySuper: renderModal method is not allowed with standalone "formUrl"');
+      return this;
+    }
     this.isInited = true;
     this.layout = 'modal';
     const appendContainer = selectorOrElement ? getDomElement(selectorOrElement) : document.body;
@@ -205,10 +207,12 @@ export default class PaySuper extends Events.EventEmitter {
     this.iframe = createIframe(
       this.getIframeSrc(),
       appendContainer,
+      true,
     );
 
     this.initIframeMessagesHandling();
 
+    modalTools.hideBodyScrollbar();
     this.emit('pageBeforeInit');
 
     return this;
