@@ -1,8 +1,5 @@
-import { invert } from 'lodash-es';
 import { receiveMessagesFromPaymentForm } from '@/PaySuper';
-import { payonePaymentFormSourceName, receivingMessagesNames } from '@/postMessage';
-
-const invertedReceivingMessagesNames = invert(receivingMessagesNames);
+import { paysuperPaymentFormSourceName } from '@/postMessage';
 
 class WindowMock {
   constructor() {
@@ -25,8 +22,8 @@ class WindowMock {
   imitateReceivedMessage(name, data) {
     this.listeners.message({
       data: {
-        source: payonePaymentFormSourceName,
-        name: invertedReceivingMessagesNames[name],
+        source: paysuperPaymentFormSourceName,
+        name,
         data,
       },
     });

@@ -88,6 +88,13 @@ export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow)
       this.modalLayer.classList.remove('paysuper-js-sdk-modal-layer--loading');
     },
 
+    TRY_TO_BEGIN_AGAIN: () => {
+      if (!this.modalLayer) {
+        return;
+      }
+      this.modalLayer.classList.add('paysuper-js-sdk-modal-layer--loading');
+    },
+
     MODAL_CLOSED: () => {
       this.closeModal();
     },
@@ -127,13 +134,13 @@ export default class PaySuper extends Events.EventEmitter {
     }
     this.setType(type);
 
-    this.iframe = null;
-    this.modalLayer = null;
-    this.cancelIframeMessagesHandling = null;
-
     this.customApiUrl = apiUrl;
     this.urls = getFunctionalUrls({ apiUrl, formUrl });
     this.formUrl = this.urls.formUrl;
+
+    this.iframe = null;
+    this.modalLayer = null;
+    this.cancelIframeMessagesHandling = null;
 
     this.isInited = false;
     this.layout = null;
