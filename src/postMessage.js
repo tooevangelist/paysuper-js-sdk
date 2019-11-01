@@ -1,34 +1,34 @@
 import assert from 'assert';
-import { invert } from 'lodash-es';
+import { includes } from 'lodash-es';
 
-export const payonePaymentFormSourceName = 'PAYSUPER_PAYMENT_FORM';
+export const paysuperPaymentFormSourceName = 'PAYSUPER_PAYMENT_FORM';
 
-export const sendingMessagesNames = {
-  REQUEST_INIT_FORM: 'requestInitForm',
-};
+export const sendingMessagesNames = [
+  'REQUEST_INIT_FORM',
+];
 
 /**
  * If a status is not in list the SDK won't react on it (no handling, no event emmitting)
  */
-export const receivingMessagesNames = invert({
-  INITED: 'inited',
-  LOADED: 'loaded',
-  FORM_RESIZE: 'formResize',
-  PAYMENT_BEFORE_CREATED: 'paymentBeforeCreated',
-  PAYMENT_CREATED: 'paymentCreated',
-  PAYMENT_FAILED_TO_CREATE: 'paymentFailedToCreate',
-  PAYMENT_PENDING: 'paymentPending',
-  PAYMENT_COMPLETED: 'paymentCompleted',
-  PAYMENT_CANCELLED: 'paymentCancelled',
-  PAYMENT_DECLINED: 'paymentDeclined',
-  PAYMENT_INTERRUPTED: 'paymentInterrupted',
-  ORDER_RECREATE_STARTED: 'orderRecreateStarted',
-  MODAL_CLOSED: 'modalClosed',
-});
+export const receivingMessagesNames = [
+  'INITED',
+  'LOADED',
+  'FORM_RESIZE',
+  'PAYMENT_BEFORE_CREATED',
+  'PAYMENT_CREATED',
+  'PAYMENT_FAILED_TO_CREATE',
+  'PAYMENT_PENDING',
+  'PAYMENT_COMPLETED',
+  'PAYMENT_CANCELLED',
+  'PAYMENT_DECLINED',
+  'PAYMENT_INTERRUPTED',
+  'PAYMENT_PROBABLY_COMPLETED',
+  'TRY_TO_BEGIN_AGAIN',
+  'MODAL_CLOSED',
+];
 
-export function postMessage(targetWindow, nameID, data = {}) {
-  const name = sendingMessagesNames[nameID];
-  assert(name, `Undefiend postMessage nameID: ${nameID}`);
+export function postMessage(targetWindow, name, data = {}) {
+  assert(includes(sendingMessagesNames, name), `Undefiend postMessage name: ${name}`);
   targetWindow.postMessage({
     source: 'PAYSUPER_JS_SDK',
     name,
@@ -38,16 +38,15 @@ export function postMessage(targetWindow, nameID, data = {}) {
 
 export function receiveMessages(from, objectWithCallbacks, callbackEvery) {
   function handler(event) {
-    if (event.data && event.data.source !== payonePaymentFormSourceName) {
+    if (event.data && event.data.source !== paysuperPaymentFormSourceName) {
       return;
     }
     const { name } = event.data;
-    const messageAlias = receivingMessagesNames[name];
-    if (!messageAlias) {
+    if (!includes(receivingMessagesNames, name)) {
       return;
     }
     callbackEvery(name, event.data.data);
-    const callback = objectWithCallbacks[messageAlias];
+    const callback = objectWithCallbacks[name];
     if (!callback) {
       return;
     }
