@@ -147,15 +147,19 @@ export default class PaySuper extends Events.EventEmitter {
   }
 
   getIframeSrc() {
+    const [base, queryString] = this.formUrl.split('?');
+    const query = queryString ? qs.parse(queryString) : {};
     const orderParams = {
+      ...query,
       ...(this.project ? { project: this.project } : {}),
       ...(this.token ? { token: this.token } : {}),
       ...(this.products ? { products: this.products } : {}),
       ...(this.amount ? { amount: this.amount, currency: this.currency } : {}),
       ...(this.type ? { type: this.type } : {}),
       ...(this.customApiUrl ? { apiUrl: this.urls.apiUrl } : {}),
+      sdk: true,
     };
-    return `${this.formUrl}?${qs.stringify(orderParams)}`;
+    return `${base}?${qs.stringify(orderParams)}`;
   }
 
   /**
