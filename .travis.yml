@@ -18,15 +18,24 @@ before_script: curl https://rclone.org/install.sh | sudo bash
 jobs:
   include:
   - name: dev
+    if: "(branch = develop)"
+    script:
+    - set -e
+    - npm run lint
+    - npm run test
+    - npm run build
+    - sonar-scanner
+    - if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then rclone copy dist :s3://cdn.pay.super.com/paysdk/dev/ --s3-access-key-id=$AWS_CDN_ACCESS_KEY_ID --s3-secret-access-key=$AWS_CDN_SECRET_KEY --s3-region=eu-west-1; else echo "PR skip upload"; fi
+    - npm run coverage:publish
+  - name: stage
     if: "(branch = master)"
     script:
     - set -e
     - npm run lint
     - npm run test
     - npm run build
-    - if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then rclone copy dist :s3://paysuper/sdk/dev/ --s3-access-key-id=$S3_ACCESS_KEY --s3-secret-access-key=$S3_SECRET_KEY --s3-endpoint=$S3_HOST; else echo "PR skip upload"; fi
+    - if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then rclone copy dist :s3://cdn.pay.super.com/paysdk/stage/ --s3-access-key-id="$S3_ACCESS_KEY" --s3-endpoint=$S3_HOST --s3-secret-access-key="$S3_SECRET_KEY"; else echo "PR skip upload"; fi
     - npm run coverage:publish
-    - sonar-scanner
   - name: release
     if: "(tag =~ ^v)"
     script:
@@ -34,8 +43,6 @@ jobs:
     - npm run lint
     - npm run test
     - npm run build-release
-    - rclone copy dist :s3://paysuper/sdk/latest/ --s3-access-key-id="$S3_ACCESS_KEY" --s3-secret-access-key="$S3_SECRET_KEY" --s3-endpoint=$S3_HOST
-    - rclone copy dist :s3://paysuper/sdk/$TRAVIS_TAG/ --s3-access-key-id="$S3_ACCESS_KEY" --s3-secret-access-key="$S3_SECRET_KEY" --s3-endpoint=$S3_HOST
     - rclone copy dist :s3://cdn.pay.super.com/paysdk/latest/ --s3-access-key-id=$AWS_CDN_ACCESS_KEY_ID --s3-secret-access-key=$AWS_CDN_SECRET_KEY --s3-region=eu-west-1
     - rclone copy dist :s3://cdn.pay.super.com/paysdk/$TRAVIS_TAG/ --s3-access-key-id=$AWS_CDN_ACCESS_KEY_ID --s3-secret-access-key=$AWS_CDN_SECRET_KEY --s3-region=eu-west-1
 notifications:
