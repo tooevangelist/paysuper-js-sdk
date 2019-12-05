@@ -6,6 +6,8 @@
 
 PaySuper Javascript SDK is designed to integrate a [PaySuper Payment Form](https://docs.stg.pay.super.com/getting-started/glossary/#payment-form) on your website or a game client.
 
+Learn more about a [payments flow](https://docs.pay.super.com/docs/payments/quick-start) and [PaySuper Checkout integration](https://docs.pay.super.com/docs/payments/sdk-integration).
+
 |   | PaySuper Service Architecture
 :---: | :---
 ✨ | **Checkout integration.** [PaySuper JS SDK](https://github.com/paysuper/paysuper-js-sdk) is designed to integrate a Checkout Form on a merchant's website or a game client.
@@ -35,8 +37,6 @@ PaySuper Javascript SDK is designed to integrate a [PaySuper Payment Form](https
 ## Demo
 
 Try out [the payment sample](https://dashboard.pay.super.com/form-demo) for a [Simple Checkout](https://docs.pay.super.com/docs/payments/#simple-checkout) and a [Products Checkout](https://docs.pay.super.com/docs/payments/#products-checkout).
-
-Learn more about a [payments flow](https://docs.pay.super.com/docs/payments/quick-start).
 
 ## Quick Start
 
