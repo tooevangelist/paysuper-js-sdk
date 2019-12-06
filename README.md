@@ -39,8 +39,8 @@ Learn more about a [payments flow](https://docs.pay.super.com/docs/payments/quic
     - [Events](#events)
 - [Developing](#developing)
     - [Branches](#branches)
+    - [Versioning](#versioning)
     - [Building](#building)
-- [Versioning](#versioning)
 - [Tests](#tests)
 - [Contributing](#contributing)
 - [License](#license)
@@ -183,6 +183,12 @@ paySuper.on('inited', function() {
 
 We use the [GitFlow](https://nvie.com/posts/a-successful-git-branching-model) as a branching model for Git.
 
+### Versioning
+
+`https://cdn.pay.super.com/paysdk/v0.11.0/paysuper.js` is a release version (for example `v0.11.0`) and it updates by releases [paysuper-js-sdk/releases](https://github.com/paysuper/paysuper-js-sdk/releases).
+
+`https://cdn.pay.super.com/paysdk/latest/paysuper.js` is the latest version.
+
 ### Building
 
 #### Compiles and hot-reloads for development
@@ -199,12 +205,6 @@ npm run build
 ```
 npm run check-size
 ```
-
-## Versioning
-
-`https://cdn.pay.super.com/paysdk/v0.11.0/paysuper.js` is a release version (for example `v0.11.0`) and it updates by releases [paysuper-js-sdk/releases](https://github.com/paysuper/paysuper-js-sdk/releases).
-
-`https://cdn.pay.super.com/paysdk/latest/paysuper.js` is the latest version.
 
 ## Tests
 
