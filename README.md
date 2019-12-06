@@ -33,7 +33,7 @@ Learn more about a [payments flow](https://docs.pay.super.com/docs/payments/quic
 ## Table of Contents
 
 - [Demo](#demo)
-- [Quick Start](#quick-start)
+- [Usage](#usage)
     - [Parameters](#parameters)
     - [Methods](#methods)
     - [Events](#events)
@@ -50,7 +50,7 @@ Learn more about a [payments flow](https://docs.pay.super.com/docs/payments/quic
 
 Try out [the payment sample](https://dashboard.pay.super.com/form-demo) for a [Simple Checkout](https://docs.pay.super.com/docs/payments/#simple-checkout) and a [Products Checkout](https://docs.pay.super.com/docs/payments/#products-checkout).
 
-## Quick Start
+## Usage
 
 You can create an instance of a PaySuper Form on your website using this sample code:
 
