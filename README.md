@@ -1,35 +1,72 @@
 # PaySuper JS SDK
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-brightgreen.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Build Status](https://api.travis-ci.org/ProtocolONE/payone-js-sdk.svg?branch=master)](https://travis-ci.org/ProtocolONE/token_one)
-[![codecov](https://codecov.io/gh/paysuper/paysuper-js-sdk/branch/master/graph/badge.svg)](https://codecov.io/gh/paysuper/paysuper-js-sdk)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-brightgreen.svg)](https://www.gnu.org/licenses/gpl-3.0) [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/paysuper/paysuper-js-sdk/issues)
 
-PaySuper Javascript SDK is designed to integrate a Checkout Form on your website.
+[![Build Status](https://api.travis-ci.org/paysuper/paysuper-js-sdk.svg?branch=master)](https://travis-ci.org/paysuper/paysuper-js-sdk) [![codecov](https://codecov.io/gh/paysuper/paysuper-js-sdk/branch/master/graph/badge.svg)](https://codecov.io/gh/paysuper/paysuper-js-sdk)
 
-1. [Usage](#usage)
-2. [Parameters](#paysuper-form-parameters)
-3. [Methods](#paysuper-form-methods)
-4. [Events](#paysuper-form-events)
-5. [Library URLs](#library-urls)
-6. [Development](#development)
-7. [Contributing](#contributing)
+PaySuper Javascript SDK is designed to integrate a [PaySuper Payment Form](https://github.com/paysuper/paysuper-payment-form) on your website or a game client.
 
-## Usage
+Learn more about a [payments flow](https://docs.pay.super.com/docs/payments/quick-start) and [PaySuper Checkout integration](https://docs.pay.super.com/docs/payments/sdk-integration).
 
-You can create an instance of a Checkout Form on your website using this sample code. 
+|   | PaySuper Service Architecture
+:---: | :---
+✨ | **Checkout integration.** [PaySuper JS SDK](https://github.com/paysuper/paysuper-js-sdk) is designed to integrate a Checkout Form on a merchant's website or a game client.
+💵 | **Frontend for a payment form.** [PaySuper Checkout Form](https://github.com/paysuper/paysuper-payment-form) is a frontend for a sigle-page application with a payment form.
+📊 | **Frontend for a merchant.** [PaySuper Dashboard](https://github.com/paysuper/paysuper-dashboard) is the BFF server and frontend to interact with all PaySuper related features for merchants.
+🔧 | **API Backend.** [PaySuper Management API](https://github.com/paysuper/paysuper-management-api) is a REST API backend for the [PaySuper Dashboard](https://github.com/paysuper/paysuper-management-server) and the [PaySuper Checkout Form](https://github.com/paysuper/paysuper-payment-form). Public API methods are documented in the [API Reference](https://docs.pay.super.com/api).
+💳 | **Payment processing.** [Billing Server](https://github.com/paysuper/paysuper-billing-server) is a micro-service that provides with any payment processing business logic.
 
-> Use your IDs for the Project and Products found in your merchant account in the PaySuper Admin. To get the Project and Product IDs click on the Product from the Products list page and copy the ID from an opened page URL.
+***
+
+## Features
+
+**Conversion-optimized:** The payment form loads instantly with a single-page layout.
+
+**Payment methods:** VISA, Master Card, AMEX, JCB, China UnionPay, Bitcoin payments, Alipay, QIWI, Bank Wire Transfers.
+
+**Payment types:** Simple Checkout, Items Checkout.
+
+**Authentication:** Dynamic 3D Secure (ready for Strong Customer Authentication).
+
+**Localization:** Localized for [24 languages](https://docs.pay.super.com/docs/payments/localization).
+
+## Table of Contents
+
+- [Demo](#demo)
+- [Quick Start](#quick-start)
+    - [Parameters](#parameters)
+    - [Methods](#methods)
+    - [Events](#events)
+- [Developing](#developing)
+    - [Branches](#branches)
+    - [Building](#building)
+- [Versioning](#versioning)
+- [Configuration](#configuration)
+- [Tests](#tests)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Demo
+
+Try out [the payment sample](https://dashboard.pay.super.com/form-demo) for a [Simple Checkout](https://docs.pay.super.com/docs/payments/#simple-checkout) and a [Products Checkout](https://docs.pay.super.com/docs/payments/#products-checkout).
+
+## Quick Start
+
+You can create an instance of a PaySuper Form on your website using this sample code:
+
+> Use your IDs for the Project and Products found in your merchant account in PaySuper Dashboard. To get the Project and Product IDs click on the Product from the Products list page and copy the ID from an opened page URL.
 
 ```html
 <script src="https://cdn.pay.super.com/paysdk/latest/paysuper.js"></script>
+
 <script>
 function buyItems() {
-    // Create an instance of the Payment form with required order parameters
+    // Create an instance of the Payment Form with required order parameters
     const paySuper = new PaySuper({
         token: '5cd5620f06ae110001509185'
     });
     
-    // Display a modal window with the payment form
+    // Display a modal window with the Payment Form
     paySuper.renderModal();
 
     paySuper.on('paymentCompleted', function() {
@@ -41,23 +78,23 @@ function buyItems() {
 <button onclick="buyItems()">BUY</button>
 ```
 
-### The PaySuper form parameters
+### Parameters
 
 | Method | Type and Example | Description |
 |---|---|---|
-| ``token`` | String, Example - 'DWuGy6S1ADGUqR2Crnp4V2q26Jk309b3' | Order parameters as a secure string generated with [Tokens API](https://docs.stg.pay.super.com/docs/api/#tag/Token). You should generate secure strings of order and user parameters with Tokens API. |
-|``project``|String, Example - '5be2e16701d96d00012d26c3'| Unique identifier of the Project in PaySuper Admin.|
-|``type``|String, Available options: 'simple' (default), 'virtual_currency', 'key', 'product'|The Type depends on your products in the payment order: set a `type` to **'product'** for a [Virtual item](https://docs.stg.pay.super.com/docs/payments/#products-checkout), **'key'** for a [Game key](https://docs.stg.pay.super.com/docs/payments/#products-checkout), **'virtual_currency'** for a [Virtual currency](https://docs.stg.pay.super.com/docs/payments/#products-checkout). Default type is set to 'simple' for a [simple checkout payment](https://docs.stg.pay.super.com/docs/payments/#simple-checkout).|
-|``products``|Array, Example - ['5d848f484dd6a50001970479']|Unique identifier of the Product being in the Project. The order can have multiple Products.|
-|``amount``|Number\|String, Example - 59.9|The order amount of the [Virtual currency](https://docs.stg.pay.super.com/docs/payments/#products-checkout).|
-|``currency``|String, Example - 'USD'|The order currency. Three-letter Currency Code ISO 4217. If this field sent, then we're process amount in this field. |
-|``viewScheme``|String, Available options: 'dark' (default), 'light'|Sample code is available at [Theme style](docs/CUSTOMIZATION.md)|
-|``viewSchemeConfig``|Object, Example - { headerTextColor: '#333333' }|Sample code is available at [Colors styles](docs/CUSTOMIZATION.md)|
-|``formUrl``|String, Example - 'https://order.pay.super.com/?order_id=14e9be11-42c2-4e12-8737-5a5b8e6b25b8'|You can get the payment form URL via [PaySuper Tokens API](https://docs.stg.pay.super.com/docs/api/#tag/Token) or [PaySuper Order API](https://docs.stg.pay.super.com/docs/api/#tag/Payment-Order). |
+| `token` | String | Order parameters as a secure string generated with [Tokens API](https://docs.pay.super.com/api/#token). **Example:** 'DWuGy6S1ADGUqR2Crnp4V2q26Jk309b3'.|
+|`project`|String| Unique identifier of the Project in PaySuper Dashboard. **Example:** '5be2e16701d96d00012d26c3'.|
+|`type`|String|The Type depends on your [products in the payment order](https://docs.pay.super.com/docs/payments/#getting-started). **Available options:** `simple` (default), `key`, `product`.|
+|`products`|Array|Unique identifier of the Product being in the Project. The order can have multiple Products. **Example:** ['5d848f484dd6a50001970479', '4g848f484dd6a50001970490'].|
+|`amount`|Number|The order amount. **Example:** 59.9.|
+|`currency`|String|The order currency. Three-letter Currency Code ISO 4217, in uppercase. The default value is used from the Project general settings. If the value for this field is passed, the default value is overwritten. **Example:** 'USD'.|
+|`formUrl`|String|The URL with the ID of the created order. The URL format is `https://order.pay.super.com/?order_id=YOUR_ORDER_ID`.|
+|`viewScheme`|String|Sample code is available at [Theme style](docs/CUSTOMIZATION.md). **Available options:** `dark` (default), `light`.|
+|`viewSchemeConfig`|Object|Sample code is available at [Colors styles](docs/CUSTOMIZATION.md). **Example:** { headerTextColor: '#333333' }|
 
-### Sample code of the PaySuper form for the Virtual item order:
+#### Sample code for the Virtual item:
 
-```js
+```html
 const paySuper = new PaySuper({
     project: '5cd5620f06ae110001509185',
     products: ['5d848f484dd6a50001970479', '5d8c7a219e362100013de214'],
@@ -65,19 +102,20 @@ const paySuper = new PaySuper({
 });
 ```
 
-### Sample code of the PaySuper form for the Game key order:
+#### Sample code for the Game key:
 
-```js
+```html
 const paySuper = new PaySuper({
     project: '5cd5620f06ae110001509185',
     products: ['5d7baee015ff7d0001b986a8'],
+    platform_id: 'gog',
     type: 'key'
 });
 ```
 
-### Sample code of the PaySuper form for a simple checkout payment:
+#### Sample code for Simple Checkout:
 
-```js
+```html
 const paySuper = new PaySuper({
     project: '5cd5624a06ae110001509186',
     amount: 50,
@@ -85,44 +123,44 @@ const paySuper = new PaySuper({
 });
 ```
 
-### Sample code of the PaySuper form as a standalone web-page:
+### Methods
 
-```js
-const paySuper = new PaySuper({
-    formUrl: 'https://order.pay.super.com/?order_id=14e9be11-42c2-4e12-8737-5a5b8e6b25b8'
-});
-paySuper.renderPage();
-```
-
-### The PaySuper form methods
-
-| Method | Type and Example | Description |
+| Method | Type | Description |
 |---|---|---|
-|``renderModal()``| return: {PaySuper} | Renders the form in a modal dialog. |
-|``renderPage()``|return: {PaySuper}|Renders the form in a bare iframe. Height is determined automatically.|
-|``closeModal()``|return: {PaySuper}|Closes a modal dialog.|
-|``setAmount( value )`` |param: **value** {Number\|String} Example - 59.9, return: {PaySuper}||
-|``setCurrency( value )``|param: **value** {String} Example - 'USD', return: {PaySuper}||
-|``setProducts( value )``|param: **value** {Array} Example - ['5d848f484dd6a50001970479'], return: {PaySuper}||
-|``setType( value )``|param: **value** {String} Example - 'product', return: {PaySuper}||
+| `renderModal()` | return: {PaySuper} | Renders the form in a modal dialog window.|
+|`renderPage()`|return: {PaySuper}|Renders the form as an iframe. Height is determined automatically.|
+|`closeModal()`|return: {PaySuper}|Closes a modal dialog.|
+|`setAmount(value)` |param: **value** {Number}, return: {PaySuper}|**Example:** 59.9.|
+|`setCurrency(value)`|param: **value** {String}, return: {PaySuper}|**Example:** 'USD'.|
+|`setProducts(value)`|param: **value** {Array}, return: {PaySuper}|**Example:** ['5d848f484dd6a50001970479'].|
+|`setType(value)`|param: **value** {String}, return: {PaySuper}|**Example:** 'product'.|
 
-### The PaySuper form events
+#### Use this code sample to open the Checkout Form as a standalone web-page:
 
-```js
-// Handles events of the payment form and payment statuses
-paySuper.on('inited', function() {
-  console.log('PaySuper is initialized')
-})
+```html
+<script>
+function buyItems() {
+    const paySuper = new PaySuper({
+        formUrl: 'https://order.pay.super.com/?order_id=YOUR_ORDER_ID'
+    });
+
+    paySuper.renderPage();
+}
+</script>
+
+<button onclick="buyItems()">BUY</button>
 ```
 
-#### The full events list in the expected order of execution
+### Events
+
+#### Full events list in the expected order of execution:
 
 | Method | Description |
 |---|---|
-| ``pageBeforeInit`` | The PaySuper form has started to render as a page. |
+| ``pageBeforeInit`` | PaySuper form has started to render as a page. |
 | ``modalBeforeInit`` | PaySuper form has started to render as a modal dialog. |
-| ``inited`` | The PaySuper form scripts have been downloaded and have started to load. |
-| ``loaded`` | The PaySuper form has finished to load and is ready to operate. |
+| ``inited`` | PaySuper form scripts have been downloaded and have started to load. |
+| ``loaded`` | PaySuper form has finished to load and is ready to operate. |
 | ``paymentFailedToBegin`` | An error has occured while fetching the order. |
 | ``paymentBeforeCreated`` | The moment before the payment is created. |
 | ``paymentCreated`` | The payment has been created, but has not finished yet. |
@@ -130,43 +168,46 @@ paySuper.on('inited', function() {
 | ``paymentCompleted`` | The payment is successful. |
 | ``paymentDeclined`` | The payment is declined by the payment system. |
 | ``paymentInterrupted`` | The payment is interrupted by the user. |
-| ``modalClosed`` | The PaySuper form modal dialog is closed. Applicable when the form was created inside a modal dialog. |
+| ``modalClosed`` | PaySuper form modal dialog is closed. Applicable when the form was created inside a modal dialog. |
 
-## Library URLs
+#### Sample code to handle events of the Payment Form or a payment status:
 
-### Hub with navigation
+```js
+paySuper.on('inited', function() {
+  console.log('PaySuper is initialized')
+})
+```
 
-``https://static.protocol.one/minio/paysuper/sdk/``
+## Developing
 
-### Dev version
+### Branches
 
-``https://static.protocol.one/payone/sdk/dev/p1payone.js``
-Updates automatically with `master` branch updates
+We use the [GitFlow](https://nvie.com/posts/a-successful-git-branching-model) as a branching model for Git.
 
-### Production version
+### Building
 
-``https://cdn.pay.super.com/paysdk/latest/paysuper.js`` 
-``https://cdn.pay.super.com/paysdk/v0.8.2/paysuper.js``
-Updates width actual version releases (`v*` tag pushed into repo)
-
-
-
-## Development
-
-### Compiles and hot-reloads for development
+#### Compiles and hot-reloads for development
 ```
 npm run serve
 ```
 
-### Compiles and minifies into single js-file
+#### Compiles and minifies into single js-file
 ```
 npm run build
 ```
 
-### Like `run build` but with a dist file size analysis
+#### Like `run build` but with a dist file size analysis
 ```
 npm run check-size
 ```
+
+## Versioning
+
+`https://cdn.pay.super.com/paysdk/v0.11.0/paysuper.js` is a release version (for example `v0.11.0`) and it updates by releases [paysuper-js-sdk/releases](https://github.com/paysuper/paysuper-js-sdk/releases).
+
+`https://cdn.pay.super.com/paysdk/latest/paysuper.js` is the latest version.
+
+## Tests
 
 ### Run tests
 ```
@@ -178,14 +219,14 @@ npm run test
 npm run test:dev
 ```
 
-## About
-
-Learn more about PaySuper at https://pay.super.com
-
 ## Contributing
 
-We feel that a welcoming community is important and we ask that you follow PaySuper's [Open Source Code of Conduct](https://github.com/paysuper/code-of-conduct/blob/master/README.md) in all interactions with the community.
+If you like this project then you can put a ⭐️ on it.
 
-PaySuper welcomes contributions from anyone and everyone. Please refer to each project's style and contribution guidelines for submitting patches and additions. In general, we follow the "fork-and-pull" Git workflow.
+We welcome contributions to PaySuper of any kind including documentation, suggestions, bug reports, pull requests etc. We would love to hear from you. In general, we follow the "fork-and-pull" Git workflow.
 
-The master branch of this repository contains the latest stable release of this component.
+We feel that a welcoming community is important and we ask that you follow the PaySuper's [Open Source Code of Conduct](https://github.com/paysuper/code-of-conduct/blob/master/README.md) in all interactions with the community.
+
+## License
+
+The project is available as open source under the terms of the [GPL v3 License](https://www.gnu.org/licenses/gpl-3.0).
