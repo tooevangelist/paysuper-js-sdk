@@ -80,7 +80,7 @@ function buyItems() {
 |`viewScheme`|String|Sample code is available at [Theme style](docs/CUSTOMIZATION.md). **Available options:** `dark` (default), `light`.|
 |`viewSchemeConfig`|Object|Sample code is available at [Colors styles](docs/CUSTOMIZATION.md). **Example:** { headerTextColor: '#333333' }|
 
-### Sample code for the Virtual item:
+#### Sample code for the Virtual item:
 
 ```html
 const paySuper = new PaySuper({
@@ -90,7 +90,7 @@ const paySuper = new PaySuper({
 });
 ```
 
-### Sample code for the Game key:
+#### Sample code for the Game key:
 
 ```html
 const paySuper = new PaySuper({
@@ -101,7 +101,7 @@ const paySuper = new PaySuper({
 });
 ```
 
-### Sample code for Simple Checkout:
+#### Sample code for Simple Checkout:
 
 ```html
 const paySuper = new PaySuper({
