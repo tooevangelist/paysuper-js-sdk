@@ -157,18 +157,18 @@ function buyItems() {
 
 | Method | Description |
 |---|---|
-| ``pageBeforeInit`` | PaySuper form has started to render as a page. |
-| ``modalBeforeInit`` | PaySuper form has started to render as a modal dialog. |
-| ``inited`` | PaySuper form scripts have been downloaded and have started to load. |
-| ``loaded`` | PaySuper form has finished to load and is ready to operate. |
-| ``paymentFailedToBegin`` | An error has occured while fetching the order. |
-| ``paymentBeforeCreated`` | The moment before the payment is created. |
-| ``paymentCreated`` | The payment has been created, but has not finished yet. |
-| ``paymentFailedToCreate`` | An error has occured while creating the payment. |
-| ``paymentCompleted`` | The payment is successful. |
-| ``paymentDeclined`` | The payment is declined by the payment system. |
-| ``paymentInterrupted`` | The payment is interrupted by the user. |
-| ``modalClosed`` | PaySuper form modal dialog is closed. Applicable when the form was created inside a modal dialog. |
+| `pageBeforeInit` | PaySuper form has started to render as a page. |
+| `modalBeforeInit` | PaySuper form has started to render as a modal dialog. |
+| `inited` | PaySuper form scripts have been downloaded and have started to load. |
+| `loaded` | PaySuper form has finished to load and is ready to operate. |
+| `paymentFailedToBegin` | An error has occured while fetching the order. |
+| `paymentBeforeCreated` | The moment before the payment is created. |
+| `paymentCreated` | The payment has been created, but has not finished yet. |
+| `paymentFailedToCreate` | An error has occured while creating the payment. |
+| `paymentCompleted` | The payment is successful. |
+| `paymentDeclined` | The payment is declined by the payment system. |
+| `paymentInterrupted` | The payment is interrupted by the user. |
+| `modalClosed` | PaySuper form modal dialog is closed. Applicable when the form was created inside a modal dialog. |
 
 #### Sample code to handle events of the Payment Form or a payment status:
 
@@ -191,7 +191,7 @@ We use the [GitFlow](https://nvie.com/posts/a-successful-git-branching-model) as
 npm run serve
 ```
 
-#### Compiles and minifies into single js-file
+#### Compiles and minifies into a single js-file
 ```
 npm run build
 ```
