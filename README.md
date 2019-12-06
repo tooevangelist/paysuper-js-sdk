@@ -4,7 +4,7 @@
 
 [![Build Status](https://api.travis-ci.org/paysuper/paysuper-js-sdk.svg?branch=master)](https://travis-ci.org/paysuper/paysuper-js-sdk) [![codecov](https://codecov.io/gh/paysuper/paysuper-js-sdk/branch/master/graph/badge.svg)](https://codecov.io/gh/paysuper/paysuper-js-sdk)
 
-PaySuper Javascript SDK is designed to integrate a [PaySuper Payment Form](https://docs.pay.super.com/getting-started/glossary/#payment-form) on your website or a game client.
+PaySuper Javascript SDK is designed to integrate a [PaySuper Payment Form](https://github.com/paysuper/paysuper-payment-form) on your website or a game client.
 
 Learn more about a [payments flow](https://docs.pay.super.com/docs/payments/quick-start) and [PaySuper Checkout integration](https://docs.pay.super.com/docs/payments/sdk-integration).
 
