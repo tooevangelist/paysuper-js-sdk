@@ -18,6 +18,18 @@ Learn more about a [payments flow](https://docs.pay.super.com/docs/payments/quic
 
 ***
 
+## Features
+
+**Conversion-optimized:** The payment form loads instantly with a single-page layout.
+
+**Payment methods:** VISA, Master Card, AMEX, JCB, China UnionPay, Bitcoin payments, Alipay, QIWI, Bank Wire Transfers.
+
+**Payment types:** Simple Checkout, Items Checkout.
+
+**Authentication:** Dynamic 3D Secure (ready for Strong Customer Authentication).
+
+**Localization:** Localized for [24 languages](https://docs.pay.super.com/docs/payments/localization).
+
 ## Table of Contents
 
 - [Demo](#demo)
