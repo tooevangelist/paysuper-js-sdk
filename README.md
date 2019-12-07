@@ -41,9 +41,8 @@ Learn more about a [payments flow](https://docs.pay.super.com/docs/payments/quic
     - [Branches](#branches)
     - [Building](#building)
 - [Versioning](#versioning)
-- [Configuration](#configuration)
 - [Tests](#tests)
-- [Contributing](#contributing)
+- [Contributing](#contributing-feature-requests-and-support)
 - [License](#license)
 
 ## Demo
