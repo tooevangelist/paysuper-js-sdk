@@ -23,7 +23,7 @@ Report bugs and issues by submitting a [bug report](../../issues/new?labels=type
 
 ### Feature Requests and support
 
-If you have an idea of how to improve PaySuper payent form (or anything related, really) or have general feedback, you're welcome to submit a [feature request](../../issues/new?labels=type%3A+feature+request&template=2-feature_request.md).
+If you have an idea of how to improve PaySuper payment form (or anything related, really) or have general feedback, you're welcome to submit a [feature request](../../issues/new?labels=type%3A+feature+request&template=2-feature_request.md).
 
 Chances are, you like what we have already but you may require a custom integration, a special license or something else big and specific to your needs that our community may not benefit from. We're generally open to such conversations.
 
