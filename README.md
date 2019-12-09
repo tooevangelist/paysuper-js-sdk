@@ -33,14 +33,14 @@ Learn more about a [payments flow](https://docs.pay.super.com/docs/payments/quic
 ## Table of Contents
 
 - [Demo](#demo)
-- [Quick Start](#quick-start)
+- [Usage](#usage)
     - [Parameters](#parameters)
     - [Methods](#methods)
     - [Events](#events)
 - [Developing](#developing)
     - [Branches](#branches)
+    - [Versioning](#versioning)
     - [Building](#building)
-- [Versioning](#versioning)
 - [Tests](#tests)
 - [Contributing](#contributing-feature-requests-and-support)
 - [License](#license)
@@ -49,7 +49,7 @@ Learn more about a [payments flow](https://docs.pay.super.com/docs/payments/quic
 
 Try out [the payment sample](https://dashboard.pay.super.com/form-demo) for a [Simple Checkout](https://docs.pay.super.com/docs/payments/#simple-checkout) and a [Products Checkout](https://docs.pay.super.com/docs/payments/#products-checkout).
 
-## Quick Start
+## Usage
 
 You can create an instance of a PaySuper Form on your website using this sample code:
 
@@ -156,18 +156,18 @@ function buyItems() {
 
 | Method | Description |
 |---|---|
-| ``pageBeforeInit`` | PaySuper form has started to render as a page. |
-| ``modalBeforeInit`` | PaySuper form has started to render as a modal dialog. |
-| ``inited`` | PaySuper form scripts have been downloaded and have started to load. |
-| ``loaded`` | PaySuper form has finished to load and is ready to operate. |
-| ``paymentFailedToBegin`` | An error has occured while fetching the order. |
-| ``paymentBeforeCreated`` | The moment before the payment is created. |
-| ``paymentCreated`` | The payment has been created, but has not finished yet. |
-| ``paymentFailedToCreate`` | An error has occured while creating the payment. |
-| ``paymentCompleted`` | The payment is successful. |
-| ``paymentDeclined`` | The payment is declined by the payment system. |
-| ``paymentInterrupted`` | The payment is interrupted by the user. |
-| ``modalClosed`` | PaySuper form modal dialog is closed. Applicable when the form was created inside a modal dialog. |
+| `pageBeforeInit` | PaySuper form has started to render as a page. |
+| `modalBeforeInit` | PaySuper form has started to render as a modal dialog. |
+| `inited` | PaySuper form scripts have been downloaded and have started to load. |
+| `loaded` | PaySuper form has finished to load and is ready to operate. |
+| `paymentFailedToBegin` | An error has occured while fetching the order. |
+| `paymentBeforeCreated` | The moment before the payment is created. |
+| `paymentCreated` | The payment has been created, but has not finished yet. |
+| `paymentFailedToCreate` | An error has occured while creating the payment. |
+| `paymentCompleted` | The payment is successful. |
+| `paymentDeclined` | The payment is declined by the payment system. |
+| `paymentInterrupted` | The payment is interrupted by the user. |
+| `modalClosed` | PaySuper form modal dialog is closed. Applicable when the form was created inside a modal dialog. |
 
 #### Sample code to handle events of the Payment Form or a payment status:
 
@@ -183,6 +183,12 @@ paySuper.on('inited', function() {
 
 We use the [GitFlow](https://nvie.com/posts/a-successful-git-branching-model) as a branching model for Git.
 
+### Versioning
+
+`https://cdn.pay.super.com/paysdk/v0.11.0/paysuper.js` updates with an actual version release by a tag starts with `v*` that is pushed into the repository.
+
+`https://cdn.pay.super.com/paysdk/latest/paysuper.js` is the latest version.
+
 ### Building
 
 #### Compiles and hot-reloads for development
@@ -190,7 +196,7 @@ We use the [GitFlow](https://nvie.com/posts/a-successful-git-branching-model) as
 npm run serve
 ```
 
-#### Compiles and minifies into single js-file
+#### Compiles and minifies into a single js-file
 ```
 npm run build
 ```
@@ -200,11 +206,13 @@ npm run build
 npm run check-size
 ```
 
+=======
 ## Versioning
+`https://cdn.pay.super.com/paysdk/latest/paysuper.js` is the latest production version.
 
-`https://cdn.pay.super.com/paysdk/v0.11.0/paysuper.js` is a release version (for example `v0.11.0`) and it updates by releases [paysuper-js-sdk/releases](https://github.com/paysuper/paysuper-js-sdk/releases).
+`https://cdn.pay.super.com/paysdk/v0.11.0/paysuper.js` is a production release version (for example `v0.11.0`) and it updates by releases [paysuper-js-sdk/releases](https://github.com/paysuper/paysuper-js-sdk/releases).
 
-`https://cdn.pay.super.com/paysdk/latest/paysuper.js` is the latest version.
+`https://cdn.pay.super.com/paysdk/dev/paysuper.js` is a development version. It works with develpment api and updates with `develop` branch pushes.
 
 ## Tests
 
