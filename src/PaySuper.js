@@ -1,6 +1,7 @@
 import assert from 'simple-assert';
 import Events from 'events';
 import qs from 'qs';
+import { camelCase } from 'lodash-es';
 import getFunctionalUrls from './getFunctionalUrls';
 import { createIframe, createModalLayer } from './createElements';
 import modalTools from './modalTools';
@@ -99,7 +100,7 @@ export function receiveMessagesFromPaymentForm(currentWindow, postMessageWindow)
       this.closeModal();
     },
   }, (name, data) => {
-    this.emit(name, data);
+    this.emit(camelCase(name), data);
   });
 }
 
