@@ -42,7 +42,7 @@ Learn more about a [payments flow](https://docs.pay.super.com/docs/payments/quic
     - [Versioning](#versioning)
     - [Building](#building)
 - [Tests](#tests)
-- [Contributing](#contributing)
+- [Contributing](#contributing-feature-requests-and-support)
 - [License](#license)
 
 ## Demo
@@ -226,13 +226,19 @@ npm run test
 npm run test:dev
 ```
 
-## Contributing
+## Contributing, Feature Requests and Support
+If you like this project then you can put a ⭐️ on it. It means a lot to us.
 
-If you like this project then you can put a ⭐️ on it.
+If you have an idea of how to improve PaySuper (or any of the product parts) or have general feedback, you're welcome to submit a [feature request](../../issues/new?assignees=&labels=&template=feature_request.md&title=).
 
-We welcome contributions to PaySuper of any kind including documentation, suggestions, bug reports, pull requests etc. We would love to hear from you. In general, we follow the "fork-and-pull" Git workflow.
+Chances are, you like what we have already but you may require a custom integration, a special license or something else big and specific to your needs. We're generally open to such conversations.
 
-We feel that a welcoming community is important and we ask that you follow the PaySuper's [Open Source Code of Conduct](https://github.com/paysuper/code-of-conduct/blob/master/README.md) in all interactions with the community.
+If you have a question and can't find the answer yourself, you can [raise an issue](../../issues/new?assignees=&labels=&template=support-request.md&title=I+have+a+question+about+%3Cthis+and+that%3E+%5BSupport%5D) and describe what exactly you're trying to do. We'll do our best to reply in a meaningful time.
+
+We feel that a welcoming community is important and we ask that you follow PaySuper's [Open Source Code of Conduct](https://github.com/paysuper/code-of-conduct/blob/master/README.md) in all interactions with the community.
+
+PaySuper welcomes contributions from anyone and everyone. Please refer to [our contribution guide to learn more](CONTRIBUTING.md).
+
 
 ## License
 
